@@ -17,3 +17,8 @@ They can then choose between:
 | Full body | Upper / Lower | PPL |
 | --- | --- | --- |
 
+They will be asked to choose core exercises:
+
+| Horizontal | Vertical |
+| Push | Pull | Push | Pull |
+| --- | --- | --- | --- |
