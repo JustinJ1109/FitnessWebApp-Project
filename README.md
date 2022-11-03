@@ -33,6 +33,22 @@ They will be asked to input their current maxes and their goals
 | Powerlifting | Bodybuilding | Mix |
 | --- | --- | --- |
 
+### Custom Exercises
+
+Users will be provided a list of default exercises
+| Exercises |
+| --- |
+| Bench Press |
+| Overhead Press |
+| Pullups |
+| Rows |
+| Squats |
+| Deadlifts |
+| Curls |
+| Dips |
+| Pushups |
+| Planks |
+
 ## Cardio
 
 Users can choose between
