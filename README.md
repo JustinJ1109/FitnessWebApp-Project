@@ -11,6 +11,8 @@ Users asked what fitness to track
 | Resistance Training | Cardio | 
 | --- | --- |
 
+# For Resistance Training:
+
 | 2-day | 3-day | 4-day | 5-day | 6-day |
 | --- | --- | --- | --- | --- |
 
@@ -23,8 +25,6 @@ Users asked what fitness to track
 Each will have a default routine that can be edited
 
 They will be asked to input their current maxes and their goals 
-
-# Resistance Training
 
 ## Custom Exercises
 
