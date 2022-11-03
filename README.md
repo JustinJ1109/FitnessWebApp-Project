@@ -11,9 +11,15 @@ This app is a web-based application used to track workouts.
 - [ ] User can add and remove exercises to their program
 - [ ] User can view a history of past workouts, completed and non-completed
 - [ ] User can add notes
-- [ ] User can edit their default routine or create their own template
+
+- [ ] \(Extended) Show progress charts
+- [ ] \(Extended) Let user customize their own template
+- [ ] \(Extended) Let user override formulas for weight per set
+- [ ] \(Extended) Link exercises to tutorials
 
 ---
+
+
 
 # Premade workout plans
 
