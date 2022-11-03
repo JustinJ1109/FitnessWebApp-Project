@@ -9,7 +9,7 @@ This app is a web-based application used to track workouts.
 ---
 # To Do
 
-**## Premade workout plans**
+## Premade workout plans
 
 Users asked what fitness to track
 | Resistance Training | Cardio | 
@@ -17,7 +17,7 @@ Users asked what fitness to track
   
     
   
-## Resistance Training
+##### Resistance Training
 
 Users can choose between the following workout plans
 | 2-day | 3-day | 4-day | 5-day | 6-day |
@@ -33,7 +33,7 @@ They will be asked to input their current maxes and their goals
 | Powerlifting | Bodybuilding | Mix |
 | --- | --- | --- |
 
-## Cardio
+##### Cardio
 
 Users can choose between
 | Endurance | High Intensity |
