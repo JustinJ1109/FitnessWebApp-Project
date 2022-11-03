@@ -4,6 +4,16 @@
 
 This app is a web-based application used to track workouts. 
 
+# Minimum Viable Product
+
+- [ ] User can determine number of days in their workout plan
+- [ ] User can choose a program from the default given
+- [ ] User can add and remove exercises to their program
+- [ ] User can view a history of past workouts, completed and non-completed
+- [ ] User can add notes
+- [ ] User can edit their default routine or create their own template
+
+---
 
 # Premade workout plans
 
