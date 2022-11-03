@@ -1,12 +1,9 @@
 # FitnessWebApp-Project
 
-***
-
-## Description
+# Description
 
 This app is a web-based application used to track workouts. 
 
----
 
 # Premade workout plans
 
@@ -53,7 +50,16 @@ Users can:
 - sort by muscle worked
 - search by name
 
+Users will be asked to input their expected 1RM for each of the compound lifts. The recommendations will be based off of that, but may be overridden individually by lift if desired. 
 
+Users can create their own programs, modify the lift intensity (Ex. @90% 1RM)
+
+| Lift | 1RM |
+| --- | --- |
+| Bench Press | 185 |
+| Overhead Press | 115 |
+| Squats | 265 |
+| Deadlifts | 315 |
 
 ---
 
@@ -65,3 +71,7 @@ Users can choose between
 
 They will be asked their current mile times, goals, etc
 
+# Calendar Tracking
+Users can track their workouts for the day and throughout the week
+
+When selected
