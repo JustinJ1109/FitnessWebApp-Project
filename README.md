@@ -11,21 +11,20 @@ Users asked what fitness to track
 | Resistance Training | Cardio | 
 | --- | --- |
 
-# Resistance Training
-
-Users can choose between the following workout plans
 | 2-day | 3-day | 4-day | 5-day | 6-day |
 | --- | --- | --- | --- | --- |
 
-They can then choose between:
 | Full body | Upper / Lower | PPL |
+| --- | --- | --- |
+
+| Powerlifting | Bodybuilding | Mix |
 | --- | --- | --- |
 
 Each will have a default routine that can be edited
 
 They will be asked to input their current maxes and their goals 
-| Powerlifting | Bodybuilding | Mix |
-| --- | --- | --- |
+
+# Resistance Training
 
 ## Custom Exercises
 
