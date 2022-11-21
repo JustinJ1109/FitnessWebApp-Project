@@ -1,41 +1,28 @@
 import React from "react";
- 
-// We import bootstrap to make our application look better.
-import "bootstrap/dist/css/bootstrap.css";
- 
-// We import NavLink to utilize the react router.
-import { NavLink } from "react-router-dom";
- 
-// Here, we display our Navbar
-export default function Navbar() {
- return (
-   <div>
-     <nav className="navbar navbar-expand-lg navbar-light bg-light">
-       <NavLink className="navbar-brand" to="/">
-       <img style={{"width" : 25 + '%'}} src="https://d3cy9zhslanhfa.cloudfront.net/media/3800C044-6298-4575-A05D5C6B7623EE37/4B45D0EC-3482-4759-82DA37D8EA07D229/webimage-8A27671A-8A53-45DC-89D7BF8537F15A0D.png"></img>
-       </NavLink>
-       <button
-         className="navbar-toggler"
-         type="button"
-         data-toggle="collapse"
-         data-target="#navbarSupportedContent"
-         aria-controls="navbarSupportedContent"
-         aria-expanded="false"
-         aria-label="Toggle navigation"
-       >
-         <span className="navbar-toggler-icon"></span>
-       </button>
- 
-       <div className="collapse navbar-collapse" id="navbarSupportedContent">
-         <ul className="navbar-nav ml-auto">
-           <li className="nav-item">
-             <NavLink className="nav-link" to="/create">
-               Create Record
-             </NavLink>
-           </li>
-         </ul>
-       </div>
-     </nav>
-   </div>
- );
+// import { Route, Routes, useLocation } from "react-router-dom";
+import { Nav, Navbar } from 'react-bootstrap';
+
+import "../views/css/main.css";
+
+export default function NB(props) {
+  return (
+    // <Navbar className="bg-dark navbar-dark flex-column" bg="dark" expand="lg">
+    //   <Nav activeKey="/">
+	// 	  <Nav.Link href="/">Home</Nav.Link>
+	// 	  <Nav.Link href="/progress">Progress</Nav.Link>
+	// 	  <Nav.Link href="/settings">Settings</Nav.Link>
+
+	//   </Nav>
+    // </Navbar>
+
+	<nav className="nav flex-column nav-col">
+		<a className="nav-link active" href="/">Home</a>
+		<hr />
+		<a className="nav-link" href="/progress">Progress</a>
+		<hr />
+		<a className="nav-link" href="/settings">Settings</a>
+		<hr />
+		<a className="nav-link" href="/dev/todo">(dev) To Do</a>
+	</nav>
+  );
 }

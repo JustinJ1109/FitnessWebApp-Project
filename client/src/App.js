@@ -1,25 +1,41 @@
 import React from "react";
- 
+
 // We use Route in order to define the different routes of our application
 import { Route, Routes } from "react-router-dom";
- 
+
 // We import all the components we need in our app
-import Navbar from "./components/navbar";
-import RecordList from "./components/recordList";
+import NB from "./components/navbar";
+import WorkoutCalendar from "./components/workoutCalendar";
 import Edit from "./components/edit";
 import Create from "./components/create";
- 
+import Settings from "./components/settings";
+import Header from "./components/header";
+import Progress from "./components/progress";
+import Daily from "./components/daily";
+import Delete from "./components/deleteall";
+import Todo from "./components/dev/todo";
+
 const App = () => {
- return (
-   <div>
-     <Navbar />
-     <Routes>
-       <Route exact path="/" element={<RecordList />} />
-       <Route path="/edit/:id" element={<Edit />} />
-       <Route path="/create" element={<Create />} />
-     </Routes>
-   </div>
- );
+    return (
+		<div className="container-fluid page">
+			<NB />
+
+			<Header />
+			<div className="page-content">
+				<Routes>
+					<Route exact path="/" element={<WorkoutCalendar />} />
+					<Route path="/edit/:id" element={<Edit />} />
+					<Route path="/record/create" element={<Create />} />
+					<Route path="/settings" element={<Settings />} />
+					<Route path="/progress" element={<Progress />} />
+					<Route path="/record/:id" element={<Daily />} />
+					<Route path="/deleteall" element={<Delete />} />
+					<Route path="/dev/todo" element={<Todo />} />
+
+				</Routes>
+			</div>
+		</div>
+    );
 };
- 
+
 export default App;
