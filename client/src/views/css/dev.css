@@ -1,0 +1,26 @@
+
+.askprof {
+    background-color: blueviolet !important;
+    color: white !important;
+}
+
+.completed {
+    color:white;
+    background-color: green;
+}
+
+.smallfix {
+    color:green;
+}
+
+.medfix {
+    color: yellow;
+}
+
+.bigfix {
+    color: red;
+
+}
+.optional {
+    color:rgb(127, 168, 255);
+}
