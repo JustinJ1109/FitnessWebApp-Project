@@ -30,18 +30,9 @@ export default function Todo() {
                         <li className="bigfix">Save status and user settings/custom workouts</li>
                     </ul>
                 </li>
-
+                <li className="askprof">change clicking on days from GET to hide ID?</li>
                 
             </ul>
-
-            <div> 
-                <h4>Key:</h4>
-                <p className="bigfix">Red = Difficult</p>
-                <p className="medfix">Yellow = Med </p>
-                <p className="smallfix">Green = Easy </p>
-                <p className="askprof">Purple = Ask prof </p>
-                <p className="optional">Blue = Optional</p>
-            </div>
         </div>
     )
 }
