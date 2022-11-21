@@ -10,6 +10,7 @@ export default function Todo() {
                 <li>Add progress charts</li>
                 <li>Create list of exercises that can be added and removed</li>
                 <li>Have multiple routines at once add/remove (e.g. run and lift)</li>
+                <li>Make UI UX better</li>
             </ul>
         </div>
     )

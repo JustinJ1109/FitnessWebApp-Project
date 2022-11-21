@@ -85,7 +85,7 @@ export default function Create() {
          <input
            type="submit"
            value="Add"
-           className="btn btn-primary"
+           className="btn btn-dark"
          />
        </div>
 
