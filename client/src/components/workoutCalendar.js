@@ -7,17 +7,25 @@ import "../views/css/main.css";
 /* Single day as clickable box in calendar */
 const DayReport = (props) => (
     <div
-        className="col-md day-report"
+        className={props.record.date === getTodayFormatted() ? "col-md day-report today" : "col-md day-report"}
         onClick={props.gotoRecord}
         style={{ cursor: "pointer" }}
     >
         <div className="date">{new Date(props.record.date).toLocaleDateString()}</div>
-        <div className="day">{props.record.day} Day</div>
+        <div className="day">{props.record.day != 'none' ? props.record.day + ' Day' : ''}</div>
         <div className="status">
-            {props.record.status === 'complete' ?? ''}
+            {props.record.status === 'none' ? '' : 'Progress: ' + props.record.status}
         </div>
     </div>
 );
+
+/* YYYY-MM-DD - format for MongoDB */
+function getTodayFormatted() {
+    let today = new Date();
+    let today_actual = today.getDate() + 1
+    today = new Date(today.setDate(today_actual))
+    return `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`
+}
 
 export default function WorkoutCalendar() {
 
@@ -25,10 +33,8 @@ export default function WorkoutCalendar() {
     const [records, setRecords] = useState([]);
     const navigate = useNavigate();
 
-    
-
     // fetches the records from the database.
-    function PopulateWeek() {
+    function PopulateWeek(weeks_ago) {
 
         let today = new Date()
         let first = today.getDate() - today.getDay()
@@ -110,9 +116,6 @@ export default function WorkoutCalendar() {
         return;
     }, [records.length])
 
-    
-
-
     function weekReport(week) {
 
         // console.log(records)
@@ -124,7 +127,6 @@ export default function WorkoutCalendar() {
                     key={record._id}
                 />
             );
-            
         });
 
         if (week_records.length === 0) {
@@ -137,17 +139,6 @@ export default function WorkoutCalendar() {
         navigate("/record/create")
     }
 
-    function getDate() {
-        let today = new Date()
-        let this_week_start = new Date(today)
-        this_week_start.setDate(this_week_start.getDate() - 7)
-
-        return <div>
-            {today.toLocaleDateString()}
-            {this_week_start.toLocaleDateString()}
-        </div>
-    }
-
     // This following section will display the table with the records of individuals.
     return (
         <div className="container-fluid week-report">
@@ -157,8 +148,6 @@ export default function WorkoutCalendar() {
                 value="Add New Entry"
                 onClick={onClickCreate}
             />
-
-            {getDate()}
 
             <h2>This Week</h2>
             <div className="row">

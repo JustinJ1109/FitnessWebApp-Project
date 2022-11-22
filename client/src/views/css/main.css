@@ -29,6 +29,11 @@ body {
     text-align: center;
 }
 
+.day-report.today {
+    border-width: 2px;
+    border-color: rgb(0, 119, 255);
+}
+
 .week-report {
     /* padding-bottom: 50px; */
     background-color: var(--background-color-dark);
