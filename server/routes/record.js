@@ -11,49 +11,38 @@ const dbo = require("../db/conn");
 // This help convert the id from string to ObjectId for the _id.
 const ObjectId = require("mongodb").ObjectId;
 
+
+
 // This section will help you get a list of all the records.
 recordRoutes.route("/record").get(function (req, res) {
     let db_connect = dbo.getDb("daily-report-db")
 
-	let start_date = new Date(req.query.start)
-	let end_date = new Date(req.query.end)
+	let start_date = req.query.start
+    let end_date = req.query.end
+
+    console.log(`Retrieving all with dates between ${start_date} - ${end_date}`);
 
     db_connect
         .collection("_weightlift-session")
         // get between dates
         .find({
             date: {
-                $gt: start_date,
-                $lt : end_date
+                $gte: start_date,
+                $lte: end_date
             }
         })
+        .sort({date : 1})
         .toArray(function (err, result) {
             if (err) throw err;
             res.json(result);
-
-            if (result.length > 0) {
-                console.log(`Start: ${start_date}\nEnd:${end_date}\nData:${result}`);
-
-            }
         });
-
-	
 });
 
 // This section will help you get a single record by id
 recordRoutes.route("/record/:id").get(function (req, res) {
     let db_connect = dbo.getDb();
     let myquery = { _id: ObjectId(req.params.id) };
-    db_connect.collection("records").findOne(myquery, function (err, result) {
-        if (err) throw err;
-        res.json(result);
-    });
-});
-
-recordRoutes.route("/record/getbydate/:id").get(function (req, res) {
-    let db_connect = dbo.getDb();
-    let myquery = { date: {$eq : req.params.date} };
-    db_connect.collection("records").findOne(myquery, function (err, result) {
+    db_connect.collection("_weightlift-session").findOne(myquery, function (err, result) {
         if (err) throw err;
         res.json(result);
     });
@@ -63,7 +52,7 @@ recordRoutes.route("/record/getbydate/:id").get(function (req, res) {
 recordRoutes.route("/today/:id").get(function (req, res) {
     let db_connect = dbo.getDb();
     let myquery = { _id: ObjectId(req.params.id) };
-    db_connect.collection("records").findOne(myquery, function (err, result) {
+    db_connect.collection("_weightlift-session").findOne(myquery, function (err, result) {
         if (err) throw err;
         res.json(result);
     });
@@ -72,12 +61,13 @@ recordRoutes.route("/today/:id").get(function (req, res) {
 // This section will help you create a new record.
 recordRoutes.route("/record/add").post(function (req, response) {
     let db_connect = dbo.getDb();
-    let myobj = {
-        date: req.body.date,
-        day: req.body.day,
-        status: req.body.status,
-    };
-    db_connect.collection("records").insertOne(myobj, function (err, res) {
+
+    db_connect.collection("_weightlift-session").updateOne(
+        {date: {$eq : req.body.date}}, 
+        { $setOnInsert: {
+            day: req.body.day,
+            status: req.body.status
+        } }, {upsert:true}, function (err, res) {
         if (err) throw err;
         response.json(res);
     });
@@ -95,7 +85,7 @@ recordRoutes.route("/update/:id").post(function (req, response) {
         },
     };
     db_connect
-        .collection("records")
+        .collection("_weightlift-session")
         .updateOne(myquery, newvalues, function (err, res) {
             if (err) throw err;
             console.log("1 document updated");
@@ -107,7 +97,7 @@ recordRoutes.route("/update/:id").post(function (req, response) {
 recordRoutes.route("/:id").delete((req, response) => {
     let db_connect = dbo.getDb();
     let myquery = { _id: ObjectId(req.params.id) };
-    db_connect.collection("records").deleteOne(myquery, function (err, obj) {
+    db_connect.collection("_weightlift-session").deleteOne(myquery, function (err, obj) {
         if (err) throw err;
         console.log("1 document deleted");
         response.json(obj);
@@ -118,7 +108,7 @@ recordRoutes.route("/:id").delete((req, response) => {
 recordRoutes.route("/deleteall").delete((req, response) => {
     let db_connect = dbo.getDb();
     let myquery = {};
-    db_connect.collection("records").deleteMany(myquery, function (err, obj) {
+    db_connect.collection("_weightlift-session").deleteMany(myquery, function (err, obj) {
         if (err) throw err;
         console.log(obj.result.n + " document deleted");
         response.json(obj);

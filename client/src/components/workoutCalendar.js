@@ -21,102 +21,101 @@ const DayReport = (props) => (
 
 export default function WorkoutCalendar() {
 
-    const weekly_data = []
+    let weekly_data = []
     const [records, setRecords] = useState([]);
     const navigate = useNavigate();
 
+    
+
     // fetches the records from the database.
+    function PopulateWeek() {
+
+        let today = new Date()
+        let first = today.getDate() - today.getDay()
+        let first_day = new Date(today.setDate(first))        
+
+        let dates = []
+
+        const week = [0,1,2,3,4,5,6]
+        week.map((i) => {
+
+            let next_day = new Date(first_day.setDate(first + i))
+            let date_format = `${next_day.getFullYear()}-${next_day.getMonth() + 1}-${next_day.getDate()}`;
+            dates.push(date_format)
+        })
+
+        dates.map(async (d) => {
+            // console.log(`d:${d}`)
+
+            const newDay = {
+                date: d,
+                day: 'none',
+                status: 'none'
+            }
+
+            await fetch(`http://localhost:5000/record/add`, {
+                method: "POST",
+                headers: {
+                "Content-Type": "application/json",
+                },
+                body: JSON.stringify(newDay),
+            })
+            .catch(error => {
+                window.alert(error);
+                return;
+            });            
+        })
+    }
+
+    PopulateWeek();
+
     useEffect(() => {
         async function getRecords() {
             let today = new Date()
-            let this_week_start = new Date(today)
-            this_week_start.setDate(this_week_start.getDate() - 7)
 
-            const response = await fetch(`http://localhost:5000/record?start=${this_week_start.toLocaleDateString()}&end=${today.toLocaleDateString()}`);
+            // get first of week (Sun)
+            let first = today.getDate() - today.getDay()
+            let first_day = new Date(today.setDate(first))
+            
+            // get last of week (Sat)
+            let last = first + 6
+            let last_day = new Date(today.setDate(last))
+            
+            //formatted, YYYY-MM-DD str
+            let first_date = `${first_day.getFullYear()}-${first_day.getMonth() + 1}-${first_day.getDate()}`;
+            let last_date = `${last_day.getFullYear()}-${last_day.getMonth() + 1}-${last_day.getDate()}`;
+    
+            // console.log("f" + first_date)
+            // console.log("l" + last_date)
 
+            const response = await fetch(`http://localhost:5000/record?start=${first_date}&end=${last_date}`)
+    
             if (!response.ok) {
-                const message = `An error occurred: ${response.statusText}`;
+                const message = `An error has occurred: ${response.statusText}`;
                 window.alert(message);
                 return;
             }
-
             const records = await response.json();
-
-            
-
-            console.log(records)
-            setRecords(records);
-
-            let temp_day = new Date(today);
-
-            for (let i =0 ; i < 7; i++) {
-                temp_day.setDate(temp_day.getDate() - 1)
-                let temp_date = `${temp_day.getFullYear()}-${temp_day.getMonth()+1}-${temp_day.getDate()}`
-                
-                records.forEach((record) => {
-                    if (record.date.includes(temp_date)) {
-                        console.log('asdf')
-
-                        return;
-                    }
-                    // create new empty record
-                    const emptyDay = {
-                        date : temp_date,
-                        day : "none",
-                        status : "none"
-                    };
-
-                    // add new record to db
-                    async function addEmpty() {
-                        await fetch(`http://localhost:5000/record/add`, {
-                            method:"POST",
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body : JSON.stringify(emptyDay),
-                        })
-                        .catch(error => {
-                            window.alert(error);
-                            return;
-                        })
-
-                        // get the new record from db (to include id)
-                        const response = await fetch(`http://localhost:5000/record/getbydate/${temp_date}`)
-                        
-                        if (!response.ok) {
-                            const message = `Error has occurred: CODE 16-${response.statusText}`
-                            window.alert(message)
-                            return;
-                        }
-
-                        const new_record = await response.json();
-                        if (!new_record) {
-                            window.alert(`Record with date ${temp_date} not found`);
-                            return;
-                        }
-                        console.log(`new record: ${new_record}`)
-                        return new_record;
-                    }
-                    const new_record = addEmpty();
-
-                    // add new record to all records
-                    setRecords(records => [...records, new_record])
-                    
-                })
+            if (!records) {
+                window.alert(`Record not found`);
+                return;
             }
+            setRecords(records);
+            console.log("RECORDS")
+            console.log(records)
         }
-
-        getRecords();
-
+    
+        getRecords()
+    
         return;
-    }, [records.length]);
+    }, [records.length])
 
-    console.log("REFRESH")
+    
+
 
     function weekReport(week) {
 
-        let week_template = [];
-
+        // console.log(records)
         let week_records = records.map((record) => {
             return (
                 <DayReport
