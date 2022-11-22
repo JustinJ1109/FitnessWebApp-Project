@@ -50,6 +50,15 @@ recordRoutes.route("/record/:id").get(function (req, res) {
     });
 });
 
+recordRoutes.route("/record/getbydate/:id").get(function (req, res) {
+    let db_connect = dbo.getDb();
+    let myquery = { date: {$eq : req.params.date} };
+    db_connect.collection("records").findOne(myquery, function (err, result) {
+        if (err) throw err;
+        res.json(result);
+    });
+});
+
 // Get single record by id
 recordRoutes.route("/today/:id").get(function (req, res) {
     let db_connect = dbo.getDb();
