@@ -13,18 +13,28 @@ const ObjectId = require("mongodb").ObjectId;
 
 // This section will help you get a list of all the records.
 recordRoutes.route("/record").get(function (req, res) {
-    let db_connect = dbo.getDb("employees");
+    let db_connect = dbo.getDb("daily-report-db")
 
-	let start_date = req.query.start;
-	let end_date = req.query.end;
+	let start_date = new Date(req.query.start)
+	let end_date = new Date(req.query.end)
 
     db_connect
-        .collection("records")
-        .find()
+        .collection("_weightlift-session")
+        // get between dates
+        .find({
+            date: {
+                $gt: start_date,
+                $lt : end_date
+            }
+        })
         .toArray(function (err, result) {
             if (err) throw err;
             res.json(result);
-			console.log(result);
+
+            if (result.length > 0) {
+                console.log(`Start: ${start_date}\nEnd:${end_date}\nData:${result}`);
+
+            }
         });
 
 	
