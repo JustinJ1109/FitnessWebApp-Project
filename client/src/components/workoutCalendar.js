@@ -42,8 +42,70 @@ export default function WorkoutCalendar() {
 
             const records = await response.json();
 
+            
+
             console.log(records)
             setRecords(records);
+
+            let temp_day = new Date(today);
+
+            for (let i =0 ; i < 7; i++) {
+                temp_day.setDate(temp_day.getDate() - 1)
+                let temp_date = `${temp_day.getFullYear()}-${temp_day.getMonth()+1}-${temp_day.getDate()}`
+                
+                records.forEach((record) => {
+                    if (record.date.includes(temp_date)) {
+                        console.log('asdf')
+
+                        return;
+                    }
+                    else {
+                        // create new empty record
+                        const emptyDay = {
+                            date : temp_date,
+                            day : "none",
+                            status : "none"
+                        };
+
+                        // add new record to db
+                        async function addEmpty() {
+                            await fetch(`http://localhost:5000/record/add`, {
+                                method:"POST",
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body : JSON.stringify(emptyDay),
+                            })
+                            .catch(error => {
+                                window.alert(error);
+                                return;
+                            })
+
+                            // get the new record from db (to include id)
+                            const response = await fetch(`http://localhost:5000/record/getbydate/${temp_date}`)
+
+                            if (!response.ok) {
+                                const message = `Error has occurred: CODE 16-${response.statusText}`
+                                window.alert(message)
+                                return;
+                            }
+
+                            const new_record = await response.json();
+                            if (!new_record) {
+                                window.alert(`Record with date ${temp_date} not found`);
+                                navigate("/");
+                                return;
+                            }
+
+                            return new_record;
+                        }
+                        const new_record = addEmpty();
+
+                        // add new record to all records
+                        setRecords(records => [...records, new_record])
+                    }
+                })
+            }
         }
 
         getRecords();
@@ -56,14 +118,6 @@ export default function WorkoutCalendar() {
     function weekReport(week) {
 
         let week_template = [];
-        let temp_day = new Date();
-
-            // temp_day.setDate(temp_day.getDate() - 1)
-
-            // let temp_date = `${temp_day.getFullYear()}-${temp_day.getMonth()+1}-${temp_day.getDate()}`
-
-            // YYYY-MM-DD
-        
 
         let week_records = records.map((record) => {
             return (
