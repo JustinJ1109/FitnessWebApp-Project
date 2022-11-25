@@ -11,8 +11,6 @@ const dbo = require("../db/conn");
 // This help convert the id from string to ObjectId for the _id.
 const ObjectId = require("mongodb").ObjectId;
 
-
-
 // This section will help you get a list of all the records.
 recordRoutes.route("/record").get(function (req, res) {
     let db_connect = dbo.getDb("daily-report-db")
@@ -20,7 +18,7 @@ recordRoutes.route("/record").get(function (req, res) {
 	let start_date = req.query.start
     let end_date = req.query.end
 
-    console.log(`Retrieving all with dates between ${start_date} - ${end_date}`);
+    console.log(`Retrieving all with dates between ${start_date + 1} - ${end_date}`);
 
     db_connect
         .collection("_weightlift-session")
@@ -28,7 +26,7 @@ recordRoutes.route("/record").get(function (req, res) {
         .find({
             date: {
                 $gte: start_date,
-                $lte: end_date
+                $lte: end_date + 1
             }
         })
         .sort({date : 1})
@@ -36,10 +34,13 @@ recordRoutes.route("/record").get(function (req, res) {
             if (err) throw err;
             res.json(result);
         });
+
+    console.log('done')
 });
 
 // This section will help you get a single record by id
 recordRoutes.route("/record/:id").get(function (req, res) {
+    console.log("Retrieving record by id");
     let db_connect = dbo.getDb();
     let myquery = { _id: ObjectId(req.params.id) };
     db_connect.collection("_weightlift-session").findOne(myquery, function (err, result) {

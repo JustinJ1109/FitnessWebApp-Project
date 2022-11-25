@@ -19,9 +19,10 @@ body {
 
 .day-report {
     border: 1px solid black;
-    padding-bottom: 60px;
-    background-color: rgb(219, 219, 219);
+    padding-bottom: 80px;
+    background-color: rgb(199, 215, 218);
     color:black;
+    border-radius: 10px;
 }
 
 .day-report > .day, 
@@ -29,9 +30,13 @@ body {
     text-align: center;
 }
 
+.day-report:hover {
+    background-color: rgb(195, 228, 228);
+}
+
 .day-report.today {
-    border-width: 2px;
-    border-color: rgb(0, 119, 255);
+    border-width: 3px;
+    border-color: rgb(255, 217, 0);
 }
 
 .week-report {

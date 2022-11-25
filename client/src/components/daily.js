@@ -11,7 +11,17 @@ export default function Daily() {
 
     useEffect(() => {
         async function getToday() {
-            const response = await fetch(`http://localhost:5000/today/${id}`);
+            const response = await fetch(`http://localhost:5000/record/${id}`);
+
+            if (!response) {
+
+            }
+
+            const result = await response.json();
+
+            setDaily(result);
+
+            console.log(result);
         }
 
         
@@ -26,6 +36,8 @@ export default function Daily() {
             <h4>Viewing ID: 
                 <span>{id}</span>
             </h4>
+
+            {/* <p>Date: {daily.date} </p> */}
 
             <input 
                 type="button"

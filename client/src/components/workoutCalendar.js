@@ -7,11 +7,11 @@ import "../views/css/main.css";
 /* Single day as clickable box in calendar */
 const DayReport = (props) => (
     <div
-        className={props.record.date === getTodayFormatted() ? "col-md day-report today" : "col-md day-report"}
+        className={props.record.date === getTodayFormatted() ? "col-lg col-3-md day-report today" : "col-lg col-3-md day-report"}
         onClick={props.gotoRecord}
         style={{ cursor: "pointer" }}
     >
-        <div className="date">{new Date(props.record.date).toLocaleDateString()}</div>
+        <div className="date">{formatDate(props.record.date)}</div>
         <div className="day">{props.record.day != 'none' ? props.record.day + ' Day' : ''}</div>
         <div className="status">
             {props.record.status === 'none' ? '' : 'Progress: ' + props.record.status}
@@ -22,33 +22,43 @@ const DayReport = (props) => (
 /* YYYY-MM-DD - format for MongoDB */
 function getTodayFormatted() {
     let today = new Date();
-    let today_actual = today.getDate() + 1
+    let today_actual = today.getDate()
     today = new Date(today.setDate(today_actual))
     return `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`
 }
 
+function formatDate(date_string) {
+    let date = new Date(date_string)
+    // why tf does this work
+    date.setDate(date.getDate())
+
+    return `${date.getMonth() + 1}/${date.getDate() + 1}`
+}
+
 export default function WorkoutCalendar() {
 
-    let weekly_data = []
     const [records, setRecords] = useState([]);
     const navigate = useNavigate();
 
+    const weeks_to_display = 3;
+    
     // fetches the records from the database.
-    function PopulateWeek(weeks_ago) {
-
-        let today = new Date()
-        let first = today.getDate() - today.getDay()
-        let first_day = new Date(today.setDate(first))        
+    function PopulateWeek(num_weeks) {
 
         let dates = []
+        let today = new Date()
+        let first = today.getDate() - today.getDay() - (7* (num_weeks-1))
 
-        const week = [0,1,2,3,4,5,6]
-        week.map((i) => {
+        Array.from({length : 7 + (7 * (num_weeks - 1))}).map((x , i) => {
+            let next_day = new Date(today.setDate(first + i))
+            // console.log(`next day ${next_day}`)
 
-            let next_day = new Date(first_day.setDate(first + i))
-            let date_format = `${next_day.getFullYear()}-${next_day.getMonth() + 1}-${next_day.getDate()}`;
+            let date_format = `${next_day.getFullYear()}-${next_day.getMonth() + 1}-${next_day.getDate() < 10 ? '0' + next_day.getDate() : next_day.getDate()}`;
+            // console.log(date_format)
             dates.push(date_format)
         })
+
+        // console.log(dates)
 
         dates.map(async (d) => {
             // console.log(`d:${d}`)
@@ -73,26 +83,26 @@ export default function WorkoutCalendar() {
         })
     }
 
-    PopulateWeek();
+    // add empty records to db for dates without data
+    PopulateWeek(weeks_to_display);
 
     useEffect(() => {
         async function getRecords() {
-            let today = new Date()
 
-            // get first of week (Sun)
-            let first = today.getDate() - today.getDay()
-            let first_day = new Date(today.setDate(first))
-            
+            let tmp_date = new Date()
+            let first = tmp_date.getDate() - tmp_date.getDay() - (7 * (weeks_to_display - 1))
+            let first_day = new Date(tmp_date.setDate(first))
+
             // get last of week (Sat)
-            let last = first + 6
-            let last_day = new Date(today.setDate(last))
+            let last = first + 6 + (7 * (1-weeks_to_display))
+            let last_day = new Date(tmp_date.setDate(last))
             
             //formatted, YYYY-MM-DD str
-            let first_date = `${first_day.getFullYear()}-${first_day.getMonth() + 1}-${first_day.getDate()}`;
-            let last_date = `${last_day.getFullYear()}-${last_day.getMonth() + 1}-${last_day.getDate()}`;
+            let first_date = `${first_day.getFullYear()}-${first_day.getMonth()}-${first_day.getDate() + 1}`;
+            let last_date = `${last_day.getFullYear()}-${last_day.getMonth()}-${last_day.getDate() + 1}`;
     
-            // console.log("f" + first_date)
-            // console.log("l" + last_date)
+            // console.log("f " + first_date)
+            // console.log("l " + last_date)
 
             const response = await fetch(`http://localhost:5000/record?start=${first_date}&end=${last_date}`)
     
@@ -107,8 +117,8 @@ export default function WorkoutCalendar() {
                 return;
             }
             setRecords(records);
-            console.log("RECORDS")
-            console.log(records)
+            // console.log("RECORDS")
+            // console.log(records)
         }
     
         getRecords()
