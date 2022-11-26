@@ -7,15 +7,22 @@ import "../views/css/main.css";
 /* Single day as clickable box in calendar */
 const DayReport = (props) => (
     <div
-        className={props.record.date === getTodayFormatted() ? "col-lg col-3-md day-report today" : "col-lg col-3-md day-report"}
+        className={props.record.date === getTodayFormatted() ? "col-lg col-3-sm day-report today clickable" : "col-lg col-3-sm day-report clickable"}
         onClick={props.gotoRecord}
-        style={{ cursor: "pointer" }}
     >
         <div className="date">{formatDate(props.record.date)}</div>
         <div className="day">{props.record.day != 'none' ? props.record.day + ' Day' : ''}</div>
         <div className="status">
             {props.record.status === 'none' ? '' : 'Progress: ' + props.record.status}
         </div>
+    </div>
+);
+
+const DayReportPlaceholder = (props) => (
+    <div
+        className="col-lg col-3-sm day-report clickable"
+        style={{ cursor: "pointer" }}
+    >
     </div>
 );
 
@@ -117,8 +124,6 @@ export default function WorkoutCalendar() {
                 return;
             }
             setRecords(records);
-            // console.log("RECORDS")
-            // console.log(records)
         }
     
         getRecords()
@@ -140,7 +145,19 @@ export default function WorkoutCalendar() {
         });
 
         if (week_records.length === 0) {
-            return (<div>No Results for this week</div>);
+            const emptyDay = {
+                date:'',
+                day : '',
+                status : ''
+            }
+            Array.from(week * 7).map((sqr) => {
+                return (
+                    <DayReportPlaceholder />
+    
+                );
+            })
+
+            
         }
         return week_records;
     }
@@ -152,12 +169,12 @@ export default function WorkoutCalendar() {
     // This following section will display the table with the records of individuals.
     return (
         <div className="container-fluid week-report">
-            <input
+            {/* <input
                 type="button"
                 className="btn btn-dark"
                 value="Add New Entry"
                 onClick={onClickCreate}
-            />
+            /> */}
 
             <h2>This Week</h2>
             <div className="row">

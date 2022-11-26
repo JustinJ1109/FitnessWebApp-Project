@@ -12,6 +12,10 @@
     --font-color-dark-bold:rgb(218, 218, 218);
 }
 
+.title, .nav {
+    z-index: 1;
+}
+
 body {
     background-color: var(--background-color-dark) !important;
     color:var(--color-dark) !important;
@@ -19,7 +23,8 @@ body {
 
 .day-report {
     border: 1px solid black;
-    padding-bottom: 80px;
+    height: 160px;
+    /* padding-bottom: px; */
     background-color: rgb(199, 215, 218);
     color:black;
     border-radius: 10px;
@@ -72,8 +77,20 @@ body {
     margin-bottom: 5px;
 }
 
+.clickable {
+    cursor: pointer;
+}
+
+.routine-table {
+    margin-top:10px;
+}
+
+tr.collapse.in {
+    display:table-row !important;
+}
+
 .page-content {
-    position: fixed;
+    position: relative;
     top:var(--titleHeight);
     left:calc(var(--navBarWidth) + 60px);
     width:calc(100% - var(--navBarWidth)*2);

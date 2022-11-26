@@ -17,7 +17,7 @@ import Todo from "./components/dev/todo";
 
 const App = () => {
     return (
-		<div className="container-fluid page">
+		<div className="page">
 			<NB />
 
 			<Header />

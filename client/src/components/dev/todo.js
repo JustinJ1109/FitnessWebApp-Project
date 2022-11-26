@@ -8,8 +8,6 @@ export default function Todo() {
         <div>
             
             <ul>
-                <li className="askprof smallfix">Delete all entries from DB (or make new?)</li>
-                <li className="askprof medfix" >get 7 days consistent for home page for each week interval (no data if empty)</li>
                 <li className="bigfix">Add progress charts
                     <ul>
                         <li>Want to see progression and breakdown of notable changes over weeks</li>
@@ -17,6 +15,7 @@ export default function Todo() {
                 </li>
                 <li className="medfix">Create list of exercises that can be added and removed</li>
                 <li className="smallfix">Have multiple routines at once add/remove (e.g. run and lift)</li>
+                <li className="smallfix">Rename title and doc title / fix icon</li>
                 <li className="medfix">Make UI UX better
                     <ul>
                         <li>Round corners</li>

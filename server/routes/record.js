@@ -119,3 +119,24 @@ recordRoutes.route("/deleteall").delete((req, response) => {
 });
 
 module.exports = recordRoutes;
+
+
+
+const user = {
+    username: '',
+    password: '',
+
+    selected_routine: routines,
+
+    sets_reps_separate : true,
+    dark: true,
+
+    
+}
+
+const routines = {
+    full_body : '',
+    ppl : '',
+    upper: ''
+}   
+
