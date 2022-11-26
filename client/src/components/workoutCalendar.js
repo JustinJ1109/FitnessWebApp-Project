@@ -129,7 +129,7 @@ export default function WorkoutCalendar() {
     function weekReport(week) {
 
         // console.log(records)
-        let week_records = records.map((record) => {
+        let week_records = records.slice(week * 7, week*7 + 7).map((record) => {
             return (
                 <DayReport
                     record={record}
@@ -160,6 +160,16 @@ export default function WorkoutCalendar() {
             />
 
             <h2>This Week</h2>
+            <div className="row">
+                {weekReport(2)}
+            </div>
+
+            <h2>Last Week</h2>
+            <div className="row">
+                {weekReport(1)}
+            </div>
+
+            <h2>Week of Date</h2>
             <div className="row">
                 {weekReport(0)}
             </div>

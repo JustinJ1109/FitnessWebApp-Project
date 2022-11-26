@@ -31,7 +31,8 @@ export default function Todo() {
                     </ul>
                 </li>
                 <li className="askprof">change clicking on days from GET to hide ID?</li>
-                
+                <li className="medfix">placeholder calendar spots for pre-load data</li>
+
             </ul>
         </div>
     )
