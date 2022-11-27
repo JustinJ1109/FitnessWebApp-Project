@@ -62,46 +62,51 @@ function getDates(startDate, stopDate) {
 
 export default function WorkoutCalendar() {
 
+    let d = new Date()
+
+    d = d.addDays(-d.getDay());
+
+    // console.log(d.toLocaleString())
+    // console.log(d.toLocaleDateString())
+    // console.log(d.toISOString())
+
+
     const [records, setRecords] = useState([]);
     const navigate = useNavigate();
 
     const weeks_to_display = 3;
     
     // fetches the records from the database.
-    function PopulateWeek(num_weeks) {
+    async function PopulateWeek(num_weeks) {
 
-        let dates = []
-        let today = new Date()
-        let first = today.getDate() - today.getDay() - (7* (num_weeks-1))
+        let last = new Date()
+        let first = new Date()
 
-        Array.from({length : 7 + (7 * (num_weeks - 1))}).map((x , i) => {
-            let next_day = new Date(today.setDate(first + i))
+        // get sunday
+        first = last.addDays(-last.getDay())
 
-            let date_format = `${next_day.getFullYear()}-${next_day.getMonth() + 1}-${next_day.getDate() < 10 ? '0' + next_day.getDate() : next_day.getDate()}`;
-            dates.push(date_format)
+        // get saturday
+        last = first.addDays(6)
+
+        // get sunday from num_weeks ago
+        first = first.addDays(-(7*(num_weeks-1)))
+
+        let dates = getDates(first, last)
+
+        console.log(dates)
+
+        await fetch(`http://localhost:5000/record/add`, {
+            method: "POST",
+            headers: {
+            "Content-Type": "application/json",
+            },
+            body: JSON.stringify(dates),
         })
-
-
-        dates.map(async (d) => {
-            const newDay = {
-                date: d,
-                day: 'none',
-                status: 'none'
-            }
-
-            await fetch(`http://localhost:5000/record/add`, {
-                method: "POST",
-                headers: {
-                "Content-Type": "application/json",
-                },
-                body: JSON.stringify(newDay),
-            })
-            .catch(error => {
-                // window.alert(error);
-                console.log(error)
-                return;
-            });            
-        })
+        .catch(error => {
+            // window.alert(error);
+            console.log(error)
+            return;
+        });   
     }
 
     // add empty records to db for dates without data
@@ -122,8 +127,8 @@ export default function WorkoutCalendar() {
             let first_date = `${first_day.getFullYear()}-${first_day.getMonth()+1}-${first_day.getDate()}`;
             let last_date = `${last_day.getFullYear()}-${last_day.getMonth()+1}-${last_day.getDate()}`;
     
-            console.log("f " + first_date)
-            console.log("l " + last_date)
+            // console.log("f " + first_date)
+            // console.log("l " + last_date)
 
             const response = await fetch(`http://localhost:5000/record?start=${first_date}&end=${last_date}`)
     
@@ -144,7 +149,7 @@ export default function WorkoutCalendar() {
         getRecords()
     
         return;
-    }, [records.length])
+    }, [])
 
     function weekReport(week) {
 

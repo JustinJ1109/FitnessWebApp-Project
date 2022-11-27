@@ -15,15 +15,26 @@ const ObjectId = require("mongodb").ObjectId;
 recordRoutes.route("/record/add").post(function (req, response) {
     let db_connect = dbo.getDb();
 
-    db_connect.collection("_weightlift-session").updateOne(
-        {date: {$eq : req.body.date}}, 
-        { $setOnInsert: {
-            day: req.body.day,
-            status: req.body.status
-        } }, {upsert:true}, function (err, res) {
+    console.log(req.body)
+    let dates = req.body
+
+    dates.map((d) => {
+        db_connect
+        .collection("_weightlift-session")
+        .updateOne(
+            {date: {$eq : d.toISOString().split("T")[0]}}, 
+            { 
+            $setOnInsert: {
+                day: '',
+                status: ''
+            } 
+            }, 
+            {upsert:true}, 
+            function (err, res) {
         if (err) throw err;
         response.json(res);
-    });
+        });
+    })
 });
 
 // This section will help you get a list of all the records.
@@ -100,6 +111,4 @@ recordRoutes.route("/record/:id").delete((req, response) => {
 
 
 module.exports = recordRoutes;
-
-
 
