@@ -22,6 +22,8 @@ export default function NB(props) {
 		<hr />
 		<a className="nav-link" href="/settings">Settings</a>
 		<hr />
+		<a className="nav-link" href="/lift">Lift Catalogue</a>
+		<hr />
 		<a className="nav-link" href="/dev/todo">(dev) To Do</a>
 	</nav>
   );

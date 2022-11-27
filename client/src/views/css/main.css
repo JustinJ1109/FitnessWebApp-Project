@@ -51,8 +51,17 @@ body {
     padding-bottom: 20px;
 }
 
+.nav-link {
+    text-align: center;
+}
 
+.secondary-title {
+    text-align: center;
+}
 
+.lift-row {
+    text-align: center;
+}
 .nav-col {
     position: fixed;
     top:0;
@@ -113,3 +122,33 @@ tr.collapse.in {
     display: flex;
     padding-left:20px;
 }
+
+.addNew-input::placeholder, .addNew-tags::placeholder {
+    text-align: center;
+}
+
+.addNew-input, .addNew-tags {
+    border-radius: 6px;
+    border:0px solid black;
+    text-align: center;
+    color:rgb(43, 42, 42);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.tag {
+    font-size: smaller;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+}
+
+.divider.collapsed {
+    position: relative;
+    width: 10px;
+}
+
+.divider {
+    position: relative;
+    width:auto;
+}
+

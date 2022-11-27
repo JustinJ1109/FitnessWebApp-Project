@@ -144,7 +144,7 @@ export default function Daily() {
             <div className="container row">
                 <input 
                     type="button"
-                    className="col-1 btn btn-dark"
+                    className="col-lg-1 col-md-2 col-sm-2 btn btn-dark"
                     value="Back"
                     onClick={goBack}
                 />

@@ -33,7 +33,7 @@ recordRoutes.route("/record").get(function (req, res) {
 	let start_date = req.query.start
     let end_date = req.query.end
 
-    console.log(`Retrieving all with dates between ${start_date + 1} - ${end_date}`);
+    console.log(`Retrieving all with dates between ${start_date} - ${end_date}`);
 
     db_connect
         .collection("_weightlift-session")

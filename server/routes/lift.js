@@ -12,17 +12,27 @@ const dbo = require("../db/conn");
 // This help convert the id from string to ObjectId for the _id.
 const ObjectId = require("mongodb").ObjectId;
 
-liftRoutes.route("/lift_library/add").get(function (req, res) {
+liftRoutes.route("/lift_library/add").post(function (req, response) {
     let db_connect = dbo.getDb();
 
-    db_connect.collection("_lift_library").updateOne(
-        {name:req.body.name}, 
-        { $setOnInsert: {
-            type: req.body.type,
-        } }, {upsert:true}, function (err, res) {
-        if (err) throw err;
-        response.json(res);
-    });
+    if (req.body.name !== '') {
+        db_connect.collection("_lift_library").updateOne(
+            {name:req.body.name}, 
+            { $setOnInsert: {
+                type: req.body.tags,
+            } }, {upsert:true}, function (err, res) {
+            if (err) throw err;
+            response.json(res);
+        });
+    }
+    else {
+        console.log("receieved empty string, not adding")
+        response.status(400).json(req.body)
+    }
+
+
+
+    
 })
 
 liftRoutes.route("/lift_library").get(function (req, res) {
@@ -58,7 +68,7 @@ liftRoutes.route("/lift_library/update/:id").post(function (req, res) {
     let newvalues = {
         $set: {
             name: req.body.name,
-            type: req.body.type,
+            tags: req.body.tags,
         },
     };
     db_connect

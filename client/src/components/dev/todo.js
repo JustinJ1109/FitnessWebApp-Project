@@ -31,6 +31,9 @@ export default function Todo() {
                 </li>
                 <li className="askprof">change clicking on days from GET to hide ID?</li>
                 <li className="medfix">placeholder calendar spots for pre-load data</li>
+                <li className="smallfix">fix calendar placeholder "Week of Date" title for week 3</li>
+                <li className="medfix">fix calendar dating. Use ISO dates rather than strings? Improve date range function</li>
+
 
             </ul>
         </div>

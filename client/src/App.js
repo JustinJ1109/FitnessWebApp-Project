@@ -15,6 +15,7 @@ import Daily from "./components/daily";
 import Delete from "./components/deleteall";
 import Todo from "./components/dev/todo";
 import GetLifts from "./components/lift/list";
+import AddLift from "./components/lift/create";
 
 const App = () => {
     return (
@@ -34,6 +35,7 @@ const App = () => {
 					<Route path="/dev/todo" element={<Todo />} />
 
 					<Route path="/lift/" element={<GetLifts />} />
+					<Route path="/lift/add" element={<AddLift />} />
 
 				</Routes>
 			</div>
