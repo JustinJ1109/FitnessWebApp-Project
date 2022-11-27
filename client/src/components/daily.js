@@ -12,17 +12,22 @@ const EmptyDay = {
 const DateInfo = (props) => {
 
     let da = new Date(props.record.date)
+    da.setDate(da.getDate() + 1)
     const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+
+
     let formattedDate = `${weekday[da.getDay()]}, ${da.toLocaleDateString()}`
 
     return (
-        <div className={props.className} style={{color:"white"}}>
+        <div className={props.className??''} style={{color:"white", textAlign:'center'}}>
             <h4>{formattedDate}</h4>
         </div>
     )
 }
 
-const Routine = (props) => {
+const RoutineTable = (props) => {
+
+    const [hideRow, setHideRow] = useState();
 
     return (
         <div>
@@ -54,6 +59,8 @@ const Routine = (props) => {
                                     percent_rm="85"
                                     target={`subrow-${i+1}`}
                                     key={`${i}-${x}`}
+                                    setHideRow={setHideRow}
+                                    hideRow={hideRow}
                                 />
                             )
                         }
@@ -61,7 +68,7 @@ const Routine = (props) => {
                         else {
                             return (
                                 <Sub_Row
-                                    className={`subrow-${i} collapse`}
+                                    className={`subrow-${i} ${hideRow ? 'collapse' : ''}`}
                                     key={`${i}-${x}`}
                                 />
                             )
@@ -76,23 +83,11 @@ const Routine = (props) => {
     )
 }
 
-function expandRow(prop) {
-    console.log(prop.target)
-    let ele = document.getElementsByClassName(prop.target)[0]
-    console.log(ele)
-    
-    if (ele.classList.contains("collapse"))
-        ele.classList.remove("collapse")
-    else {
-        ele.classList.add("collapse")
-    }
-
-}
 const Exercise_Row = (props) => {
     return (
         <tr 
         className={props.className??''}
-        onClick={()=>expandRow(props)}
+        onClick={()=>props.setHideRow(!props.hideRow)}
         >
             <td>{props.number??''}</td>
             <td>{(props.progress??'') + '%'}</td>
@@ -107,7 +102,9 @@ const Exercise_Row = (props) => {
 
 const Sub_Row = (props) => {
     return (
-        <tr className={`${props.className}`}>testing</tr>
+        <tr className={`subrow ${props.className}`}>
+            <td colSpan="2">testing</td>
+        </tr>
     )
 }
 
@@ -115,6 +112,7 @@ export default function Daily() {
 
     const { id } = useParams();
     const [record, setRecord] = useState();
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -134,7 +132,8 @@ export default function Daily() {
         }
 
         getToday();
-    }, [])
+        console.log('use effect')
+    },[])
 
     const goBack = () => {
         navigate("/");
@@ -142,21 +141,23 @@ export default function Daily() {
 
     return (
         <div>
-            <div className="row">
+            <div className="container row">
                 <input 
                     type="button"
-                    className="col-2 btn btn-dark"
+                    className="col-1 btn btn-dark"
                     value="Back"
                     onClick={goBack}
                 />
                 <DateInfo
                     className="col"
                     record={record??EmptyDay}
-                    // key={id} 
                 />
+                <div className="col-1" />
+
             </div>
 
-            <Routine />
+            <RoutineTable
+            />
             
         </div>
     )

@@ -89,6 +89,11 @@ tr.collapse.in {
     display:table-row !important;
 }
 
+.subrow {
+    pointer-events: none !important;
+    opacity: 0.7;
+}
+
 .page-content {
     position: relative;
     top:var(--titleHeight);

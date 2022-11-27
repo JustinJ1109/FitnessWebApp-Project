@@ -14,6 +14,7 @@ import Progress from "./components/progress";
 import Daily from "./components/daily";
 import Delete from "./components/deleteall";
 import Todo from "./components/dev/todo";
+import GetLifts from "./components/lift/list";
 
 const App = () => {
     return (
@@ -31,6 +32,8 @@ const App = () => {
 					<Route path="/record/:id" element={<Daily />} />
 					<Route path="/deleteall" element={<Delete />} />
 					<Route path="/dev/todo" element={<Todo />} />
+
+					<Route path="/lift/" element={<GetLifts />} />
 
 				</Routes>
 			</div>
