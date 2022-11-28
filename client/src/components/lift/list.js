@@ -2,7 +2,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
-import AddLift from "./create";
+// import AddLift from "./create";
 
 export default function GetLifts() {
     const navigate = useNavigate();
@@ -19,14 +19,12 @@ export default function GetLifts() {
                 return;
             }
         
-            const records = await response.json();
+            const record = await response.json();
     
-            setRecords(records)
+            setRecords(record)
             // console.log(records)
         }
-
         getLifts();
-
         return;
         
     }, [records.length])
@@ -47,7 +45,7 @@ export default function GetLifts() {
             return;
         })
 
-        setRecords([...records], newLift)
+        setRecords([...records, newLift])
     }
 
     const GotoEdit = () => {
@@ -135,7 +133,7 @@ export default function GetLifts() {
         )
     }
     
-    const Record_row = (props) => {
+    const RecordRow = (props) => {
         const [expand, setExpand] = useState(false);
 
         return (
@@ -190,7 +188,7 @@ export default function GetLifts() {
                         <tbody>
                             {[...records].map((rec, i) => {
                                 return (
-                                    <Record_row row_num={i+1} name={rec.name} key={i}/>
+                                    <RecordRow row_num={i+1} name={rec.name} key={i}/>
                                 )
                             })}
                             <AddNewRow num={records.length + 1}/>
