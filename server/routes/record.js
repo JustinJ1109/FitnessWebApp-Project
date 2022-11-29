@@ -41,8 +41,8 @@ recordRoutes.route("/record/add").post(function (req, response) {
 recordRoutes.route("/record").get(function (req, res) {
     let db_connect = dbo.getDb("daily-report-db")
 
-	let start_date = req.query.start
-    let end_date = req.query.end
+	let start_date = new Date(req.query.start).toLocaleDateString()
+    let end_date = new Date(req.query.end).toLocaleDateString()
 
     console.log(`Retrieving all with dates between ${start_date} - ${end_date}`);
 
@@ -63,10 +63,22 @@ recordRoutes.route("/record").get(function (req, res) {
 });
 
 // This section will help you get a single record by id
-recordRoutes.route("/record/:id").get(function (req, res) {
-    console.log("Retrieving record by id");
+recordRoutes.route("/record/:date").get(function (req, res) {
+    console.log("Retrieving record by date");
+
+    // let parsed_date
+
+    try{
+        parsed_date = `${req.params.date.slice(0, 4)}/${req.params.date.slice(4,6)}/${req.params.date.slice(6)}`
+    }
+    catch {
+        res.status(400)
+    }
+
+    console.log(`parsed date : ${parsed_date}`)
+
     let db_connect = dbo.getDb();
-    let myquery = { _id: ObjectId(req.params.id) };
+    let myquery = { date: parsed_date };
     db_connect.collection("_weightlift-session").findOne(myquery, function (err, result) {
         if (err) throw err;
         res.json(result);

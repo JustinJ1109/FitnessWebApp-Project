@@ -1,0 +1,243 @@
+[
+    {
+        "program" : "nSuns 5/3/1",
+        "name" : "Bench Press",
+        "position" : 1,
+        "day" : 1,
+        "sets" : 9,
+        "reps" : [
+            6, 5, 4, 4, 4, 5, 6, 7, 8
+        ],
+        "ref" : "Bench Press",
+        "weight" : [
+            50, 60, 80, 80, 80, 80, 70, 60, 50
+        ]
+    },
+    {
+        "program" : "nSuns 5/3/1",
+        "name" : "Overhead Press",
+        "position" : 2,
+        "day" : 1,
+        "sets" : 8,
+        "reps" : [
+            6, 5, 3, 5, 7, 4, 6, 8
+        ],
+        "ref" : "Overhead Press",
+        "weight" : [
+            50, 60, 70, 70, 70, 70, 70, 70
+        ]
+    },
+
+    {
+        "program" : "nSuns 5/3/1",
+        "name" : "Squat",
+        "position" : 1,
+        "day" : 2,
+        "sets" : 9,
+        "reps" : [
+            5, 3, 1, 3, 3, 3, 5, 5, 5
+        ],
+        "ref" : "Squat",
+        "weight" : [
+            75, 85, 95, 90, 85, 80, 75, 70, 65
+        ]
+    },
+
+    {
+        "program" : "nSuns 5/3/1",
+        "name" : "Sumo Deadlift",
+        "position" : 2,
+        "day" : 2,
+        "sets" : 8,
+        "reps" : [
+            6, 5, 3, 5, 7, 4, 6, 8
+        ],
+        "ref" : "Deadlift",
+        "weight" : [
+            50, 60, 70, 70, 70, 70, 70, 70
+        ]
+    },
+
+    {
+        "program" : "nSuns 5/3/1",
+        "name" : "Overhead Press",
+        "position" : 1,
+        "day" : 3,
+        "sets" : 9,
+        "reps" : [
+            5, 3, 1, 3, 3, 3, 5, 5, 5
+        ],
+        "ref" : "Overhead Press",
+        "weight" : [
+            75, 85, 95, 90, 85, 80, 75, 70, 65
+        ]
+    },
+
+    {
+        "program" : "nSuns 5/3/1",
+        "name" : "Incline Press",
+        "position" : 2,
+        "day" : 3,
+        "sets" : 8,
+        "reps" : [
+            6, 5, 3, 5, 7, 4, 6, 8
+        ],
+        "ref" : "Bench Press",
+        "weight" : [
+            40, 50, 60, 60, 60, 60, 60, 60
+        ]
+    },
+
+    {
+        "program" : "nSuns 5/3/1",
+        "name" : "Deadlift",
+        "position" : 1,
+        "day" : 4,
+        "sets" : 9,
+        "reps" : [
+            5, 3, 1, 3, 3, 3, 3, 3, 3
+        ],
+        "ref" : "Deadlift",
+        "weight" : [
+            75, 85, 95, 90, 85, 80, 75, 70, 65
+        ]
+    },
+
+    {
+        "program" : "nSuns 5/3/1",
+        "name" : "Front Squat",
+        "position" : 2,
+        "day" : 4,
+        "sets" : 8,
+        "reps" : [
+            6, 5, 3, 5, 7, 4, 6, 8
+        ],
+        "ref" : "Squat",
+        "weight" : [
+            35, 45, 55, 55, 55, 55, 55, 55
+        ]
+    },
+
+    {
+        "program" : "nSuns 5/3/1",
+        "name" : "Bench Press",
+        "position" : 1,
+        "day" : 5,
+        "sets" : 9,
+        "reps" : [
+            5, 3, 1, 3, 5, 3, 5, 3, 5
+        ],
+        "ref" : "Bench Press",
+        "weight" : [
+            75, 85, 95, 90, 85, 80, 75, 70, 65
+        ]
+    },
+
+    {
+        "program" : "nSuns 5/3/1",
+        "name" : "Close Grip Bench",
+        "position" : 2,
+        "day" : 5,
+        "sets" : 8,
+        "reps" : [
+            6, 5, 3, 5, 7, 4, 6, 8
+        ],
+        "ref" : "Bench Press",
+        "weight" : [
+            50, 60, 70, 70, 70, 70, 70, 70
+        ]
+    },
+
+    {
+        "program" : "PPL-6d",
+        "name" : "Bench Press",
+        "position" : 1,
+        "day" : 1,
+        "sets" : 6,
+        "reps" : [
+            3, 3, 3, 3, 3,-1
+        ],
+        "ref" : "Bench Press",
+        "weight" : [
+            90, 90, 90, 90, 90, 70
+        ]
+    },
+
+    {
+        "program" : "PPL-6d",
+        "name" : "Seated Overhead Press",
+        "position" : 2,
+        "day" : 1,
+        "sets" : 3,
+        "reps" : [
+            10,10,10
+        ],
+        "ref" : "Overhead Press",
+        "weight" : [
+            40,40,40
+        ]
+    },
+
+    {
+        "program" : "PPL-6d",
+        "name" : "Tricep Dips",
+        "position" : 3,
+        "day" : 1,
+        "sets" : 3,
+        "reps" : [
+            10,10,10
+        ],
+        "ref" : "Accessory",
+        "weight" : [
+            -1,-1,-1
+        ]
+    },
+
+    {
+        "program" : "PPL-6d",
+        "name" : "Cable Crossovers",
+        "position" : 4,
+        "day" : 1,
+        "sets" : 5,
+        "reps" : [
+            10,10,10,10,10
+        ],
+        "ref" : "Accessory",
+        "weight" : [
+            50,50,50,50,50
+        ]
+    },
+
+    {
+        "program" : "PPL-6d",
+        "name" : "Seated Tricep Extensions",
+        "position" : 5,
+        "day" : 1,
+        "sets" : 5,
+        "reps" : [
+            10,10,10,10,10
+        ],
+        "ref" : "Accessory",
+        "weight" : [
+            50,50,50,50,50
+        ]
+    },
+
+    {
+        "program" : "PPL-6d",
+        "name" : "Dumbbell Lateral Raises",
+        "position" : 6,
+        "day" : 1,
+        "sets" : 5,
+        "reps" : [
+            10,10,10,10,10
+        ],
+        "ref" : "Accessory",
+        "weight" : [
+            40,40,40,40,40
+        ]
+    }
+
+
+]
+

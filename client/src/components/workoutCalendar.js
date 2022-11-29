@@ -6,43 +6,7 @@ import "../views/css/main.css";
 
 const CALENDAR_FORMAT = 'col-lg col-md-4 col-sm-6 day-report clickable'
 
-/* Single day as clickable box in calendar */
-const DayReport = (props) => (
-    <div
-        className={props.record.date === getTodayFormatted() ? `${CALENDAR_FORMAT} today` : `${CALENDAR_FORMAT}`}
-        onClick={props.gotoRecord}
-    >
-        <div className="date">{formatDate(props.record.date)}</div>
-        <div className="day">{props.record.day != 'none' ? props.record.day + ' Day' : ''}</div>
-        <div className="status">
-            {props.record.status === 'none' ? '' : 'Progress: ' + props.record.status}
-        </div>
-    </div>
-);
-
-const DayReportPlaceholder = (props) => (
-    <div
-        className={`${CALENDAR_FORMAT}`}
-        style={{ cursor: "pointer" }}
-    >
-    </div>
-);
-
-/* YYYY-MM-DD - format for MongoDB */
-function getTodayFormatted() {
-    let today = new Date();
-    let today_actual = today.getDate()
-    today = new Date(today.setDate(today_actual))
-    return `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`
-}
-
-function formatDate(date_string) {
-    let date = new Date(date_string)
-    // why tf does this work
-    date.setDate(date.getDate())
-
-    return `${date.getMonth() + 1}/${date.getDate() + 1}`
-}
+const _USER = "Justin"
 
 Date.prototype.addDays = function(days) {
     var date = new Date(this.valueOf());
@@ -66,71 +30,25 @@ export default function WorkoutCalendar() {
 
     d = d.addDays(-d.getDay());
 
-    // console.log(d.toLocaleString())
-    // console.log(d.toLocaleDateString())
-    // console.log(d.toISOString())
-
-
     const [records, setRecords] = useState([]);
+    const [user, setUser] = useState();
+    const [dateMap, setDateMap] = useState([])
     const navigate = useNavigate();
 
     const weeks_to_display = 3;
-    
-    // fetches the records from the database.
-    async function PopulateWeek(num_weeks) {
 
-        let last = new Date()
-        let first = new Date()
+    let last = new Date()
+    let first = new Date()
 
-        // get sunday
-        first = last.addDays(-last.getDay())
-
-        // get saturday
-        last = first.addDays(6)
-
-        // get sunday from num_weeks ago
-        first = first.addDays(-(7*(num_weeks-1)))
-
-        let dates = getDates(first, last)
-
-        console.log(dates)
-
-        await fetch(`http://localhost:5000/record/add`, {
-            method: "POST",
-            headers: {
-            "Content-Type": "application/json",
-            },
-            body: JSON.stringify(dates),
-        })
-        .catch(error => {
-            // window.alert(error);
-            console.log(error)
-            return;
-        });   
-    }
-
-    // add empty records to db for dates without data
-    PopulateWeek(weeks_to_display);
+    first = last.addDays(-last.getDay())
+    last = first.addDays(6)
+    first = first.addDays(-(7*(weeks_to_display-1)))
+    let dates = getDates(first, last)
 
     useEffect(() => {
         async function getRecords() {
 
-            let tmp_date = new Date()
-            let first = tmp_date.getDate() - tmp_date.getDay() - (7 * (weeks_to_display - 1))
-            let first_day = new Date(tmp_date.setDate(first))
-
-            // get last of week (Sat)
-            let last = first + 6 + (7 * (weeks_to_display-1))
-            let last_day = new Date(tmp_date.setDate(last))
-            
-            //formatted, YYYY-MM-DD str
-            let first_date = `${first_day.getFullYear()}-${first_day.getMonth()+1}-${first_day.getDate()}`;
-            let last_date = `${last_day.getFullYear()}-${last_day.getMonth()+1}-${last_day.getDate()}`;
-    
-            // console.log("f " + first_date)
-            // console.log("l " + last_date)
-
-            const response = await fetch(`http://localhost:5000/record?start=${first_date}&end=${last_date}`)
+            const response = await fetch(`http://localhost:5000/record?start=${first}&end=${last}`)
     
             if (!response.ok) {
                 const message = `An error has occurred: ${response.statusText}`;
@@ -138,12 +56,13 @@ export default function WorkoutCalendar() {
                 console.log(message)
                 return;
             }
-            const records = await response.json();
-            if (!records) {
+            const record = await response.json();
+            if (!record) {
                 window.alert(`Record not found`);
                 return;
             }
-            setRecords(records);
+
+            setRecords(record);
         }
     
         getRecords()
@@ -151,65 +70,96 @@ export default function WorkoutCalendar() {
         return;
     }, [])
 
-    function weekReport(week) {
 
-        // console.log(records)
-        let week_records = records.slice(week * 7, week*7 + 7).map((record) => {
-            return (
-                <DayReport
-                    record={record}
-                    gotoRecord={() => {navigate(`/record/${record._id}`)}}
-                    key={record._id}
-                />
-            );
-        });
+    useEffect(() => {
+        async function getProgramDays() {
+            // get user data
+            fetch(`http://localhost:5000/user?name=${_USER}`)
+            .then(async (res) => {
+                // get user data in json
+                res.json()
+                .then(async (content) => {
+                    console.log(content)
+                    // find program data for user
+                    const response = await fetch(`http://localhost:5000/program?name=${content[0].program}`)
+                    if (!response.ok) {
+                        const message = `Could not find program for user ${_USER}: ${response.statusText}`;
+                        // window.alert(message);
+                        console.log(message)
+                        return;
+                    }
+                    response.json()
+                    .then((cont) => {
+                        setDateMap(cont[0].days)
+                    })
+                })
+            })
+            .catch((e) => {
+                // window.alert(e)
+                return;
+            })
+        }
 
-        if (week_records.length === 0) {
-            const emptyDay = {
-                date:'',
-                day : '',
-                status : ''
-            }
-            Array.from(week * 7).map((sqr) => {
+        getProgramDays()
+    }, [])
+
+    const WeekReport = (props) => {
+        return (
+            <div className="row">
+                <h2>{props.title}</h2>
+            {
+            props.days.map((d, i) => {
                 return (
-                    <DayReportPlaceholder />
-    
+                    <DayReport
+                        date={d}
+                        day=''
+                        status=''
+                        gotoRecord={() => {navigate(`/record/${formatDateURL(d)}`)}}
+                        key={`DayReport-${d}-${i}`}
+                    />
                 );
             })
+            }
+            </div>
+        )
+    }
 
+    /* Single day as clickable box in calendar */
+    const DayReport = (props) => (
+        <div
+            className={props.date.toLocaleDateString() === new Date().toLocaleDateString() ? `${CALENDAR_FORMAT} today` : `${CALENDAR_FORMAT}`}
+            onClick={props.gotoRecord}
+        >
+            <div className="date">{new Date(props.date).toLocaleDateString()}</div>
+            <div className="day">{dateMap[new Date(props.date).getDay()] == 0 ? "Rest Day" : ''}</div>
             
-        }
-        return week_records;
-    }
-
-    function onClickCreate() {
-        navigate("/record/create")
-    }
+        </div>
+    );
 
     // This following section will display the table with the records of individuals.
     return (
         <div className="container-fluid week-report">
-            {/* <input
-                type="button"
-                className="btn btn-dark"
-                value="Add New Entry"
-                onClick={onClickCreate}
-            /> */}
 
-            <h2>This Week</h2>
-            <div className="row">
-                {weekReport(2)}
-            </div>
+            <WeekReport 
+            days={dates.slice((weeks_to_display-1) * 7)}
+            title="This Week"
+            />
 
-            <h2>Last Week</h2>
-            <div className="row">
-                {weekReport(1)}
-            </div>
+            <WeekReport 
+            days={dates.slice((weeks_to_display-2) * 7, (weeks_to_display-1)*7)}
+            title="Last Week"
+            />
 
-            <h2>Week of Date</h2>
-            <div className="row">
-                {weekReport(0)}
-            </div>
+            <WeekReport 
+            days={dates.slice(0, (weeks_to_display-2) * 7)}
+            title={`Week of ${dates[0].toLocaleDateString()}`}
+            />
         </div>
     );
+}
+
+
+
+function formatDateURL(date) {
+    return `${date.getFullYear()}${date.getMonth()+1}${date.getDate()}`
 }

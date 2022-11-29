@@ -1,0 +1,11 @@
+Users ( id, username, 
+
+Lifts ( id, name, tags[], 
+
+Programs ( id, name, days
+
+Days (date, 
+
+
+# User chooses what days they want the program to be on
+Program_Days (
