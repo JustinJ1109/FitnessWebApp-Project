@@ -79,7 +79,6 @@ export default function WorkoutCalendar() {
                 // get user data in json
                 res.json()
                 .then(async (content) => {
-                    console.log(content)
                     // find program data for user
                     const response = await fetch(`http://localhost:5000/program?name=${content[0].program}`)
                     if (!response.ok) {

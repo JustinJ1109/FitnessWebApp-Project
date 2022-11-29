@@ -3,6 +3,9 @@ import React, { useEffect, useState} from "react";
 import { useNavigate } from "react-router";
 import {useParams} from 'react-router-dom';
 
+function thisDateFormatted(date) {
+    return `${date.slice(4,6)}/${date.slice(6)}/${date.slice(2,4)}`
+}
 
 export default function Daily() {
 
@@ -23,7 +26,6 @@ export default function Daily() {
             }
             
             const record = await response.json();
-            console.log(record)
             if (!record) {
                 // window.alert(`Record not found`);
                 // return;
@@ -42,18 +44,25 @@ export default function Daily() {
         navigate("/");
     }
 
-    return (
-        <div>
-            <div className="date-title">
-                <h3>{record.date}</h3>
-            </div>
-        </div>
-    )
 
-    if (existing === 1) {
+    if (existing === 1 || existing === 0) {
+        if (existing === 1) {
+            return (
+                <div>
+                    <h3>{thisDateFormatted(date)}</h3>
+                    <input
+                    className="btn btn-dark"
+                    type="button"
+                    value="Back"
+                    onClick={goBack}
+                    />
+                </div>
+            )
+        }
         return (
             <div>
-                <h3>I exist, show data</h3>
+                <h3>{thisDateFormatted(date)}</h3>
+                <div>I dont exist</div>
                 <input
                 className="btn btn-dark"
                 type="button"
@@ -62,20 +71,9 @@ export default function Daily() {
                 />
             </div>
         )
+        
     }
-    else if (existing === 0) {
-        return (
-            <div>
-                <h3>I don't exist, let me create new</h3>
-                <input
-                className="btn btn-dark"
-                type="button"
-                value="Back"
-                onClick={goBack}
-                />
-            </div>
-        )
-    }
+    
 
     // pre-load
     return (
