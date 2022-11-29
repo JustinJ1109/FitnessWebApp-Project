@@ -21,6 +21,7 @@ body {
     color:var(--color-dark) !important;
 }
 
+/* Each calendar square */
 .day-report {
     border: 1px solid black;
     height: 160px;
@@ -30,20 +31,43 @@ body {
     border-radius: 10px;
 }
 
-.day-report > .day, 
-.day-report > .status {
+/* Controls the calendar display content "Bench Press", "Overhead Press", ... etc */
+.day-report > .day-content-display {
     text-align: center;
+    font-size: small;
 }
 
+/* hover over calendar day */
 .day-report:hover {
     background-color: rgb(195, 228, 228);
 }
 
+/* outline for today square */
 .day-report.today {
     border-width: 3px;
     border-color: rgb(255, 217, 0);
 }
 
+/* Sunday, Monday, etc */
+.day-content-box .day-of-week {
+    padding-top:10px;
+    padding-bottom: 15px;
+    font-size: large;
+    text-align: center;
+}
+
+/* Field above each calendar box */
+.day-content-box .day-header {
+    font-size: small;
+}
+
+/* Fixes padding issues between calendar dates, bc idk why rows are dumb */
+.day-content-box {
+    padding-left:0px !important;
+    padding-right: 0px !important;
+}
+
+/* Each row */
 .week-report {
     /* padding-bottom: 50px; */
     background-color: var(--background-color-dark);
@@ -152,3 +176,9 @@ tr.collapse.in {
     width:auto;
 }
 
+.day-content {
+    position:relative;
+
+    justify-content: center;
+    align-items: center;
+}

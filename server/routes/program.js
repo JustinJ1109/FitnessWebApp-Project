@@ -39,6 +39,25 @@ programRoutes.route("/program/add").post(function (req, response) {
 });
 
 // This section will help you get a list of all the programs.
+programRoutes.route("/program/getmap/:progname").get(function (req, res) {
+    let db_connect = dbo.getDb("daily-report-db")
+
+    let progname = req.params.progname
+    console.log(`called /getmap/ Finding ${progname}`)
+    db_connect
+        .collection("_volume_map")
+        // get between dates
+        .find({
+            program : {$eq: progname}
+        })
+        .sort({day:1, position: 1})
+        .toArray(function (err, result) {
+            if (err) throw err;
+            res.json(result);
+        });
+});
+
+// This section will help you get a list of all the programs.
 programRoutes.route("/program").get(function (req, res) {
     let db_connect = dbo.getDb("daily-report-db")
     let name = req.query.name
