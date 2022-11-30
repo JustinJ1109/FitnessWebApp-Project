@@ -3,6 +3,10 @@ import React, { useEffect, useState} from "react";
 import { useNavigate } from "react-router";
 import {useParams} from 'react-router-dom';
 
+import "../views/css/daily-page.css";
+
+let date_map = require("../db/days_map.json")
+
 function getDateDayValue(date) {
     return new Date(date).getDay()
 }
@@ -76,21 +80,51 @@ export default function Daily() {
         navigate("/");
     }
 
+    const expandRow = (e) => {
+
+        
+        let bodyId = e.target.firstChild.firstChild.textContent.replace(" ", "") + '-body';
+        let body = document.getElementById(bodyId);
+        let children = body.children;
+
+        for (let i = 0; i < children.length; i++) {
+
+            if (i > 0) {
+                let child = children[i];
+                if (child.classList.contains("collapse")) {
+                    child.classList.remove("collapse")
+                }
+                else {
+                    child.classList.add("collapse")
+                }
+            }
+            
+        }
+
+    
+        
+        
+
+
+    }
+
     const SetRow = (props) => {
+
+        let collapsed = true
         return (
             <tr className={`set-row ${props.name != '' ? 'titled-row' : ''} ${collapsed && props.name == '' ? 'collapse' : ''}`}>
                 <td 
-                onClick={props.name != '' ? () => setCollapsed(!collapsed) : () => setCollapsed(collapsed)} 
-                style={props.name == '' ? {visibility:"hidden",border:'0'} : {}}
-                className={props.name != '' ? 'name-cell-hover' : ''}
+                className={props.name != '' ? 'name-cell-hover' : 'empty-cell'}
+                onClick={expandRow}
+                style={props.name == '' ? {pointerEvents:'none',border:'0'} : {}}
                 >
-                    <div className="row">
+                    <div className="row" style={{pointerEvents:'none'}}>
                         <div className="col">
                             {props.name}
                         </div>
 
-                        <div className="col-xl-1 col-lg-2 col-md-3 col-sm-2">
-                            {collapsed ? `\u23F5` : '\u23F7'}
+                        <div id="arrow-collapser" className="col-xl-1 col-lg-2 col-md-3 col-sm-2">
+                            {props.name != '' ? collapsed ? `\u23F5` : '\u23F7' : ''}
                         </div>
                     </div>
                 </td>
@@ -112,13 +146,14 @@ export default function Daily() {
             </tr>
         )
     }
+
     
     if (existing === 1 || existing === 0) {
         return (
-            <div>
-                <h3>{date}</h3>
+            <div className="container-fluid daily-report">
+                <h3 className="subtitle date-display">{date_map[new Date(date).getDay()]}, {new Date(date).toLocaleDateString()}</h3>
 
-                <table className="lift-table table table-bordered table-dark">
+                <table className="lift-table table table-bordered table-colored">
                     <thead>
                         <tr>
                             <th>Lift</th>
@@ -128,32 +163,8 @@ export default function Daily() {
                     </thead>
                         {volumeMap.map((e, i) => {
                             return (
-                                <tbody className="workout-body">
+                                <tbody key={`${e.name}-${i}-body`} id={`${e.name.replace(" ", "")}-body`} className={`workout-body`}>
 
-                                    {/* <tr >
-                                        <td className="col-2 name-cell-hover" onClick={() => setCollapsed(collapsed ? false : true)}>
-                                            <div className="row">
-                                            <span className="col dropdown-name">{e.name}</span> 
-                                            <span className="col-xl-1 col-lg-2 col-sm-12 dropdown-triangle">{collapsed ? '\u25B8' : '\u25BE'}</span>
-                                            </div>
-                                        </td>
-                                        <td className="col-2">
-                                            <div className="row">
-                                                <div className="col">
-                                                {`${e.reps[0]} reps @ ${220 * e.weight[0] / 100} lbs`}
-
-                                                </div>
-                                                <div className="col-2">
-                                                    {'\u2713'}
-                                                </div>
-
-                                            </div>
-                                            
-                                        </td>
-
-                                        <td className="col-2">{e.weight[0]}%</td>
-                                        
-                                    </tr> */}
                                     {e.reps.map((r, i) => {
                                         if (i === 0) {
                                             return (
@@ -175,23 +186,6 @@ export default function Daily() {
                                                     weight={e.weight[i]}
                                                     
                                                 />
-                                                // <tr className={collapsed ? 'collapse' : ''}>
-                                                //     <td style={{visibility:"hidden"}}></td>
-                                                //     <td>
-                                                //         <div className="row"> 
-                                                //             <div className="col">
-                                                //                 {`${r} reps @ ${220 * e.weight[i] / 100} lbs`}
-
-                                                //             </div>
-
-                                                //             <div className="col-2">
-                                                //                 {'\u2713'}
-                                                //             </div>
-                                                //         </div>
-                                                //     </td>
-                                                //     <td>{e.weight[i]}%</td>
-                                                    
-                                                // </tr>
                                             )
                                     })}
                                     <tr>
@@ -210,26 +204,9 @@ export default function Daily() {
                 />
             </div>
         )
-
-        
-
-        return (
-            <div>
-                <h3>{date}</h3>
-                <div>I dont exist</div>
-                <input
-                className="btn btn-dark"
-                type="button"
-                value="Back"
-                onClick={goBack}
-                />
-            </div>
-        )
         
     }
-    function expandWorkout() {
-        
-    }
+
 
     // pre-load
     return (

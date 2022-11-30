@@ -1,0 +1,76 @@
+
+@import url("./main.css");
+
+.day-content-box {
+    padding-left:0px !important;
+    padding-right: 0px !important;
+    height: 120px;
+}
+
+/* Field above each calendar box */
+.day-content-box .day-header {
+    font-size: small;
+    font-weight: 600;
+    text-align: center;
+    color: var(--main)
+
+}
+
+/* Sunday, Monday, etc */
+.day-content-box .day-of-week {
+    padding-top:10px;
+    padding-bottom: 15px;
+    font-size: large;
+    text-align: center;
+}
+
+.day-divider {
+    position: relative;
+    width: 50%;
+    left:calc(25%);
+    top:-18%;
+    border: 1px solid var(--background);
+}
+
+/* Each calendar square */
+.day-report {
+    border: 1px solid black;
+    height: 100%;
+    width: 100%;
+    /* padding-bottom: px; */
+    background-color: var(--main);
+    color: var(--background);
+    border-radius: 10px;
+}
+
+/* outline for today square */
+.day-report.today {
+    border-width: 3px;
+    border-color: var(--highlight1);
+}
+
+/* hover over calendar day */
+.day-report:hover {
+    background-color: var(--highlight2) !important;
+    color: var(--background);
+    background-color: var(--main);
+    color:var(--background);
+}
+
+/* Controls the calendar display content "Bench Press", "Overhead Press", ... etc */
+.day-report > .day-content-display {
+    text-align: center;
+    position: relative;
+    font-size: small;
+    top: -20%;
+}
+
+.week-block {
+    padding-top: 25px;
+}
+
+.page content .week-report {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

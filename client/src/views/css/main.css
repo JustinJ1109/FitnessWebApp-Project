@@ -2,12 +2,7 @@
 :root {
     --navBarWidth: 120px;
     --titleHeight:80px;
-
 }
-
-
-
-
 
 [data-theme='Ardent'] {
     --background: #393D3F;
@@ -16,7 +11,6 @@
     --highlight2: #FF5C53;
 
     --background-opaque:#393d3fc7;
-
 }
 
 [data-theme='Starship'] {
@@ -26,7 +20,6 @@
     --background: #191919;
 
     --background-opaque:#e4e4e4c4;
-
 }
 
 [data-theme='Sherbet'] {
@@ -36,7 +29,6 @@
     --highlight2: #E1E1E1;
 
     --background-opaque:#d8bbcabe;
-
 }
 
 [data-theme='Atlantic'] {
@@ -55,126 +47,92 @@
     --highlight2: #BE5DFF;
 
     --background-opaque:#ffa6f8cb;
-
-    /* --text-color1
-    --text-color2
-
-    --background-strong
-    --background-accent
-
-    --highlight1
-    --highlight2
-
-    --quirky */
-
-}
-
-.page {
-    position: relative;
-    width: 100%;
-    height: 100%;
-
-    background-color: var(--highlight1);
 }
 
 #root {
-    background-color: var(--highlight1) !important;
+    position: absolute;
+    width: 100%;
+    height: 100%;
 }
 
+.page {
+    position: absolute;
+    background-color: var(--background);
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}
+
+.page-content {
+    position:relative;
+    width: 100%;
+    height: 100%;
+
+    top:var(--titleHeight);
+    left:calc(var(--navBarWidth));
+    top:calc(var(--titleHeight));
+    width:calc(100% - var(--navBarWidth));
+    height:calc(100% - var(--titleHeight));
+
+    
+
+    background-color: var(--background);
+}
+
+tbody, td, tfoot, th, thead, tr {
+    border-color: var(--background) !important;
+}
 
 .title, .nav {
     z-index: 1;
-}
-
-html, body {
-    margin:0%;
-    min-height: 100%;
-    height:100%;
-    background-color: var(--highlight1) !important;
-    color:var(--main) !important;
-}
-
-/* Each calendar square */
-.day-report {
-    border: 1px solid black;
-    height: 100%;
-    width: 100%;
-    /* padding-bottom: px; */
-    background-color: var(--main);
-    color: var(--background);
-    border-radius: 10px;
-}
-
-/* Controls the calendar display content "Bench Press", "Overhead Press", ... etc */
-.day-report > .day-content-display {
-    text-align: center;
-    position: relative;
-    font-size: small;
-    top: -20%;
-}
-
-/* hover over calendar day */
-.day-report:hover {
-    background-color: var(--highlight2) !important;
-    color: var(--background);
-    background-color: var(--main);
-    color:var(--background);
-}
-
-/* outline for today square */
-.day-report.today {
-    border-width: 3px;
-    border-color: var(--highlight1);
-}
-
-.day-divider {
-    position: relative;
-    width: 50%;
-    left:calc(25%);
-    top:-18%;
-    border: 1px solid var(--background);
-}
-
-/* Sunday, Monday, etc */
-.day-content-box .day-of-week {
-    padding-top:10px;
-    padding-bottom: 15px;
-    font-size: large;
-    text-align: center;
-}
-
-/* Field above each calendar box */
-.day-content-box .day-header {
-    font-size: small;
-    font-weight: 600;
-    text-align: center;
-    color: var(--main)
-
-}
-
-/* Fixes padding issues between calendar dates, bc idk why rows are dumb */
-.day-content-box {
-    padding-left:0px !important;
-    padding-right: 0px !important;
-    height: 120px;
-}
-
-.week-block {
-    padding-top: 25px;
+    background-color: var(--background);
 }
 
 .name-cell-hover:hover {
-    background-color: rgb(65, 68, 70);
+    background-color: var(--highlight2);
 }
 
 /* Each row */
-.week-report {
+.page-content .week-report {
     /* padding-bottom: 50px; */
     background-color: var(--background);
     color:var(--highlight2);
     padding-bottom: 20px;
+    position: relative;
+    width: 90%;
 }
 
+.page-content .table {
+    position: relative;
+    width: 90%;
+    /* left:5% */
+}
+
+/* NAVBAR */
+.nav-col {
+    position: fixed;
+    top:0;
+    left:0;
+    width:var(--navBarWidth);
+    height:100%;
+    background-color: var(--background);
+    border-right:2px solid var(--main);
+    padding-top: 20px;
+}
+.nav-col > a {
+    color:var(--main);
+}
+.nav-col > a:hover {
+    color:var(--highlight2);
+}
+.nav-col > hr {
+    color:var(--main);
+    width:80%;
+    position: relative;
+    left:10%;
+    margin-top:5px;
+    margin-bottom: 5px;
+}
 .nav-link {
     text-align: center;
 }
@@ -186,33 +144,7 @@ html, body {
 .lift-row {
     text-align: center;
 }
-.nav-col {
-    position: fixed;
-    top:0;
-    left:0;
-    width:var(--navBarWidth);
-    height:100%;
-    background-color: var(--background);
-    border-right:2px solid var(--main);
-    padding-top: 20px;
-}
 
-.nav-col > a {
-    color:var(--main);
-}
-
-.nav-col > a:hover {
-    color:var(--highlight2);
-}
-
-.nav-col > hr {
-    color:var(--main);
-    width:80%;
-    position: relative;
-    left:10%;
-    margin-top:5px;
-    margin-bottom: 5px;
-}
 
 .clickable {
     cursor: pointer;
@@ -231,23 +163,19 @@ tr.collapse.in {
     opacity: 0.7;
 }
 
-.page-content {
-    position: relative;
-    top:var(--titleHeight);
-    left:calc(var(--navBarWidth) + 60px);
-    width:calc(100% - var(--navBarWidth)*2);
-}
+
 
 .title {
     position: fixed;
-    background-color: var(--highlight1);
+    /* background-color: var(--highlight1); */
+    border-bottom: 1px solid var(--highlight2);
     color:var(--main);
     margin-left:-12px;
     width:100%;
     height:var(--titleHeight);
     left:calc(var(--navBarWidth) + 12px);
-    align-items: center;
     display: flex;
+    align-items: center;
     padding-left:20px;
 }
 
@@ -282,12 +210,13 @@ tr.collapse.in {
 
 .lift-dividers-collapsed {
     /* border-radius: 25px; */
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
+    
+
+    border-radius: 10px;
     border-spacing: 5px;
     background-color: rgb(40, 45, 49) !important;
     position: relative;
-    height: 10px !important;
+    height: 5px !important;
 }
 
 .day-content {
@@ -295,4 +224,25 @@ tr.collapse.in {
 
     justify-content: center;
     align-items: center;
+}
+
+table.table-colored {
+    /* background-color: var(--main); */
+    border: 0px solid transparent;
+
+}
+
+.table-colored tbody {
+    border-color: var(--background);
+    border: 0px solid transparent;
+
+}
+
+tbody {
+    background-color: var(--main);
+}
+
+.table-colored .empty-cell {
+    background-color: var(--background) !important;
+    border: 0px solid transparent;
 }

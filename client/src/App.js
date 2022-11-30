@@ -32,9 +32,13 @@ const App = () => {
 
     return (
 		<div className="page" data-theme={theme}>
+			{/* navbar */}
 			<NB />
 
+			{/* header */}
 			<Header />
+
+			{/* content */}
 			<div className="page-content">
 				<Routes>
 					<Route exact path="/" element={<WorkoutCalendar />} />
