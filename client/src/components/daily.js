@@ -76,9 +76,43 @@ export default function Daily() {
         navigate("/");
     }
 
+    const SetRow = (props) => {
+        return (
+            <tr className={`set-row ${props.name != '' ? 'titled-row' : ''} ${collapsed && props.name == '' ? 'collapse' : ''}`}>
+                <td 
+                onClick={props.name != '' ? () => setCollapsed(!collapsed) : () => setCollapsed(collapsed)} 
+                style={props.name == '' ? {visibility:"hidden",border:'0'} : {}}
+                className={props.name != '' ? 'name-cell-hover' : ''}
+                >
+                    <div className="row">
+                        <div className="col">
+                            {props.name}
+                        </div>
+
+                        <div className="col-xl-1 col-lg-2 col-md-3 col-sm-2">
+                            {collapsed ? `\u23F5` : '\u23F7'}
+                        </div>
+                    </div>
+                </td>
+                <td className="name-cell-hover">
+                    <div className="row"> 
+                        <div className="col">
+                            {`${props.reps} reps @ ${220 * parseInt(props.weight, 10) / 100} lbs`}
+                        </div>
+
+                        <div className="col-2">
+                            {'\u2713'}
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    {props.weight}%
+                </td>
+                
+            </tr>
+        )
+    }
     
-
-
     if (existing === 1 || existing === 0) {
         return (
             <div>
@@ -94,9 +128,9 @@ export default function Daily() {
                     </thead>
                         {volumeMap.map((e, i) => {
                             return (
-                                <tbody>
+                                <tbody className="workout-body">
 
-                                    <tr >
+                                    {/* <tr >
                                         <td className="col-2 name-cell-hover" onClick={() => setCollapsed(collapsed ? false : true)}>
                                             <div className="row">
                                             <span className="col dropdown-name">{e.name}</span> 
@@ -119,32 +153,50 @@ export default function Daily() {
 
                                         <td className="col-2">{e.weight[0]}%</td>
                                         
-                                    </tr>
+                                    </tr> */}
                                     {e.reps.map((r, i) => {
                                         if (i === 0) {
+                                            return (
+                                                <SetRow 
+                                                    key={e.name + '-' + i}
+                                                    name={e.name}
+                                                    reps={r}
+                                                    weight={e.weight[i]}
+                                                />
+                                            )
                                             
                                         }
                                         if (i > 0)
                                             return (
-                                                <tr className={collapsed ? 'collapse' : ''}>
-                                                    <td style={{visibility:"hidden"}}></td>
-                                                    <td>
-                                                        <div className="row"> 
-                                                            <div className="col">
-                                                                {`${r} reps @ ${220 * e.weight[i] / 100} lbs`}
-
-                                                            </div>
-
-                                                            <div className="col-2">
-                                                                {'\u2713'}
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>{e.weight[i]}%</td>
+                                                <SetRow 
+                                                    key={e.name + '-' + i}
+                                                    name=''
+                                                    reps={r}
+                                                    weight={e.weight[i]}
                                                     
-                                                </tr>
+                                                />
+                                                // <tr className={collapsed ? 'collapse' : ''}>
+                                                //     <td style={{visibility:"hidden"}}></td>
+                                                //     <td>
+                                                //         <div className="row"> 
+                                                //             <div className="col">
+                                                //                 {`${r} reps @ ${220 * e.weight[i] / 100} lbs`}
+
+                                                //             </div>
+
+                                                //             <div className="col-2">
+                                                //                 {'\u2713'}
+                                                //             </div>
+                                                //         </div>
+                                                //     </td>
+                                                //     <td>{e.weight[i]}%</td>
+                                                    
+                                                // </tr>
                                             )
                                     })}
+                                    <tr>
+                                        <td className="lift-dividers-collapsed" style={collapsed ? {} :{visibility:'hidden'}} colSpan="3" />
+                                    </tr>
                                 </tbody>
                             )
                         })}
@@ -158,6 +210,8 @@ export default function Daily() {
                 />
             </div>
         )
+
+        
 
         return (
             <div>

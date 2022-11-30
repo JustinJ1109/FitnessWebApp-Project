@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 // We use Route in order to define the different routes of our application
 import { Route, Routes } from "react-router-dom";
+import useLocalStorage from 'use-local-storage'
 
 // We import all the components we need in our app
 import NB from "./components/navbar";
@@ -17,11 +18,20 @@ import Todo from "./components/dev/todo";
 import GetLifts from "./components/lift/list";
 import AddLift from "./components/lift/create";
 import Populate from "./components/dev/pop_db";
+import PopulateColorThemes from "./components/dev/pop_colors";
 import UserList from "./components/user/list";
 
 const App = () => {
+	const defaultColorScheme = window.matchMedia('(prefers-color-scheme: ardent)').matches;
+	const [theme, setTheme] = useLocalStorage('theme', defaultColorScheme ? 'Ardent' : 'Smoothie');
+	useEffect(() => {
+		setTheme('Atlantic')
+	},[])
+
+	// Starship, Smoothie, Atlantic, Sherbet, Ardent
+
     return (
-		<div className="page">
+		<div className="page" data-theme={theme}>
 			<NB />
 
 			<Header />
@@ -42,6 +52,8 @@ const App = () => {
 					<Route path="/program/populate" element={<Populate />} />
 
 					<Route path="/user" element={<UserList />} />
+
+					<Route path="/color/populate" element={<PopulateColorThemes />} />
 
 
 

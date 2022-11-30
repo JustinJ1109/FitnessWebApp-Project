@@ -3,49 +3,128 @@
     --navBarWidth: 120px;
     --titleHeight:80px;
 
-    --background-color-dark:rgb(54, 54, 54);
-    --color-dark:rgb(245, 245, 245);
-    --header-color-dark:rgb(31, 31, 31);
-    --navbar-bg-dark:rgb(31, 31, 31);
-    --navbar-dark:rgb(243, 243, 243);
-
-    --font-color-dark-bold:rgb(218, 218, 218);
 }
+
+
+
+
+
+[data-theme='Ardent'] {
+    --background: #393D3F;
+    --main: #FF4141;
+    --highlight1: #DCDCDC;
+    --highlight2: #FF5C53;
+
+    --background-opaque:#393d3fc7;
+
+}
+
+[data-theme='Starship'] {
+    --highlight2: #E4E4E4;
+    --highlight1: #FF582A;
+    --main: #E2E0D7;
+    --background: #191919;
+
+    --background-opaque:#e4e4e4c4;
+
+}
+
+[data-theme='Sherbet'] {
+    --background: #D8BBCA;
+    --main: #DDD6B4;
+    --highlight1: #D5C8BC;
+    --highlight2: #E1E1E1;
+
+    --background-opaque:#d8bbcabe;
+
+}
+
+[data-theme='Atlantic'] {
+    --background: #3F4B67;
+    --main: #A9BCD0;
+    --highlight1: #2e3131;
+    --highlight2: #D8D8E2;
+    --background-opaque:#3f4b67be;
+
+}
+
+[data-theme='Smoothie'] {
+    --main: #1b1a1b;
+    --background: #BFD5E2;
+    --highlight1: #D5D5D5;
+    --highlight2: #BE5DFF;
+
+    --background-opaque:#ffa6f8cb;
+
+    /* --text-color1
+    --text-color2
+
+    --background-strong
+    --background-accent
+
+    --highlight1
+    --highlight2
+
+    --quirky */
+
+}
+
+.page {
+    position: relative;
+    width: 100%;
+    height: 100%;
+
+    background-color: var(--highlight1);
+}
+
+#root {
+    background-color: var(--highlight1) !important;
+}
+
 
 .title, .nav {
     z-index: 1;
 }
 
-body {
-    background-color: var(--background-color-dark) !important;
-    color:var(--color-dark) !important;
+html, body {
+    margin:0%;
+    min-height: 100%;
+    height:100%;
+    background-color: var(--highlight1) !important;
+    color:var(--main) !important;
 }
 
 /* Each calendar square */
 .day-report {
     border: 1px solid black;
-    height: 160px;
+    height: 100%;
+    width: 100%;
     /* padding-bottom: px; */
-    background-color: rgb(199, 215, 218);
-    color:black;
+    background-color: var(--main);
+    color: var(--background);
     border-radius: 10px;
 }
 
 /* Controls the calendar display content "Bench Press", "Overhead Press", ... etc */
 .day-report > .day-content-display {
     text-align: center;
+    position: relative;
     font-size: small;
+    top: -20%;
 }
 
 /* hover over calendar day */
 .day-report:hover {
-    background-color: rgb(195, 228, 228);
+    background-color: var(--highlight2) !important;
+    color: var(--background);
+    background-color: var(--main);
+    color:var(--background);
 }
 
 /* outline for today square */
 .day-report.today {
     border-width: 3px;
-    border-color: rgb(255, 217, 0);
+    border-color: var(--highlight1);
 }
 
 .day-divider {
@@ -53,7 +132,7 @@ body {
     width: 50%;
     left:calc(25%);
     top:-18%;
-    border: 1px solid black;
+    border: 1px solid var(--background);
 }
 
 /* Sunday, Monday, etc */
@@ -69,14 +148,19 @@ body {
     font-size: small;
     font-weight: 600;
     text-align: center;
+    color: var(--main)
+
 }
-
-
 
 /* Fixes padding issues between calendar dates, bc idk why rows are dumb */
 .day-content-box {
     padding-left:0px !important;
     padding-right: 0px !important;
+    height: 120px;
+}
+
+.week-block {
+    padding-top: 25px;
 }
 
 .name-cell-hover:hover {
@@ -86,8 +170,8 @@ body {
 /* Each row */
 .week-report {
     /* padding-bottom: 50px; */
-    background-color: var(--background-color-dark);
-    color:var(--color-dark);
+    background-color: var(--background);
+    color:var(--highlight2);
     padding-bottom: 20px;
 }
 
@@ -108,17 +192,21 @@ body {
     left:0;
     width:var(--navBarWidth);
     height:100%;
-    background-color: var(--navbar-bg-dark);
-    border-right:2px solid rgb(22, 22, 22);
+    background-color: var(--background);
+    border-right:2px solid var(--main);
     padding-top: 20px;
 }
 
 .nav-col > a {
-    color:var(--navbar-dark);
+    color:var(--main);
+}
+
+.nav-col > a:hover {
+    color:var(--highlight2);
 }
 
 .nav-col > hr {
-    color:var(--color-dark);
+    color:var(--main);
     width:80%;
     position: relative;
     left:10%;
@@ -152,8 +240,8 @@ tr.collapse.in {
 
 .title {
     position: fixed;
-    background-color: var(--header-color-dark);
-    color:var(--font-color-dark-bold);
+    background-color: var(--highlight1);
+    color:var(--main);
     margin-left:-12px;
     width:100%;
     height:var(--titleHeight);
@@ -190,6 +278,16 @@ tr.collapse.in {
 .divider {
     position: relative;
     width:auto;
+}
+
+.lift-dividers-collapsed {
+    /* border-radius: 25px; */
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-spacing: 5px;
+    background-color: rgb(40, 45, 49) !important;
+    position: relative;
+    height: 10px !important;
 }
 
 .day-content {

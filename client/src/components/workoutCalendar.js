@@ -91,7 +91,7 @@ export default function WorkoutCalendar() {
 
     const WeekReport = (props) => {
         return (
-            <div className={`row`}>
+            <div className={`week-block row`}>
                 <h2>{props.title}</h2>
             {
             props.days.map((d, i) => {
