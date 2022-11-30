@@ -71,10 +71,16 @@ body {
     text-align: center;
 }
 
+
+
 /* Fixes padding issues between calendar dates, bc idk why rows are dumb */
 .day-content-box {
     padding-left:0px !important;
     padding-right: 0px !important;
+}
+
+.name-cell-hover:hover {
+    background-color: rgb(65, 68, 70);
 }
 
 /* Each row */

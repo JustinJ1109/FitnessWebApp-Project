@@ -84,13 +84,11 @@ export default function Daily() {
             <div>
                 <h3>{date}</h3>
 
-                <table className="table table-bordered table-hover table-dark">
+                <table className="lift-table table table-bordered table-dark">
                     <thead>
                         <tr>
                             <th>Lift</th>
-                            <th>Sets</th>
-                            <th>Reps</th>
-                            <th>Weight (lbs)</th>
+                            <th>Reps @ Weight (lbs)</th>
                             <th>%1RM</th>
                         </tr>
                     </thead>
@@ -98,64 +96,58 @@ export default function Daily() {
                             return (
                                 <tbody>
 
-                                    <tr onClick={() => setCollapsed(collapsed ? false : true)}>
-                                        <td>{e.name}</td>
-                                        <td>{e.sets}</td>
-                                        <td>{e.reps.map((r, i) => {
-                                            if (i < 2) {
-                                                return `${r}, `
-                                            }
-                                            else if (i === 2) {
-                                                return '...'
-                                            }
-                                            else if (i === e.reps.length-1) {
-                                                return `${r}`
-                                            }
-                                        })}</td>
+                                    <tr >
+                                        <td className="col-2 name-cell-hover" onClick={() => setCollapsed(collapsed ? false : true)}>
+                                            <div className="row">
+                                            <span className="col dropdown-name">{e.name}</span> 
+                                            <span className="col-xl-1 col-lg-2 col-sm-12 dropdown-triangle">{collapsed ? '\u25B8' : '\u25BE'}</span>
+                                            </div>
+                                        </td>
+                                        <td className="col-2">
+                                            <div className="row">
+                                                <div className="col">
+                                                {`${e.reps[0]} reps @ ${220 * e.weight[0] / 100} lbs`}
 
-                                        <td>175, 190, ...175</td>
+                                                </div>
+                                                <div className="col-2">
+                                                    {'\u2713'}
+                                                </div>
 
-                                        <td>{e.weight.map((w, i) => {
-                                            if (i < 2) {
-                                                return `${w}, `
-                                            }
-                                            else if (i === 2) {
-                                                return '...'
-                                            }
-                                            else if (i === e.weight.length-1) {
-                                                return `${w}`
-                                            }
-                                        })}%</td>
+                                            </div>
+                                            
+                                        </td>
+
+                                        <td className="col-2">{e.weight[0]}%</td>
                                         
                                     </tr>
                                     {e.reps.map((r, i) => {
-
-                                        return (
-                                            <tr className={collapsed ? 'collapse' : ''}>
-                                                <td style={{visibility:"hidden"}}></td>
-                                                <td>{i+1}</td>
-                                                <td style={{textAlign:"left"}}>{r}</td>
-                                                <td>{220 * e.weight[i] / 100}</td>
-                                                <td>{e.weight[i]}%</td>
-                                            </tr>
-                                        )
-                                    })}
-
-                                    <tr>
-                                        <td style={{visibility:'hidden'}}/>
-                                        <td style={{textAlign:'center'}} colSpan="4" onClick={() => {
-                                            setCollapsed(collapsed ? false : true)
+                                        if (i === 0) {
+                                            
                                         }
-                                        }>{collapsed ? '\u25B8' : '\u25BE'}</td>
-                                    </tr>
+                                        if (i > 0)
+                                            return (
+                                                <tr className={collapsed ? 'collapse' : ''}>
+                                                    <td style={{visibility:"hidden"}}></td>
+                                                    <td>
+                                                        <div className="row"> 
+                                                            <div className="col">
+                                                                {`${r} reps @ ${220 * e.weight[i] / 100} lbs`}
 
-                                    
+                                                            </div>
+
+                                                            <div className="col-2">
+                                                                {'\u2713'}
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>{e.weight[i]}%</td>
+                                                    
+                                                </tr>
+                                            )
+                                    })}
                                 </tbody>
-
                             )
                         })}
-
-
                 </table>
                 
                 <input
