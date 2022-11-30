@@ -119,6 +119,7 @@ export default function WorkoutCalendar() {
                     onClick={props.gotoRecord}
                 >
                     <div className="day-of-week">{CAL_MAP[d.getDay()]}</div>
+                    <hr className="day-divider" />
                     
                     <DayContent content={dateMap.length ? dateMap[new Date(props.date).getDay()] : []}/>
                     </div>
@@ -173,5 +174,5 @@ export default function WorkoutCalendar() {
 
 
 function formatDateURL(date) {
-    return `${date.getFullYear()}${date.getMonth()+1}${date.getDate()}`
+    return `${date.toISOString()}`
 }

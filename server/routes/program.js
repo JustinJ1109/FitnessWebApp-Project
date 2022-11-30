@@ -42,14 +42,27 @@ programRoutes.route("/program/add").post(function (req, response) {
 programRoutes.route("/program/getmap/:progname").get(function (req, res) {
     let db_connect = dbo.getDb("daily-report-db")
 
-    let progname = req.params.progname
-    console.log(`called /getmap/ Finding ${progname}`)
+    let dayQuery = req.query.day
+    let progname = req.params.progname.toString()
+    console.log(dayQuery)
+    console.log(typeof(dayQuery))
+    if (req.query.day) {
+        my_query = {
+            program : {$eq: progname},
+            day : {$eq : parseInt(dayQuery,10)}
+        }
+    }
+    else {
+        my_query = {
+            program : {$eq: progname},
+        }
+    }
+    
+    console.log(`called /getmap/ Finding ${progname} ${dayQuery?`for ${dayQuery}`: ''}`)
     db_connect
         .collection("_volume_map")
         // get between dates
-        .find({
-            program : {$eq: progname}
-        })
+        .find(my_query)
         .sort({day:1, position: 1})
         .toArray(function (err, result) {
             if (err) throw err;
