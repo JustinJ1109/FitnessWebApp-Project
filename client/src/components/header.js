@@ -31,7 +31,7 @@ export default function Header() {
     return (
         <div className="title row">
             <div className="col">
-            <h1 id="home-title"><a href="/">Gains Tracker</a></h1>
+            <h1 id="home-title"><a href="/">App Title</a></h1>
 
             </div>
             <div className="col">

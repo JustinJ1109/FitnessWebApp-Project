@@ -45,6 +45,10 @@
     border-radius: 10px;
 }
 
+[data-theme=""] .day-report {
+    background-color: var(--bg4);
+}
+
 /* outline for today square */
 .day-report.today {
     border-width: 3px;

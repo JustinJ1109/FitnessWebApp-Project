@@ -29,6 +29,7 @@ export default function WorkoutCalendar() {
 
     const [user, setUser] = useState();
     const [dateMap, setDateMap] = useState([])
+    const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
     const [volumeMap, setVolumeMap] = useState([])
 
@@ -67,6 +68,7 @@ export default function WorkoutCalendar() {
                             r.json()
                             .then((m) => {
                                 setVolumeMap(m)
+                                setLoading(false)
                             })
                         })  
                         .catch((err) => {
@@ -130,7 +132,12 @@ export default function WorkoutCalendar() {
     };
 
     const DayContent = (props) => {
-        if (props.content == 0) {
+        if (loading) {
+            return (
+                <div className="day-content-display"></div>
+            )
+        }
+        if (props.content === 0) {
             return (
                 <div className="day-content-display">Rest Day</div>
             )
@@ -138,7 +145,7 @@ export default function WorkoutCalendar() {
         return (
             <div className="day-content-display">
                 {volumeMap.map((v, i) => {
-                    if (v && v.position < 3 && props.content == v.day) {
+                    if (v && v.position < 3 && props.content === v.day) {
                         return (
                             <div key={`${v.name}-${i}`}>{v.name}</div>
                         )
@@ -151,7 +158,7 @@ export default function WorkoutCalendar() {
 
     // This following section will display the table with the records of individuals.
     return (
-        <div className="container-fluid week-report">
+        <div className="container-fluid week-report page-content">
 
             <WeekReport 
             days={dates.slice((weeks_to_display-1) * 7)}

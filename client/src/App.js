@@ -20,12 +20,13 @@ import AddLift from "./components/lift/create";
 import Populate from "./components/dev/pop_db";
 import PopulateColorThemes from "./components/dev/pop_colors";
 import UserList from "./components/user/list";
+import UserLogin from "./components/user/login";
 
 const App = () => {
 	const defaultColorScheme = window.matchMedia('(prefers-color-scheme: ardent)').matches;
 	const [theme, setTheme] = useLocalStorage('theme', defaultColorScheme ? 'Ardent' : 'Smoothie');
 	useEffect(() => {
-		setTheme('Ender')
+		setTheme('Seashell')
 	},[])
 
 	// Starship, Smoothie, Atlantic, Sherbet, Ardent
@@ -39,7 +40,7 @@ const App = () => {
 			<Header />
 
 			{/* content */}
-			<div className="page-content">
+			<div className="page-content-area">
 				<Routes>
 					<Route exact path="/" element={<WorkoutCalendar />} />
 					<Route path="/edit/:id" element={<Edit />} />
@@ -56,10 +57,9 @@ const App = () => {
 					<Route path="/program/populate" element={<Populate />} />
 
 					<Route path="/user" element={<UserList />} />
+					<Route path="/user/login" element={<UserLogin />} />
 
 					<Route path="/color/populate" element={<PopulateColorThemes />} />
-
-
 
 				</Routes>
 			</div>

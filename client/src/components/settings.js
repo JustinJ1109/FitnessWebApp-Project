@@ -7,27 +7,28 @@ const _USER = "Justin"
 
 export default function Settings() {
 
-    const [theme, setTheme] = useState();
-    const [program, setProgram] = useState();
+    const [theme, setTheme] = useState({
+        theme:''
+    });
+    const [program, setProgram] = useState({
+        program:''
+    });
 
     useEffect(() => {
-        async function changeTheme() {
-            fetch(`http://localhost:5000/user/update/${_USER}`, {
+        async function fetchData() {
+            const response = await fetch(`http://localhost:5000/user/${_USER}`, {
 
             })
+
+            if (!response.ok) {
+                const message = `An error has occurred`
+                window.alert(message)
+            }
         }
     }, [theme])
 
-    useEffect(() => {
-        async function changeProgram() {
-            fetch(`http://localhost:5000/user/update/${_USER}`, {
-
-            })
-        }
-    }, [program])
-
     return (
-        <div className="container-fluid settings-page">
+        <div className="container-fluid settings-page page-content">
             <h3>Settings Page</h3>
 
             <div id="program-setting" className="row setting-field">

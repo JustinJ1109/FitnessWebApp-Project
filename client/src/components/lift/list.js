@@ -164,7 +164,7 @@ export default function GetLifts() {
     }
     
     return (
-        <div className="container">
+        <div className="container-fluid page-content lift-list-page">
             <h2 className="secondary-title">Known Exercises</h2>
             <div className="row">
                 <div className="col-2">

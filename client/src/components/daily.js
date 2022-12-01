@@ -168,7 +168,7 @@ export default function Daily() {
         }
 
         return (
-            <div className="container-fluid daily-report">
+            <div className="container-fluid daily-report page-content">
                 <div className="row">
                     <div className="col-4 date-object">
                         <h3 className="subtitle date-display">{date_map[new Date(date).getDay()]}, {new Date(date).toLocaleDateString()}</h3>
