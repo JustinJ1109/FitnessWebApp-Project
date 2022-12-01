@@ -4,50 +4,9 @@
     --titleHeight:80px;
 }
 
-[data-theme='Ardent'] {
-    --background: #393D3F;
-    --main: #FF4141;
-    --highlight1: #DCDCDC;
-    --highlight2: #FF5C53;
+@import url("./themes.css");
 
-    --background-opaque:#393d3fc7;
-}
 
-[data-theme='Starship'] {
-    --highlight2: #E4E4E4;
-    --highlight1: #FF582A;
-    --main: #E2E0D7;
-    --background: #191919;
-
-    --background-opaque:#e4e4e4c4;
-}
-
-[data-theme='Sherbet'] {
-    --background: #D8BBCA;
-    --main: #DDD6B4;
-    --highlight1: #D5C8BC;
-    --highlight2: #E1E1E1;
-
-    --background-opaque:#d8bbcabe;
-}
-
-[data-theme='Atlantic'] {
-    --background: #3F4B67;
-    --main: #A9BCD0;
-    --highlight1: #2e3131;
-    --highlight2: #D8D8E2;
-    --background-opaque:#3f4b67be;
-
-}
-
-[data-theme='Smoothie'] {
-    --main: #1b1a1b;
-    --background: #BFD5E2;
-    --highlight1: #D5D5D5;
-    --highlight2: #BE5DFF;
-
-    --background-opaque:#ffa6f8cb;
-}
 
 #root {
     position: absolute;
@@ -57,7 +16,6 @@
 
 .page {
     position: absolute;
-    background-color: var(--background);
     width: 100%;
     height: 100%;
     overflow: auto;
@@ -73,30 +31,49 @@
     top:calc(var(--titleHeight));
     width:calc(100% - var(--navBarWidth));
     height:calc(100% - var(--titleHeight));
+}
 
-    
+/* text colors */
+div, th, td {
+    color:var(--text-color1)
+}
 
-    background-color: var(--background);
+h1, h2, h3, h4, .nav-col > a, hr {
+    color:var(--text-color2)
+}
+
+tbody {
+    background-color: var(--bg1);
 }
 
 tbody, td, tfoot, th, thead, tr {
-    border-color: var(--background) !important;
+    border-color: var(--bg2) !important;
+}
+
+a.nav-link:hover  {
+    color:var(--text-color1);
 }
 
 .title, .nav {
     z-index: 1;
-    background-color: var(--background);
 }
+
+/* background color */
+.title, .nav, .page-content, .page, .table-colored .empty-cell {
+    background-color: var(--bg2);
+}
+
+.nav, .title {
+    background-color: var(--bg1);
+}
+
 
 .name-cell-hover:hover {
-    background-color: var(--highlight2);
+    background-color: var(--bg3);
 }
-
 /* Each row */
 .page-content .week-report {
     /* padding-bottom: 50px; */
-    background-color: var(--background);
-    color:var(--highlight2);
     padding-bottom: 20px;
     position: relative;
     width: 90%;
@@ -115,18 +92,12 @@ tbody, td, tfoot, th, thead, tr {
     left:0;
     width:var(--navBarWidth);
     height:100%;
-    background-color: var(--background);
-    border-right:2px solid var(--main);
+    border-right:2px solid var(--bg3);
     padding-top: 20px;
 }
-.nav-col > a {
-    color:var(--main);
-}
-.nav-col > a:hover {
-    color:var(--highlight2);
-}
+
+
 .nav-col > hr {
-    color:var(--main);
     width:80%;
     position: relative;
     left:10%;
@@ -165,11 +136,11 @@ tr.collapse.in {
 
 
 
+
 .title {
     position: fixed;
-    /* background-color: var(--highlight1); */
-    border-bottom: 1px solid var(--highlight2);
-    color:var(--main);
+    border-bottom: 1px solid var(--bg3);
+    color:var(--bg2);
     margin-left:-12px;
     width:100%;
     height:var(--titleHeight);
@@ -210,11 +181,9 @@ tr.collapse.in {
 
 .lift-dividers-collapsed {
     /* border-radius: 25px; */
-    
-
     border-radius: 10px;
     border-spacing: 5px;
-    background-color: rgb(40, 45, 49) !important;
+    background-color: var(--text-color2) !important;
     position: relative;
     height: 5px !important;
 }
@@ -227,22 +196,13 @@ tr.collapse.in {
 }
 
 table.table-colored {
-    /* background-color: var(--main); */
     border: 0px solid transparent;
 
 }
 
 .table-colored tbody {
-    border-color: var(--background);
+    border-color: var(--bg2);
     border: 0px solid transparent;
 
 }
 
-tbody {
-    background-color: var(--main);
-}
-
-.table-colored .empty-cell {
-    background-color: var(--background) !important;
-    border: 0px solid transparent;
-}

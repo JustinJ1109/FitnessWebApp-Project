@@ -25,7 +25,7 @@ const App = () => {
 	const defaultColorScheme = window.matchMedia('(prefers-color-scheme: ardent)').matches;
 	const [theme, setTheme] = useLocalStorage('theme', defaultColorScheme ? 'Ardent' : 'Smoothie');
 	useEffect(() => {
-		setTheme('Atlantic')
+		setTheme('Ender')
 	},[])
 
 	// Starship, Smoothie, Atlantic, Sherbet, Ardent

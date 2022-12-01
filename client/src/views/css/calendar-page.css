@@ -12,7 +12,8 @@
     font-size: small;
     font-weight: 600;
     text-align: center;
-    color: var(--main)
+
+    color:var(--text-color1)
 
 }
 
@@ -22,6 +23,7 @@
     padding-bottom: 15px;
     font-size: large;
     text-align: center;
+    color:var(--text-color2)
 }
 
 .day-divider {
@@ -29,7 +31,7 @@
     width: 50%;
     left:calc(25%);
     top:-18%;
-    border: 1px solid var(--background);
+    border: 1px solid var(--bg3);
 }
 
 /* Each calendar square */
@@ -38,23 +40,21 @@
     height: 100%;
     width: 100%;
     /* padding-bottom: px; */
-    background-color: var(--main);
-    color: var(--background);
+    background-color: var(--bg1);
+    color: var(--text-color1);
     border-radius: 10px;
 }
 
 /* outline for today square */
 .day-report.today {
     border-width: 3px;
-    border-color: var(--highlight1);
+    border-color: var(--highlight2);
 }
 
 /* hover over calendar day */
-.day-report:hover {
-    background-color: var(--highlight2) !important;
-    color: var(--background);
-    background-color: var(--main);
-    color:var(--background);
+.day-report.clickable:hover {
+    background-color: var(--bg3) !important;
+    color: var(--text-color1) !important;
 }
 
 /* Controls the calendar display content "Bench Press", "Overhead Press", ... etc */
