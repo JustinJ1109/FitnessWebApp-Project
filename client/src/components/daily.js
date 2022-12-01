@@ -66,7 +66,7 @@ export default function Daily() {
 
         for (let i = 0; i < children.length; i++) {
 
-            if (i > 0) {
+            if (i > 0 && i < children.length-1) {
                 let child = children[i];
                 if (child.classList.contains("collapse")) {
                     child.classList.remove("collapse")
@@ -112,7 +112,7 @@ export default function Daily() {
                         </div>
                     </div>
                 </td>
-                <td className="name-cell-hover" onClick={addCheckMark}>
+                <td className="rep-cell-hover" onClick={addCheckMark}>
                     <div className="row" style={{pointerEvents:'none'}}> 
                         <div className="col">
                             {`${props.reps} reps @ ${220 * parseInt(props.weight, 10) / 100} lbs`}
@@ -134,10 +134,13 @@ export default function Daily() {
     
     if (!loading) {
         if (volumeMap.length === 0) {
+                    // rest day
+
             return (
                 <div className="container-fluid daily-report">
                     <h3 className="subtitle date-display">{date_map[new Date(date).getDay()]}, {new Date(date).toLocaleDateString()}</h3>
 
+                    
                     <div className="row">
                         <div className="col-1">
                         <input
@@ -164,10 +167,26 @@ export default function Daily() {
             )
         }
 
-
         return (
             <div className="container-fluid daily-report">
-                <h3 className="subtitle date-display">{date_map[new Date(date).getDay()]}, {new Date(date).toLocaleDateString()}</h3>
+                <div className="row">
+                    <div className="col-4 date-object">
+                        <h3 className="subtitle date-display">{date_map[new Date(date).getDay()]}, {new Date(date).toLocaleDateString()}</h3>
+                    </div>
+                    <div className="col-4 progress-object">
+                        <div className="progress-status">
+                            0%
+                        </div>
+                        <div className="progress-bar">
+
+                        </div>
+                    </div>
+
+                    <div className="col-4" />
+
+                </div>
+                
+                
                 <div className="row">
                     <div className="col">
                     <input
@@ -214,7 +233,7 @@ export default function Daily() {
                                                     )
                                             })}
                                             <tr>
-                                                <td className="lift-dividers-collapsed" style={collapsed ? {} :{visibility:'hidden'}} colSpan="3" />
+                                                <td className="lift-dividers-collapsed" colSpan="3" />
                                             </tr>
                                         </tbody>
                                     )

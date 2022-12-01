@@ -68,11 +68,11 @@ a.nav-link:hover  {
 }
 
 
-.name-cell-hover:hover {
+.name-cell-hover:hover, .rep-cell-hover:hover {
     background-color: var(--bg3);
 }
 /* Each row */
-.page-content .week-report {
+.page-content .week-report, .page-content .daily-report, .page-content .settings-page {
     /* padding-bottom: 50px; */
     padding-bottom: 20px;
     position: relative;
@@ -206,3 +206,8 @@ table.table-colored {
 
 }
 
+h1#home-title > a:visited, h1#home-title > a:link, 
+h1#home-title > a:hover, h1#home-title > a:active {
+    text-decoration: none;
+    color:var(--text-color2)
+}

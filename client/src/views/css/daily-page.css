@@ -2,11 +2,6 @@
 @import url("./main.css");
 
 
-.daily-report {
-    position: relative;
-    margin-left: 5%;
-}
-
 .rest-day-display {
     display: flex;
     position: relative;
@@ -35,4 +30,8 @@
 .checkmark {
     color:var(--text-color1);
     scale: 150%;
+}
+
+.progress-object {
+    text-align: center;
 }

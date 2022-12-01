@@ -68,9 +68,3 @@
 .week-block {
     padding-top: 25px;
 }
-
-.page content .week-report {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
