@@ -1,0 +1,37 @@
+[
+    {
+        "name" : "Starship",
+        "background" : "E4E4E4",
+        "main" : "FF582A",
+        "highlight1" : "E2E0D7",
+        "highlight2" : "191919"
+    },
+    {
+        "name" : "Smoothie",
+        "background" : "FFA6F8",
+        "main" : "BFD5E2",
+        "highlight1" : "D5D5D5",
+        "highlight2" : "BE5DFF"
+    },
+    {
+        "name" : "Atlantic",
+        "background" : "3F4B67",
+        "main" : "A9BCD0",
+        "highlight1" : "6FD0D3",
+        "highlight2" : "D8D8E2"
+    },
+    {
+        "name" : "Sherbet",
+        "background" : "D8BBCA",
+        "main" : "DDD6B4",
+        "highlight1" : "D5C8BC",
+        "highlight2" : "E1E1E1"
+    },
+    {
+        "name" : "Ardent",
+        "background" : "393D3F",
+        "main" : "FF4141",
+        "highlight1" : "DCDCDC",
+        "highlight2" : "FF5C53"
+    }
+]

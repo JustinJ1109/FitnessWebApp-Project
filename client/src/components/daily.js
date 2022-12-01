@@ -3,6 +3,11 @@ import React, { useEffect, useState} from "react";
 import { useNavigate } from "react-router";
 import {useParams} from 'react-router-dom';
 
+import "../views/css/daily-page.css";
+import PenguinImage from "../db/pengwin.png";
+
+let date_map = require("../db/days_map.json")
+
 function getDateDayValue(date) {
     return new Date(date).getDay()
 }
@@ -17,33 +22,9 @@ export default function Daily() {
     const [userData, setUserData] = useState([])
     const [collapsed, setCollapsed] = useState(true)
 
-    const [existing, setExisting] = useState(-1);
+    const [loading, setLoading] = useState(true);
 
     const navigate = useNavigate();
-
-    useEffect(() => {
-        async function getToday() {
-            const response = await fetch(`http://localhost:5000/record/${new Date(date).toLocaleDateString().replaceAll("/", "%2F")}`);
-
-            if (!response.ok) {
-                // error
-                window.alert("Something went wrong")
-            }
-            
-            const record = await response.json();
-            if (!record) {
-                // window.alert(`Record not found`);
-                // return;
-                setExisting(0)
-            }
-            else {
-                setExisting(1)
-            }
-            setRecord(record);
-        }
-
-        getToday();
-    },[])
 
     useEffect(() => {
         async function getVolMap() {
@@ -57,6 +38,7 @@ export default function Daily() {
                         map_res.json()
                         .then((body) => {
                             setVolumeMap(body)
+                            setLoading(false)
                         })
                         .catch((e) => console.log(e))
                     })
@@ -76,114 +58,200 @@ export default function Daily() {
         navigate("/");
     }
 
-    
+    const expandRow = (e) => {
+
+        let bodyId = e.target.firstChild.firstChild.textContent.replace(" ", "") + '-body';
+        let body = document.getElementById(bodyId);
+        let children = body.children;
+
+        for (let i = 0; i < children.length; i++) {
+
+            if (i > 0 && i < children.length-1) {
+                let child = children[i];
+                if (child.classList.contains("collapse")) {
+                    child.classList.remove("collapse")
+                }
+                else {
+                    child.classList.add("collapse")
+                }
+            }
+        }
+    }
+
+    const addCheckMark = (e) => {
+        let checkBox = e.target.querySelector(":nth-child(2)")
 
 
-    if (existing === 1 || existing === 0) {
+        if (checkBox.style.visibility === 'hidden') {
+            checkBox.style.visibility = 'visible'
+        }
+        else {
+            checkBox.style.visibility = 'hidden'
+        }
+
+
+    }
+
+    const SetRow = (props) => {
+
+        let collapsed = true
         return (
-            <div>
-                <h3>{date}</h3>
+            <tr className={`set-row ${props.name != '' ? 'titled-row' : ''} ${collapsed && props.name == '' ? 'collapse' : ''}`}>
+                <td 
+                className={props.name != '' ? 'name-cell-hover' : 'empty-cell'}
+                onClick={expandRow}
+                style={props.name == '' ? {pointerEvents:'none',border:'0'} : {}}
+                >
+                    <div className="row" style={{pointerEvents:'none'}}>
+                        <div className="col">
+                            {props.name}
+                        </div>
 
-                <table className="table table-bordered table-hover table-dark">
-                    <thead>
-                        <tr>
-                            <th>Lift</th>
-                            <th>Sets</th>
-                            <th>Reps</th>
-                            <th>Weight (lbs)</th>
-                            <th>%1RM</th>
-                        </tr>
-                    </thead>
-                        {volumeMap.map((e, i) => {
-                            return (
-                                <tbody>
+                        <div id="arrow-collapser" className="col-xl-1 col-lg-2 col-md-3 col-sm-2">
+                            {props.name != '' ? collapsed ? `\u23F5` : '\u23F7' : ''}
+                        </div>
+                    </div>
+                </td>
+                <td className="rep-cell-hover" onClick={addCheckMark}>
+                    <div className="row" style={{pointerEvents:'none'}}> 
+                        <div className="col">
+                            {`${props.reps} reps @ ${220 * parseInt(props.weight, 10) / 100} lbs`}
+                        </div>
 
-                                    <tr onClick={() => setCollapsed(collapsed ? false : true)}>
-                                        <td>{e.name}</td>
-                                        <td>{e.sets}</td>
-                                        <td>{e.reps.map((r, i) => {
-                                            if (i < 2) {
-                                                return `${r}, `
-                                            }
-                                            else if (i === 2) {
-                                                return '...'
-                                            }
-                                            else if (i === e.reps.length-1) {
-                                                return `${r}`
-                                            }
-                                        })}</td>
-
-                                        <td>175, 190, ...175</td>
-
-                                        <td>{e.weight.map((w, i) => {
-                                            if (i < 2) {
-                                                return `${w}, `
-                                            }
-                                            else if (i === 2) {
-                                                return '...'
-                                            }
-                                            else if (i === e.weight.length-1) {
-                                                return `${w}`
-                                            }
-                                        })}%</td>
-                                        
-                                    </tr>
-                                    {e.reps.map((r, i) => {
-
-                                        return (
-                                            <tr className={collapsed ? 'collapse' : ''}>
-                                                <td style={{visibility:"hidden"}}></td>
-                                                <td>{i+1}</td>
-                                                <td style={{textAlign:"left"}}>{r}</td>
-                                                <td>{220 * e.weight[i] / 100}</td>
-                                                <td>{e.weight[i]}%</td>
-                                            </tr>
-                                        )
-                                    })}
-
-                                    <tr>
-                                        <td style={{visibility:'hidden'}}/>
-                                        <td style={{textAlign:'center'}} colSpan="4" onClick={() => {
-                                            setCollapsed(collapsed ? false : true)
-                                        }
-                                        }>{collapsed ? '\u25B8' : '\u25BE'}</td>
-                                    </tr>
-
-                                    
-                                </tbody>
-
-                            )
-                        })}
-
-
-                </table>
+                        <div style={{visibility:'hidden'}} className="checkmark col-2">
+                            {'\u2713'}
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    {props.weight}%
+                </td>
                 
-                <input
-                className="btn btn-dark"
-                type="button"
-                value="Back"
-                onClick={goBack}
-                />
-            </div>
+            </tr>
         )
+    }
+
+    
+    if (!loading) {
+        if (volumeMap.length === 0) {
+                    // rest day
+
+            return (
+                <div className="container-fluid daily-report">
+                    <h3 className="subtitle date-display">{date_map[new Date(date).getDay()]}, {new Date(date).toLocaleDateString()}</h3>
+
+                    
+                    <div className="row">
+                        <div className="col-1">
+                        <input
+                            className="btn btn-dark"
+                            type="button"
+                            value="Back"
+                            onClick={goBack}
+                        />
+                        </div>
+                        <div className="col">
+                            <h3 className="rest-day-display rest-day-title">Rest Day</h3>
+
+                            <h4 className="rest-day-display rest-day-text">Use this time to relax, you've earned it!</h4>
+
+                            <img className="rest-day-image" alt="Really cool penguin" src={PenguinImage}/>
+
+                        </div>
+                        <div className="col-1" />
+
+                    </div>
+                    
+                    
+                    </div>
+            )
+        }
 
         return (
-            <div>
-                <h3>{date}</h3>
-                <div>I dont exist</div>
-                <input
-                className="btn btn-dark"
-                type="button"
-                value="Back"
-                onClick={goBack}
-                />
+            <div className="container-fluid daily-report">
+                <div className="row">
+                    <div className="col-4 date-object">
+                        <h3 className="subtitle date-display">{date_map[new Date(date).getDay()]}, {new Date(date).toLocaleDateString()}</h3>
+                    </div>
+                    <div className="col-4 progress-object">
+                        <div className="progress-status">
+                            0%
+                        </div>
+                        <div className="progress-bar">
+
+                        </div>
+                    </div>
+
+                    <div className="col-4" />
+
+                </div>
+                
+                
+                <div className="row">
+                    <div className="col">
+                    <input
+                        className="btn btn-dark"
+                        type="button"
+                        value="Back"
+                        onClick={goBack}
+                    />
+                    </div>
+                    <div className="col-xl-10 col-lg-9 col-md-11">
+                        <table className="lift-table table table-bordered table-colored">
+                            <thead>
+                                <tr>
+                                    <th>Lift</th>
+                                    <th>Reps @ Weight (lbs)</th>
+                                    <th>%1RM</th>
+                                </tr>
+                            </thead>
+                                {volumeMap.map((e, i) => {
+                                    return (
+                                        <tbody key={`${e.name}-${i}-body`} id={`${e.name.replace(" ", "")}-body`} className={`workout-body`}>
+
+                                            {e.reps.map((r, i) => {
+                                                if (i === 0) {
+                                                    return (
+                                                        <SetRow 
+                                                            key={e.name + '-' + i}
+                                                            name={e.name}
+                                                            reps={r}
+                                                            weight={e.weight[i]}
+                                                        />
+                                                    )
+                                                    
+                                                }
+                                                if (i > 0)
+                                                    return (
+                                                        <SetRow 
+                                                            key={e.name + '-' + i}
+                                                            name=''
+                                                            reps={r}
+                                                            weight={e.weight[i]}
+                                                            
+                                                        />
+                                                    )
+                                            })}
+                                            <tr>
+                                                <td className="lift-dividers-collapsed" colSpan="3" />
+                                            </tr>
+                                        </tbody>
+                                    )
+                                })}
+                        </table>
+                    </div>
+                   
+                    <div className="col" />
+
+                </div>
+                
+                
+                
             </div>
         )
         
     }
-    function expandWorkout() {
-        
-    }
+
 
     // pre-load
     return (

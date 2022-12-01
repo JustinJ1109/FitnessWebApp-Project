@@ -1,0 +1,35 @@
+@import url("./main.css");
+
+
+.settings-page {
+    position: relative;
+    top:2%;
+}
+
+.settings-page h3 {
+    font-weight: bold;
+}
+
+.settings-page .setting-field {
+    position: relative;
+    left:2%;
+    padding-top: 1%;
+    padding-bottom: 1%;
+}
+
+.settings-page input[type="button"] {
+    border-radius: 10px;
+    width: 75px;
+}
+
+.settings-page select {
+    width: 150px;
+    text-align: center;
+}
+
+.settings-page hr.setting-hr {
+    margin-top:1%;
+    margin-bottom: 1%;
+    padding:0;
+    width: 350px;
+}

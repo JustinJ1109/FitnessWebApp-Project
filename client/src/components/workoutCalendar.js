@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
-import "../views/css/main.css";
+import "../views/css/calendar-page.css";
 
 const CAL_MAP = require("../db/days_map.json")
 
@@ -91,7 +91,7 @@ export default function WorkoutCalendar() {
 
     const WeekReport = (props) => {
         return (
-            <div className={`row`}>
+            <div className={`week-block row`}>
                 <h2>{props.title}</h2>
             {
             props.days.map((d, i) => {

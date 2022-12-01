@@ -1,15 +1,16 @@
 import React, { useEffect } from "react";
 
-let pop_me = require("../../db/_volume_map.json")
+let color_pop_me = require("../../db/_color_map.json")
 
 
-export default function Populate() {
+export default function PopulateColorThemes() {
 
     useEffect(() => {
         function pop() {
-            pop_me.map(async (item) => {
+            color_pop_me.map(async (item) => {
+                console.log(item)
 
-                let response = await fetch(`http://localhost:5000/program/add`, {
+                let response = await fetch(`http://localhost:5000/color/add`, {
                     method: "POST",
                     headers: {
                     "Content-Type": "application/json",
@@ -30,15 +31,9 @@ export default function Populate() {
             })
         }
         pop();
-    })
-    console.log(pop_me)
-
-    pop_me.map((p) => {
-
-    })
+    }, [])
 
     return (
-        <div> Pop Page</div>
+        <div> Color Pop Page</div>
     )
 }
-

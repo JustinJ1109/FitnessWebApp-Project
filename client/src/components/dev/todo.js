@@ -49,6 +49,7 @@ export default function Todo() {
                 <li className="optional">Have multiple routines at once add/remove (e.g. run and lift)</li>
                 <li className="optional">Remove Home page (redundant, progress?)</li>
 
+                <li className="optional">B = background, M = main, H = highlight, H2= highlight 2</li>
 
                 </ul>
             </div>

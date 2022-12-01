@@ -10,11 +10,15 @@ const recordRoutes = require('./routes/record');
 const liftRoutes = require('./routes/lift')
 const userRoutes = require('./routes/user')
 const programRoutes = require('./routes/program')
+const colorRoutes = require('./routes/color')
+
 
 app.use(recordRoutes);
 app.use(liftRoutes);
 app.use(userRoutes);
 app.use(programRoutes);
+app.use(colorRoutes);
+
 
 // get driver connection
 const dbo = require("./db/conn");

@@ -2,89 +2,108 @@
 :root {
     --navBarWidth: 120px;
     --titleHeight:80px;
+}
 
-    --background-color-dark:rgb(54, 54, 54);
-    --color-dark:rgb(245, 245, 245);
-    --header-color-dark:rgb(31, 31, 31);
-    --navbar-bg-dark:rgb(31, 31, 31);
-    --navbar-dark:rgb(243, 243, 243);
+@import url("./themes.css");
 
-    --font-color-dark-bold:rgb(218, 218, 218);
+
+
+#root {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.page {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}
+
+.page-content {
+    position:relative;
+    width: 100%;
+    height: 100%;
+
+    top:var(--titleHeight);
+    left:calc(var(--navBarWidth));
+    top:calc(var(--titleHeight));
+    width:calc(100% - var(--navBarWidth));
+    height:calc(100% - var(--titleHeight));
+}
+
+/* text colors */
+div, th, td {
+    color:var(--text-color1)
+}
+
+h1, h2, h3, h4, .nav-col > a, hr {
+    color:var(--text-color2)
+}
+
+tbody {
+    background-color: var(--bg1);
+}
+
+tbody, td, tfoot, th, thead, tr {
+    border-color: var(--bg2) !important;
+}
+
+a.nav-link:hover  {
+    color:var(--text-color1);
 }
 
 .title, .nav {
     z-index: 1;
 }
 
-body {
-    background-color: var(--background-color-dark) !important;
-    color:var(--color-dark) !important;
+/* background color */
+.title, .nav, .page-content, .page, .table-colored .empty-cell {
+    background-color: var(--bg2);
 }
 
-/* Each calendar square */
-.day-report {
-    border: 1px solid black;
-    height: 160px;
-    /* padding-bottom: px; */
-    background-color: rgb(199, 215, 218);
-    color:black;
-    border-radius: 10px;
+.nav, .title {
+    background-color: var(--bg1);
 }
 
-/* Controls the calendar display content "Bench Press", "Overhead Press", ... etc */
-.day-report > .day-content-display {
-    text-align: center;
-    font-size: small;
-}
 
-/* hover over calendar day */
-.day-report:hover {
-    background-color: rgb(195, 228, 228);
+.name-cell-hover:hover, .rep-cell-hover:hover {
+    background-color: var(--bg3);
 }
-
-/* outline for today square */
-.day-report.today {
-    border-width: 3px;
-    border-color: rgb(255, 217, 0);
-}
-
-.day-divider {
-    position: relative;
-    width: 50%;
-    left:calc(25%);
-    top:-18%;
-    border: 1px solid black;
-}
-
-/* Sunday, Monday, etc */
-.day-content-box .day-of-week {
-    padding-top:10px;
-    padding-bottom: 15px;
-    font-size: large;
-    text-align: center;
-}
-
-/* Field above each calendar box */
-.day-content-box .day-header {
-    font-size: small;
-    font-weight: 600;
-    text-align: center;
-}
-
-/* Fixes padding issues between calendar dates, bc idk why rows are dumb */
-.day-content-box {
-    padding-left:0px !important;
-    padding-right: 0px !important;
-}
-
 /* Each row */
-.week-report {
+.page-content .week-report, .page-content .daily-report, .page-content .settings-page {
     /* padding-bottom: 50px; */
-    background-color: var(--background-color-dark);
-    color:var(--color-dark);
     padding-bottom: 20px;
+    position: relative;
+    width: 90%;
 }
 
+.page-content .table {
+    position: relative;
+    width: 90%;
+    /* left:5% */
+}
+
+/* NAVBAR */
+.nav-col {
+    position: fixed;
+    top:0;
+    left:0;
+    width:var(--navBarWidth);
+    height:100%;
+    border-right:2px solid var(--bg3);
+    padding-top: 20px;
+}
+
+
+.nav-col > hr {
+    width:80%;
+    position: relative;
+    left:10%;
+    margin-top:5px;
+    margin-bottom: 5px;
+}
 .nav-link {
     text-align: center;
 }
@@ -96,29 +115,7 @@ body {
 .lift-row {
     text-align: center;
 }
-.nav-col {
-    position: fixed;
-    top:0;
-    left:0;
-    width:var(--navBarWidth);
-    height:100%;
-    background-color: var(--navbar-bg-dark);
-    border-right:2px solid rgb(22, 22, 22);
-    padding-top: 20px;
-}
 
-.nav-col > a {
-    color:var(--navbar-dark);
-}
-
-.nav-col > hr {
-    color:var(--color-dark);
-    width:80%;
-    position: relative;
-    left:10%;
-    margin-top:5px;
-    margin-bottom: 5px;
-}
 
 .clickable {
     cursor: pointer;
@@ -137,23 +134,19 @@ tr.collapse.in {
     opacity: 0.7;
 }
 
-.page-content {
-    position: relative;
-    top:var(--titleHeight);
-    left:calc(var(--navBarWidth) + 60px);
-    width:calc(100% - var(--navBarWidth)*2);
-}
+
+
 
 .title {
     position: fixed;
-    background-color: var(--header-color-dark);
-    color:var(--font-color-dark-bold);
+    border-bottom: 1px solid var(--bg3);
+    color:var(--bg2);
     margin-left:-12px;
     width:100%;
     height:var(--titleHeight);
     left:calc(var(--navBarWidth) + 12px);
-    align-items: center;
     display: flex;
+    align-items: center;
     padding-left:20px;
 }
 
@@ -186,9 +179,35 @@ tr.collapse.in {
     width:auto;
 }
 
+.lift-dividers-collapsed {
+    /* border-radius: 25px; */
+    border-radius: 10px;
+    border-spacing: 5px;
+    background-color: var(--text-color2) !important;
+    position: relative;
+    height: 5px !important;
+}
+
 .day-content {
     position:relative;
 
     justify-content: center;
     align-items: center;
+}
+
+table.table-colored {
+    border: 0px solid transparent;
+
+}
+
+.table-colored tbody {
+    border-color: var(--bg2);
+    border: 0px solid transparent;
+
+}
+
+h1#home-title > a:visited, h1#home-title > a:link, 
+h1#home-title > a:hover, h1#home-title > a:active {
+    text-decoration: none;
+    color:var(--text-color2)
 }

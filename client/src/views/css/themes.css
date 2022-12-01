@@ -1,0 +1,108 @@
+[data-theme='Ardent'] {
+    --bg3: #5e696e;
+    --text-color2: #eee2e2;
+    --text-color1: #a9e9de;
+    --bg2: #FF5C53;
+
+    --bg1:#393d3f;
+}
+
+[data-theme='Starship'] {
+    --text-color1: #E2E0D7;
+    --text-color2: #dce8ff;
+
+    --bg2: #FF582A;
+
+    --bg1: #191919;
+    --bg3:rgb(37, 37, 39);
+}
+
+[data-theme='Sherbet'] {
+    --bg2: #D8BBCA;
+    --text-color1: #c2f7cd;
+    --bg3: #e4c5a6;
+    --text-color2: #E1E1E1;
+
+    --bg1:#ad5e87be;
+}
+
+[data-theme='Ender'] {
+    --bg2: #1b1a1b;
+    --bg3: #444444;
+    --text-color1: #D5D5D5;
+    --text-color2: #BE5DFF;
+
+    --bg1:#353535;
+}
+
+[data-theme="Unicorn"] {
+    --text-color2: #b500bb;
+    --text-color1: #d6d6d6;
+    --bg3: #ff499e;
+    --bg2: #D264B6;
+
+    --bg1:#659ec4 ;
+}
+
+[data-theme="Diplomat"] {
+    --text-color2: #daba2d;
+    --text-color1: #c29d23;
+    --bg1: #471a3a;
+    --bg3: #632854;
+
+    --bg2: #662b46;
+}
+
+[data-theme="Peachy"] {
+    --bg3:#da8057;    
+    --bg2:#ec80a0;    
+    --text-color2: #e5cb9d;   
+    --text-color1: #c2dde4;
+
+    --bg1: #da7258;
+}
+
+[data-theme="Bubblegum"] {
+    --text-color1: #8d296d;
+    --text-color2: #7c3a7c;
+    
+    --bg1: #d684aa;
+    --bg2:#dedbec ;
+    --bg3: #d693ba;
+}
+
+[data-theme="Sunlight"] {
+    --text-color1: #92DCE5;
+    --text-color2: #7c7c7c;
+    
+    --bg1: #2B303A;
+    --bg2:#D64933 ;
+    --bg3: #EEE5E9;
+}
+
+[data-theme="Seashell"] {
+    --text-color1: #C1DFF0;
+    --text-color2: #dff7dc;
+    
+    --bg1: #284f52;
+    --bg2:#3e7e80 ;
+    --bg3: #75c0a7;
+}
+
+[data-theme="Grapes"] {
+    --text-color1: #c0c999;
+    --text-color2: #fd96a9;
+    
+    --bg2: #8B1E3f;
+    --bg1:#3c153b ;
+    --bg3: #442043;
+}
+
+[data-theme="Utopia"] {
+    --text-color1: #d64933;
+    --text-color2: #92dce5;
+    
+    --bg2: #eee5e9;
+    --bg1:#2B303a ;
+    --bg3: #7c7c7c;
+}
