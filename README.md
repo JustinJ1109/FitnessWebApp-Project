@@ -14,5 +14,6 @@ A web application that allows users to create and track their workouts and progr
   ATLAS_URI=mongodb+srv://professor-guest:kSkqrdn40PAV2oH7@cluster0.4bfk4mr.mongodb.net/?retryWrites=true&w=majority
   PORT=5000
 ```
+- save and quit
 - run `cd client && npm install && npm start` in terminal from root
 - open a new terminal window and run `cd server && node server.js`
