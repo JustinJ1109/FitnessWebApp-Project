@@ -1,16 +1,10 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
 
 // import AddLift from "./create";
 
-export default function GetLifts() {
-    const navigate = useNavigate();
+export default function LiftTable(props) {
     const [records, setRecords] = useState([]);
-
-    const goBack = () => {
-        navigate('/');
-    }
 
     useEffect(() => {
         async function getLifts() {
@@ -172,7 +166,7 @@ export default function GetLifts() {
                         <input 
                             type="button"
                             value="Back"
-                            onClick={goBack}
+                            onClick={props.onBack}
                             className="btn btn-dark"
                         />
                     </div>

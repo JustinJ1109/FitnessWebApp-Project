@@ -51,6 +51,12 @@ export default function WorkoutCalendar() {
                 // get user data in json
                 res.json()
                 .then(async (content) => {
+                    // user not found
+                    if (content.length == 0) {
+                        navigate("/user/login");
+                        return
+                    }
+                    
                     // find program data for user
                     const response = await fetch(`http://localhost:5000/program?name=${content[0].program}`)
                     if (!response.ok) {
@@ -172,7 +178,7 @@ export default function WorkoutCalendar() {
 
             <WeekReport 
             days={dates.slice(0, (weeks_to_display-2) * 7)}
-            title={`Week of ${dates[0].toLocaleDateString()}`}
+            title={`2 Weeks Ago`}
             />
         </div>
     );

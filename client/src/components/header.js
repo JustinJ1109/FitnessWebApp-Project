@@ -39,7 +39,8 @@ export default function Header() {
                 
             </div>
 
-            <div className="col"/>
+            <div className="col logged-in-as">Logged in as 
+            <span className="user-name"><a className="user-profile-link" href={`/user/${_USER}`}> {`${_USER} \u25BD`}</a></span></div>
 
         </div>
     )

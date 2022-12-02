@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router";
+import {useCookies } from 'react-cookie';
 
 import "../views/css/settings-page.css"
 
 const _USER = "Justin"
 
 export default function Settings() {
-
+    const [cookies, setCookie] = useCookies(['theme'])
     const [theme, setTheme] = useState({
         theme:''
     });
@@ -27,6 +28,18 @@ export default function Settings() {
         }
     }, [theme])
 
+
+    const saveTheme = (e) => {
+        let theme = document.getElementById("color-theme-select").value
+        console.log(theme)
+        setCookie('ColorTheme', theme, {path:'/'})
+        window.location.reload()
+    }
+
+    const saveProgram = (e) => {
+        console.log(e)
+    }
+
     return (
         <div className="container-fluid settings-page page-content">
             <h3>Settings Page</h3>
@@ -46,7 +59,7 @@ export default function Settings() {
                         className="btn btn-success btn-sm"
                         type="button"
                         value="Save"
-                        onClick="#"
+                        onClick={saveProgram}
                         />
                     </div>
                 </div>
@@ -58,10 +71,10 @@ export default function Settings() {
                 <h4>Color Theme</h4>
                 <div className="row">
                     <div className="col-2">
-                        <select className="form-select-sm">
+                        <select defaultValue={cookies.ColorTheme} id="color-theme-select" className="form-select-sm">
                             {['Ardent', 'Starship', 'Seashell', 'Ender', 'Unicorn', 'Diplomat', 'Peachy', 'Bubblegum'].map((c) => {
                                 return (
-                                    <option>{c}</option>
+                                    <option value={c}>{c}</option>
                                 )
                             })}
                         </select>
@@ -69,10 +82,11 @@ export default function Settings() {
 
                     <div className="col">
                         <input 
+                        id="theme-button-save"
                         className="btn btn-success btn-sm"
                         type="button"
                         value="Save"
-                        onClick="#"
+                        onClick={saveTheme}
                         />
                     </div>
                 </div>
