@@ -7,7 +7,11 @@ import LiftTable from "./lift-table";
 export default function GetLifts() {
     const navigate = useNavigate();
     return (
-        <LiftTable onBack={() => navigate("/")}
+        <div>
+                        <h2 className="secondary-title">Known Exercises</h2>
+                        <LiftTable onBack={() => navigate("/")}
         />
+        </div>
+       
     )
 }

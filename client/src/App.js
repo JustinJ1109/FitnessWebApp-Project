@@ -24,12 +24,10 @@ import UserLogin from "./components/user/login";
 import Rec from "./components/rec";
 
 const App = () => {
-	const defaultColorScheme = window.matchMedia('(prefers-color-scheme: Smoothie)').matches;
 	const [cookies, setCookie] = useCookies(['theme'])
 	const [loading, setLoading] = useState(true)
 	
 	useEffect(() => {
-		console.log("Setting color theme to " + cookies.ColorTheme)
 		setCookie('ColorTheme', cookies.ColorTheme ?? 'Ender', {path:'/'})
 		setLoading(false)
 	},[])

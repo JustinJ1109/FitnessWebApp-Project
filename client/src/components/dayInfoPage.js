@@ -98,20 +98,20 @@ export default function DayInfo() {
 
     }
 
+    const addClicked = (e) => {
+        console.log(e)
+    }
+
     const CreateNewForm = (props) => {
         
         return (
             <div>
 
-                <input 
-                    className="back-btn btn btn-dark"
-                    defaultValue="Cancel"
-                    onClick={props.onClick}
-                />
-
                 <div>
+                    <h2>Add</h2>
                     <GetLifts
-                        onBack={() => setCreating(false)}></GetLifts>
+                        onClickRow={addClicked}
+                        onBack={props.onClick}></GetLifts>
                 </div>
 
                 <form onSubmit={onSubmit}>
@@ -143,7 +143,7 @@ export default function DayInfo() {
                             {props.name}
                         </div>
 
-                        <div id="arrow-collapser" className="col-xl-1 col-lg-2 col-md-3 col-sm-2">
+                        <div id="arrow-collapser" className="col-xl-2.5 col-lg-2 col-md-3 col-sm-3">
                             {props.name != '' ? collapsed ? `\u23F5` : '\u23F7' : ''}
                         </div>
                     </div>
@@ -183,7 +183,7 @@ export default function DayInfo() {
 
                 
                 <div className="row">
-                    <div className="col-1">
+                    <div className="col-1-md col0.5-sm">
                     <input
                         className="btn btn-dark"
                         type="button"
@@ -199,7 +199,7 @@ export default function DayInfo() {
                         <img className="rest-day-image" alt="Really cool penguin" src={PenguinImage}/>
 
                     </div>
-                    <div className="col-1" />
+                    <div className="col-1-md" />
 
                 </div>
                 

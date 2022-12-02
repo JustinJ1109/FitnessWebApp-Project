@@ -6,8 +6,6 @@
 
 @import url("./themes.css");
 
-
-
 /* #root {
     position: absolute;
     width: 100%;
@@ -40,6 +38,10 @@ div, th, td {
 
 h1, h2, h3, h4, .nav-col > a, hr, div.logged-in-as {
     color:var(--text-color2)
+}
+
+div.logged-in-as {
+    text-align: center;
 }
 
 span.user-name {

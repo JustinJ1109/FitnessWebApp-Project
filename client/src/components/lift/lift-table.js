@@ -131,7 +131,7 @@ export default function LiftTable(props) {
         const [expand, setExpand] = useState(false);
 
         return (
-            <tr className="lift-row">
+            <tr className="lift-row" onClick={props.addClicked}>
                 <td>{props.row_num}</td>
                 <td>{props.name}</td>
 
@@ -159,7 +159,6 @@ export default function LiftTable(props) {
     
     return (
         <div className="container-fluid page-content lift-list-page">
-            <h2 className="secondary-title">Known Exercises</h2>
             <div className="row">
                 <div className="col-2">
                     <div className="row">
