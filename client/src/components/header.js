@@ -2,17 +2,17 @@ import React, { useEffect, useState } from "react";
 
 import "../views/css/main.css";
 
-const _USER = "Justin"
-
-export default function Header() {
+export default function Header(props) {
 
     const [programTitle, setProgramTitle] = useState();
 
     useEffect(() => {
 
         async function getProgram() {
-            const response = await fetch(`http://localhost:5000/user?name=${_USER}`)
+            
+            const response = await fetch(`http://localhost:5000/user`)
             if (!response.ok) {
+                // user not found, no login?
                 console.log("Could not fetch")
                 return;
             }
@@ -20,6 +20,7 @@ export default function Header() {
             response.json()
             .then((b) => {
                 setProgramTitle(b[0].program);
+
             })
         }
         getProgram();
@@ -35,9 +36,17 @@ export default function Header() {
             <h2>{programTitle}</h2>
                 
             </div>
-
+            {props.username ? 
+            
             <div className="col-lg-4 col-md-3 col-2-sm col-6 logged-in-as">Logged in as 
-            <span className="user-name"><a className="user-profile-link" href={`/user/${_USER}`}> {`${_USER} \u25BD`}</a></span></div>
+            <span className="user-name"><a className="user-profile-link" href={`/user/profile`}> {`${props.username}`}</a></span></div>
+
+            :
+
+            <div className="col-lg-4 col-md-3 col-2-sm col-6 logged-in-as"><a className="user-login-link" href={`/user/login`}>Log in</a></div>
+        
+            }
+            
 
         </div>
     )

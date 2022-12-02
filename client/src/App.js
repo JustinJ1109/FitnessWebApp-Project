@@ -32,6 +32,9 @@ const App = () => {
 		setLoading(false)
 	},[])
 
+
+	const [username, setUsername] = useState(''); 
+
 	if (loading) {
 		return (
 			<div className="page" style={{backgroundColor:'grey'}}></div>
@@ -44,7 +47,7 @@ const App = () => {
 				<NB />
 	
 				{/* header */}
-				<Header />
+				<Header username={username}/>
 	
 				{/* content */}
 				<div className="page-content-area">
@@ -64,7 +67,7 @@ const App = () => {
 						<Route path="/program/populate" element={<Populate />} />
 	
 						<Route path="/user" element={<UserList />} />
-						<Route path="/user/login" element={<UserLogin />} />
+						<Route path="/user/login" element={<UserLogin onLogin={setUsername}/>} />
 	
 						<Route path="/color/populate" element={<PopulateColorThemes />} />
 	

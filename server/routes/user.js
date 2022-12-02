@@ -32,17 +32,17 @@ userRoutes.route("/user/add").post(function (req, response) {
     });
 });
 
-// get a list of all the users.
+// get user that is logged in
+// check if session is logged in
 userRoutes.route("/user").get(function (req, res) {
     let db_connect = dbo.getDb("daily-report-db")
-
-    let name = req.query.name
-    console.log(`Finding ${name.length > 0 ? name : 'all users'}`)
+    
+    // validate that req.session.name exists?
 
     db_connect
         .collection("user_data")
         // get between dates
-        .find({name : {$eq: name}})
+        .find({name : {$eq: 'Justin'}})
         .sort({username : 1})
         .toArray(function (err, result) {
             if (err) throw err;
