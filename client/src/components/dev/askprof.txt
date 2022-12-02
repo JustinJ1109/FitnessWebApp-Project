@@ -1,0 +1,13 @@
+how to use sessions across multiple routing pages
+
+is session data only used server side?
+
+What if you need to GET a users info for certain client side actions?
+
+Hypothetical:
+
+I click on a day to get data for that day
+
+How do I retrieve that day's data specific to the auth'd user?
+
+fetch(/records/2022-11-20) -> use session to get whos currently logged in and auto find those?
