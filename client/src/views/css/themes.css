@@ -1,21 +1,3 @@
-[data-theme='Ardent'] {
-    --bg3: #5e696e;
-    --text-color2: #eee2e2;
-    --text-color1: #a9e9de;
-    --bg2: #FF5C53;
-
-    --bg1:#393d3f;
-}
-
-[data-theme='Starship'] {
-    --text-color1: #E2E0D7;
-    --text-color2: #dce8ff;
-
-    --bg2: #FF582A;
-
-    --bg1: #191919;
-    --bg3:rgb(37, 37, 39);
-}
 
 [data-theme='Sherbet'] {
     --bg2: #D8BBCA;
@@ -25,6 +7,25 @@
 
     --bg1:#ad5e87be;
 }
+[data-theme='Starship'] {
+    --text-color1: #E2E0D7;
+    --text-color2: #dce8ff;
+
+    --bg2: #FF582A;
+
+    --bg1: #191919;
+    --bg3:rgb(37, 37, 39);
+}
+[data-theme='Ardent'] {
+    --bg3: #5e696e;
+    --text-color2: #eee2e2;
+    --text-color1: #a9e9de;
+    --bg2: #FF5C53;
+
+    --bg1:#393d3f;
+}
+
+
 
 [data-theme='Ender'] {
     --bg2: #1b1a1b;

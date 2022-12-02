@@ -1,16 +1,10 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
 
 // import AddLift from "./create";
 
-export default function GetLifts() {
-    const navigate = useNavigate();
+export default function LiftTable(props) {
     const [records, setRecords] = useState([]);
-
-    const goBack = () => {
-        navigate('/');
-    }
 
     useEffect(() => {
         async function getLifts() {
@@ -137,7 +131,7 @@ export default function GetLifts() {
         const [expand, setExpand] = useState(false);
 
         return (
-            <tr className="lift-row">
+            <tr className="lift-row" onClick={props.addClicked}>
                 <td>{props.row_num}</td>
                 <td>{props.name}</td>
 
@@ -164,15 +158,14 @@ export default function GetLifts() {
     }
     
     return (
-        <div className="container">
-            <h2 className="secondary-title">Known Exercises</h2>
+        <div className="container-fluid page-content lift-list-page">
             <div className="row">
                 <div className="col-2">
                     <div className="row">
                         <input 
                             type="button"
                             value="Back"
-                            onClick={goBack}
+                            onClick={props.onBack}
                             className="btn btn-dark"
                         />
                     </div>

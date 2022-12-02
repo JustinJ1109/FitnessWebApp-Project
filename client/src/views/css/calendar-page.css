@@ -12,9 +12,8 @@
     font-size: small;
     font-weight: 600;
     text-align: center;
-
-    color:var(--text-color1)
-
+    color:var(--text-color1);
+    margin-top: 10px;
 }
 
 /* Sunday, Monday, etc */
@@ -45,6 +44,10 @@
     border-radius: 10px;
 }
 
+[data-theme=""] .day-report {
+    background-color: var(--bg4);
+}
+
 /* outline for today square */
 .day-report.today {
     border-width: 3px;
@@ -67,4 +70,5 @@
 
 .week-block {
     padding-top: 25px;
+    padding-bottom: 10px;
 }

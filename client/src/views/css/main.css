@@ -6,13 +6,11 @@
 
 @import url("./themes.css");
 
-
-
-#root {
+/* #root {
     position: absolute;
     width: 100%;
     height: 100%;
-}
+} */
 
 .page {
     position: absolute;
@@ -21,7 +19,7 @@
     overflow: auto;
 }
 
-.page-content {
+.page-content-area {
     position:relative;
     width: 100%;
     height: 100%;
@@ -38,8 +36,16 @@ div, th, td {
     color:var(--text-color1)
 }
 
-h1, h2, h3, h4, .nav-col > a, hr {
+h1, h2, h3, h4, .nav-col > a, hr, div.logged-in-as {
     color:var(--text-color2)
+}
+
+div.logged-in-as {
+    text-align: center;
+}
+
+span.user-name {
+    font-weight: 500;
 }
 
 tbody {
@@ -59,7 +65,7 @@ a.nav-link:hover  {
 }
 
 /* background color */
-.title, .nav, .page-content, .page, .table-colored .empty-cell {
+.title, .nav, .page-content-area, .page, .table-colored .empty-cell {
     background-color: var(--bg2);
 }
 
@@ -72,14 +78,14 @@ a.nav-link:hover  {
     background-color: var(--bg3);
 }
 /* Each row */
-.page-content .week-report, .page-content .daily-report, .page-content .settings-page {
+.page-content.week-report, .page-content.daily-report, .page-content.settings-page, .page-content {
     /* padding-bottom: 50px; */
     padding-bottom: 20px;
     position: relative;
     width: 90%;
 }
 
-.page-content .table {
+.page-content-area .table {
     position: relative;
     width: 90%;
     /* left:5% */
@@ -104,6 +110,7 @@ a.nav-link:hover  {
     margin-top:5px;
     margin-bottom: 5px;
 }
+
 .nav-link {
     text-align: center;
 }
@@ -115,7 +122,6 @@ a.nav-link:hover  {
 .lift-row {
     text-align: center;
 }
-
 
 .clickable {
     cursor: pointer;
@@ -133,9 +139,6 @@ tr.collapse.in {
     pointer-events: none !important;
     opacity: 0.7;
 }
-
-
-
 
 .title {
     position: fixed;
@@ -207,7 +210,19 @@ table.table-colored {
 }
 
 h1#home-title > a:visited, h1#home-title > a:link, 
-h1#home-title > a:hover, h1#home-title > a:active {
+h1#home-title > a.user-profile-link:hover, h1#home-title > a.user-profile-link:active,
+a.user-profile-link:visited, a.user-profile-link:link, a.user-profile-link:hover, a.user-profile-link:active {
     text-decoration: none;
     color:var(--text-color2)
+}
+
+input.create-new-lift-btn.btn.btn-success {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    text-align: center;
+}
+
+#new-lift-name-field {
+    text-align: center;
 }
