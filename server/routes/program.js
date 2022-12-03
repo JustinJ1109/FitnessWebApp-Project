@@ -29,6 +29,8 @@ programRoutes.route("/program/add").post(function (req, response) {
     console.log(req.body)
     let inc_program = req.body
 
+    console.log("adding program")
+
     db_connect
     .collection("_volume_map")
     .updateOne(
@@ -86,17 +88,20 @@ programRoutes.get('/program/getmap/:progname', (req, res) => {
 
 // This section will help you get a list of all the programs.
 // programRoutes.route("/program").get(function (req, res) {
-programRoutes.get('/program', (req, res) => {
+programRoutes.get('/program', isAuthenticated, (req, res) => {
     let db_connect = dbo.getDb("daily-report-db")
-        console.log('called /program')
+    console.log('called /program')
+    
     db_connect
     .collection("user_data")
     .findOne({
         name : {$eq: req.session.name}
     }, function (err, result) {
         if (err) throw err;
+        console.log("HERE")
         let programname = result.program
         console.log(`prog name ${programname}`)
+        
         db_connect
         .collection('_program_library')
         .findOne({

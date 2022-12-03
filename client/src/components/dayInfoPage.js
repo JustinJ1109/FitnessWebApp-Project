@@ -17,7 +17,6 @@ function getDateDayValue(date) {
 export default function DayInfo() {
     const { date } = useParams();
     const [volumeMap, setVolumeMap] = useState([]);
-    const [userData, setUserData] = useState([])
     const [creating, setCreating] = useState(false);
 
     const [loading, setLoading] = useState(true);
@@ -26,25 +25,27 @@ export default function DayInfo() {
 
     useEffect(() => {
         async function getVolMap() {
-            fetch(`http://localhost:5000/user`)
-            .then((user_res) => {
-                user_res.json()
-                .then((body) => {
-                    setUserData(body[0])
-                    fetch(`http://localhost:5000/program/getmap/${body[0].program.replaceAll("/", "%2F")}?day=${getDateDayValue(date)}`)
-                    .then((map_res) => {
-                        map_res.json()
-                        .then((body) => {
-                            if (body.redirectURL) {
-                                navigate(body.redirectURL)
-                                return
-                            }
-                            setVolumeMap(body)
-                            setLoading(false)
+            fetch(`http://localhost:5000/user`).then((user_res) => {
+                user_res.json().then((body) => {
+                    if (body.redirectURL) {
+                        navigate(body.redirectURL)
+                        return
+                    }
+                    else {
+                        fetch(`http://localhost:5000/program/getmap/${body.program.replaceAll("/", "%2F")}?day=${getDateDayValue(date)}`)
+                        .then((map_res) => {
+                            map_res.json().then((body) => {
+                                if (body.redirectURL) {
+                                    navigate(body.redirectURL)
+                                    return
+                                }
+                                setVolumeMap(body)
+                                setLoading(false)
+                            })
+                            .catch((e) => console.log(e))
                         })
                         .catch((e) => console.log(e))
-                    })
-                    .catch((e) => console.log(e))
+                    }
                 })
                 .catch((e) => console.log(e))
             })
@@ -175,7 +176,6 @@ export default function DayInfo() {
             <div></div>
         )
     }
-    
     // rest day
     if (volumeMap.length === 0) {
 

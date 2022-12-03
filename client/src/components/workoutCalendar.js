@@ -25,11 +25,12 @@ function getDates(startDate, stopDate) {
 
 export default function WorkoutCalendar() {
 
-    const [user, setUser] = useState();
+    const [loggedIn, setLoggedIn] = useState(false)
     const [dateMap, setDateMap] = useState([])
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
     const [volumeMap, setVolumeMap] = useState([])
+    
 
     const weeks_to_display = 3;
 
@@ -51,7 +52,13 @@ export default function WorkoutCalendar() {
                 console.log(message)
                 return;
             }
+
             response.json().then(async (program_body) => {
+                if (program_body.redirectURL) {
+                    setLoading(false)
+                    return
+                }
+                setLoggedIn(true)
                 setDateMap(program_body.days)
                 fetch(`http://localhost:5000/program/getmap/${program_body.name.replaceAll("/", "%2F")}`)
                 .then((response) => {
@@ -115,7 +122,7 @@ export default function WorkoutCalendar() {
     };
 
     const DayContent = (props) => {
-        if (loading) {
+        if (loading || !loggedIn) {
             return (
                 <div className="day-content-display"></div>
             )

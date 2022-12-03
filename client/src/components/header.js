@@ -19,7 +19,9 @@ export default function Header(props) {
 
             response.json()
             .then((b) => {
-                setProgramTitle(b[0].program);
+                if (b.program) {
+                    setProgramTitle(b.program);
+                }
 
             })
         }
