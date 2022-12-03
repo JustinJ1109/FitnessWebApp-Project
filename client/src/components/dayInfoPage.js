@@ -14,8 +14,6 @@ function getDateDayValue(date) {
     return new Date(date).getDay()
 }
 
-const _USER = "Justin"
-
 export default function DayInfo() {
     const { date } = useParams();
     const [volumeMap, setVolumeMap] = useState([]);
@@ -28,7 +26,7 @@ export default function DayInfo() {
 
     useEffect(() => {
         async function getVolMap() {
-            fetch(`http://localhost:5000/user?name=${_USER}`)
+            fetch(`http://localhost:5000/user`)
             .then((user_res) => {
                 user_res.json()
                 .then((body) => {
@@ -37,6 +35,10 @@ export default function DayInfo() {
                     .then((map_res) => {
                         map_res.json()
                         .then((body) => {
+                            if (body.redirectURL) {
+                                navigate(body.redirectURL)
+                                return
+                            }
                             setVolumeMap(body)
                             setLoading(false)
                         })

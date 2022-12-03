@@ -46,29 +46,29 @@ recordRoutes.route("/record/add").post(function (req, response) {
 });
 
 // get a list of all the records.
-recordRoutes.route("/record").get(isAuthenticated, function (req, res) {
-    let db_connect = dbo.getDb("daily-report-db")
+// recordRoutes.route("/record").get(isAuthenticated, function (req, res) {
+//     let db_connect = dbo.getDb("daily-report-db")
 
-	let start_date = new Date(req.query.start).toLocaleDateString()
-    let end_date = new Date(req.query.end).toLocaleDateString()
+// 	let start_date = new Date(req.query.start).toLocaleDateString()
+//     let end_date = new Date(req.query.end).toLocaleDateString()
 
-    console.log(`Retrieving all with dates between ${start_date} - ${end_date}`);
+//     console.log(`Retrieving all with dates between ${start_date} - ${end_date}`);
 
-    db_connect
-        .collection("_weightlift-session")
-        // get between dates
-        .find({
-            date: {
-                $gte: start_date,
-                $lte: end_date + 1
-            }
-        })
-        .sort({date : 1})
-        .toArray(function (err, result) {
-            if (err) throw err;
-            res.json(result);
-        });
-});
+//     db_connect
+//         .collection("_weightlift-session")
+//         // get between dates
+//         .find({
+//             date: {
+//                 $gte: start_date,
+//                 $lte: end_date + 1
+//             }
+//         })
+//         .sort({date : 1})
+//         .toArray(function (err, result) {
+//             if (err) throw err;
+//             res.json(result);
+//         });
+// });
 
 // get a single record by id
 recordRoutes.route("/record/:date").get(function (req, res) {

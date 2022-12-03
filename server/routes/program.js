@@ -11,6 +11,17 @@ const dbo = require("../db/conn");
 // This help convert the id from string to ObjectId for the _id.
 const ObjectId = require("mongodb").ObjectId;
 
+function isAuthenticated(req, res, next) {
+    if (req.session.username) {
+        console.log("Logged in")
+        next()
+    }
+    else {
+        console.log("Not logged in")
+        res.json({redirectURL:'/user/login'})
+    }
+}
+
 // This section will help you create a new record.
 programRoutes.route("/program/add").post(function (req, response) {
     let db_connect = dbo.getDb();
@@ -39,13 +50,15 @@ programRoutes.route("/program/add").post(function (req, response) {
 });
 
 // This section will help you get a list of all the programs.
-programRoutes.route("/program/getmap/:progname").get(function (req, res) {
+// programRoutes.route("/program/getmap/:progname").get(isAuthenticated, function (req, res) {
+programRoutes.get('/program/getmap/:progname', (req, res) => {
     let db_connect = dbo.getDb("daily-report-db")
 
     let dayQuery = req.query.day
     let progname = req.params.progname.toString()
-    console.log(dayQuery)
-    console.log(typeof(dayQuery))
+
+    console.log(`Finding program ${progname} ${dayQuery ? `for day ${dayQuery}` : ''}`)
+
     if (req.query.day) {
         my_query = {
             program : {$eq: progname},
@@ -58,7 +71,6 @@ programRoutes.route("/program/getmap/:progname").get(function (req, res) {
         }
     }
     
-    console.log(`called /getmap/ Finding ${progname} ${dayQuery?`for ${dayQuery}`: ''}`)
     db_connect
         .collection("_volume_map")
         // get between dates
@@ -68,25 +80,53 @@ programRoutes.route("/program/getmap/:progname").get(function (req, res) {
             if (err) throw err;
             res.json(result);
         });
-});
+})
+    
+// });
 
 // This section will help you get a list of all the programs.
-programRoutes.route("/program").get(function (req, res) {
+// programRoutes.route("/program").get(function (req, res) {
+programRoutes.get('/program', (req, res) => {
     let db_connect = dbo.getDb("daily-report-db")
-    let name = req.query.name
-    console.log(`Finding ${name.length > 0 ? name : 'all programs'}`)
+        console.log('called /program')
     db_connect
-        .collection("_program_library")
-        // get between dates
-        .find({
-            name : {$eq: name}
-        })
-        .sort({date : 1})
-        .toArray(function (err, result) {
+    .collection("user_data")
+    .findOne({
+        name : {$eq: req.session.name}
+    }, function (err, result) {
+        if (err) throw err;
+        let programname = result.program
+        console.log(`prog name ${programname}`)
+        db_connect
+        .collection('_program_library')
+        .findOne({
+            name : {$eq : programname}
+        }, function (err,  result) {
             if (err) throw err;
-            res.json(result);
-        });
-});
+            console.log(result)
+            res.json(result)
+        })
+
+    })
+
+})
+    
+    
+
+
+//     console.log(`Finding ${name.length > 0 ? name : 'all programs'}`)
+//     db_connect
+//         .collection("_program_library")
+//         // get between dates
+//         .find({
+//             name : {$eq: name}
+//         })
+//         .sort({date : 1})
+//         .toArray(function (err, result) {
+//             if (err) throw err;
+//             res.json(result);
+//         });
+// });
 
 // This section will help you get a single program by id
 programRoutes.route("/program/:date").get(function (req, res) {

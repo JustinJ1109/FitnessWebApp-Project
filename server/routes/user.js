@@ -8,6 +8,18 @@ const dbo = require("../db/conn");
 // This help convert the id from string to ObjectId for the _id.
 const ObjectId = require("mongodb").ObjectId;
 
+function isAuthenticated(req, res, next) {
+    // console.log(req.session)
+    if(req.session.user) {
+      console.log("Already logged in")
+      next()
+    }
+    else {
+      console.log("Redirecting to login");
+      res.redirect('/login')
+    }
+  }
+
 // create a new user.
 userRoutes.route("/user/add").post(function (req, response) {
     let db_connect = dbo.getDb();
@@ -34,21 +46,19 @@ userRoutes.route("/user/add").post(function (req, response) {
 
 // get user that is logged in
 // check if session is logged in
-userRoutes.route("/user").get(function (req, res) {
+// userRoutes.route("/user").get(function (req, res) {
+userRoutes.get('/user', isAuthenticated, (req, res) => {
     let db_connect = dbo.getDb("daily-report-db")
     
-    // validate that req.session.name exists?
-
     db_connect
         .collection("user_data")
         // get between dates
-        .find({name : {$eq: 'Justin'}})
-        .sort({username : 1})
-        .toArray(function (err, result) {
+        .findOne({username : {$eq: req.session.user.username}}, 
+            function (err, result) {
             if (err) throw err;
             res.json(result);
         });
-});
+})
 
 // get a single user by id
 userRoutes.route("/user/:id").get(function (req, res) {
@@ -94,7 +104,7 @@ userRoutes.route("/user/:id").delete((req, response) => {
     });
 });
 
-userRoutes.route("/login").get((req, response) => {
+userRoutes.route("/user/login").get((req, response) => {
     // response.render("/user/login")
     console.log("At login")
     response.json({
