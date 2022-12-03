@@ -9,7 +9,8 @@ const dbo = require("../db/conn");
 const ObjectId = require("mongodb").ObjectId;
 
 function isAuthenticated(req, res, next) {
-    // console.log(req.session)
+    console.log("authenticating...")
+    console.log(req.session)
     if(req.session.user) {
       console.log("Already logged in")
       next()
@@ -118,6 +119,7 @@ userRoutes.post(`/user/authenticate-login`, (req, res) => {
 
     console.log('authenticating...')
     // console.log(req.body)
+    console.log(req.session)
 
     db_connect
     .collection('user_data')
@@ -127,9 +129,20 @@ userRoutes.post(`/user/authenticate-login`, (req, res) => {
     },
     function (err, response) {
         if (err) throw err;
-        console.log(response)
         if (!response) {
             res.json({succeeded:false, message:'Invalid Username or Password'})
+        }
+        else {
+            req.session.regenerate((err) => {
+                if (err)  next(err);
+                req.session.user = response
+                res.json({succeeded:true, redirectURL:'/'})
+                console.log("success!")
+            })
+
+
+            
+            
         }
     })
 })

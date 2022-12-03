@@ -8,7 +8,7 @@ function isAuthenticated(req, res, next) {
     }
     else {
       console.log("Redirecting to login");
-      res.redirect('/login')
+      res.json({redirectURL:'/user/login'})
     }
   }
 

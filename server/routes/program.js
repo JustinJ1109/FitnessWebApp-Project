@@ -12,7 +12,9 @@ const dbo = require("../db/conn");
 const ObjectId = require("mongodb").ObjectId;
 
 function isAuthenticated(req, res, next) {
-    if (req.session.username) {
+    console.log("program authenticating")
+    // console.log(req.session)
+    if (req.session.user) {
         console.log("Logged in")
         next()
     }

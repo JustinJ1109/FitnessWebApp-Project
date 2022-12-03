@@ -27,6 +27,7 @@ export default function UserLogin() {
         .then((res) => {
             res.json().then((body) => {
                 if (body.succeeded) {
+                    setMessage('')
                     navigate(body.redirectURL)
                 }
                 else {
