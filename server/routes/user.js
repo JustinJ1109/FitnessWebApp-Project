@@ -113,6 +113,27 @@ userRoutes.route("/user/login").get((req, response) => {
     })
 })
 
+userRoutes.post(`/user/authenticate-login`, (req, res) => {
+    let db_connect = dbo.getDb();
+
+    console.log('authenticating...')
+    // console.log(req.body)
+
+    db_connect
+    .collection('user_data')
+    .findOne({
+        username: {$eq : req.body.username},
+        password: {$eq : req.body.password }
+    },
+    function (err, response) {
+        if (err) throw err;
+        console.log(response)
+        if (!response) {
+            res.json({succeeded:false, message:'Invalid Username or Password'})
+        }
+    })
+})
+
 
 
 module.exports = userRoutes;
