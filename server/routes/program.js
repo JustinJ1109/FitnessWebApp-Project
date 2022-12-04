@@ -14,7 +14,7 @@ const ObjectId = require("mongodb").ObjectId;
 function isAuthenticated(req, res, next) {
     console.log("program authenticating")
     // console.log(req.session)
-    if (req.session.user) {
+    if (req.session.user || true) {
         console.log("Logged in")
         next()
     }
@@ -42,7 +42,8 @@ programRoutes.route("/program/add").post(function (req, response) {
             position: inc_program.position,
             reps : inc_program.reps,
             sets: inc_program.sets,
-            weight: inc_program.weight
+            weight: inc_program.weight,
+            ref: inc_program.ref
         } 
         }, 
         {upsert:true}, 
@@ -53,8 +54,6 @@ programRoutes.route("/program/add").post(function (req, response) {
     
 });
 
-// This section will help you get a list of all the programs.
-// programRoutes.route("/program/getmap/:progname").get(isAuthenticated, function (req, res) {
 programRoutes.get('/program/getmap/:progname', (req, res) => {
     let db_connect = dbo.getDb("daily-report-db")
 
@@ -62,12 +61,23 @@ programRoutes.get('/program/getmap/:progname', (req, res) => {
     let progname = req.params.progname.toString()
 
     console.log(`Finding program ${progname} ${dayQuery ? `for day ${dayQuery}` : ''}`)
-
+    var my_query = {}
+    
     if (req.query.day) {
-        my_query = {
-            program : {$eq: progname},
-            day : {$eq : parseInt(dayQuery,10)}
-        }
+
+        db_connect.collection('_program_library')
+        .findOne({name: {$eq: progname}},
+            function (err, res) {
+                if (err) throw err;
+                console.log("res")
+                console.log(res)
+                console.log('my query')
+                my_query = {
+                    program : {$eq: res.name},
+                    day : {$eq : res.days[parseInt(dayQuery, 10)]}
+                }
+                console.log(my_query)
+            })
     }
     else {
         my_query = {
@@ -86,8 +96,6 @@ programRoutes.get('/program/getmap/:progname', (req, res) => {
         });
 })
     
-// });
-
 // This section will help you get a list of all the programs.
 // programRoutes.route("/program").get(function (req, res) {
 programRoutes.get('/program', isAuthenticated, (req, res) => {
@@ -97,7 +105,7 @@ programRoutes.get('/program', isAuthenticated, (req, res) => {
     db_connect
     .collection("user_data")
     .findOne({
-        name : {$eq: req.session.name}
+        name : {$eq: "Justin"}
     }, function (err, result) {
         if (err) throw err;
         console.log("HERE")

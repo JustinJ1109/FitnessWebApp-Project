@@ -45,6 +45,8 @@ export default function WorkoutCalendar() {
     useEffect(() => {
         async function getProgramDays() {                    
             // find program data for user
+
+            console.log("fetching /program for calendar");
             const response = await fetch(`http://localhost:5000/program`)
             if (!response.ok) {
                 const message = `Could not find program for user: ${response.statusText}`;
@@ -60,6 +62,7 @@ export default function WorkoutCalendar() {
                 }
                 setLoggedIn(true)
                 setDateMap(program_body.days)
+                console.log("fetching /getmap")
                 fetch(`http://localhost:5000/program/getmap/${program_body.name.replaceAll("/", "%2F")}`)
                 .then((response) => {
                     response.json().then((map_body) => {

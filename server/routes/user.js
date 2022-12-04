@@ -9,9 +9,9 @@ const dbo = require("../db/conn");
 const ObjectId = require("mongodb").ObjectId;
 
 function isAuthenticated(req, res, next) {
-    console.log("authenticating...")
+    console.log("isAuthenticated")
     console.log(req.session)
-    if(req.session.user) {
+    if(req.session.user || true) {
       console.log("Already logged in")
       next()
     }
@@ -54,7 +54,7 @@ userRoutes.get('/user', isAuthenticated, (req, res) => {
     db_connect
         .collection("user_data")
         // get between dates
-        .findOne({username : {$eq: req.session.user.username}}, 
+        .findOne({username : {$eq: 'justinj1109'}}, 
             function (err, result) {
             if (err) throw err;
             res.json(result);
@@ -130,18 +130,23 @@ userRoutes.post(`/user/authenticate-login`, (req, res) => {
     function (err, response) {
         if (err) throw err;
         if (!response) {
-            res.json({succeeded:false, message:'Invalid Username or Password'})
+            res.status(401).json({succeeded:false, message:'Invalid Username or Password'})
         }
         else {
             req.session.regenerate((err) => {
                 if (err)  next(err);
                 req.session.user = response
-                res.json({succeeded:true, redirectURL:'/'})
+                console.log("settig session to response")
+                console.log(req.session)
                 console.log("success!")
+                req.session.save()
+
+                res.status(200).json({succeeded:true, redirectURL:'/'})
+
             })
 
 
-            
+
             
         }
     })

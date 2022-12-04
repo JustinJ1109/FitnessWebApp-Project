@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 
 
-export default function UserLogin() {
+export default function UserLogin(props) {
 
     const navigate = useNavigate()
     const [form, setForm] = useState({

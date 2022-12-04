@@ -1,32 +1,37 @@
 import React, { useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
 
 import "../views/css/main.css";
 
 export default function Header(props) {
 
+    const [cookies, setCookie] = useCookies([]);
+
     const [programTitle, setProgramTitle] = useState();
 
     useEffect(() => {
+        
 
-        async function getProgram() {
-            
-            const response = await fetch(`http://localhost:5000/user`)
-            if (!response.ok) {
-                // user not found, no login?
-                console.log("Could not fetch")
-                return;
-            }
 
-            response.json()
-            .then((b) => {
-                if (b.program) {
-                    setProgramTitle(b.program);
-                }
+        // async function getProgram() {
+        //     console.log("feching user in header")
+        //     const response = await fetch(`http://localhost:5000/user`)
+        //     if (!response.ok) {
+        //         // user not found, no login?
+        //         console.log("Could not fetch")
+        //         return;
+        //     }
 
-            })
-        }
-        getProgram();
-    }, [])
+        //     response.json()
+        //     .then((b) => {
+        //         if (b.program) {
+        //             setProgramTitle(b.program);
+        //         }
+
+        //     })
+        // }
+        // getProgram();
+    }, [cookies.Username])
     
     return (
         <div className="title row">

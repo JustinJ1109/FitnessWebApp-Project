@@ -67,7 +67,7 @@ const App = () => {
 						<Route path="/program/populate" element={<Populate />} />
 	
 						<Route path="/user" element={<UserList />} />
-						<Route path="/user/login" element={<UserLogin onLogin={setUsername}/>} />
+						<Route path="/user/login" element={<UserLogin headerUsername={username}/>} />
 	
 						<Route path="/color/populate" element={<PopulateColorThemes />} />
 	

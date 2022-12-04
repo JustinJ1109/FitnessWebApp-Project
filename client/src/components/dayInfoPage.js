@@ -18,6 +18,13 @@ export default function DayInfo() {
     const { date } = useParams();
     const [volumeMap, setVolumeMap] = useState([]);
     const [creating, setCreating] = useState(false);
+    const [userMaxes, setUserMaxes] = useState({
+        accessory:-1,
+        bench : -1,
+        overheadpress: -1,
+        squat : -1,
+        deadlift : -1
+    });
 
     const [loading, setLoading] = useState(true);
 
@@ -32,6 +39,14 @@ export default function DayInfo() {
                         return
                     }
                     else {
+                        console.log(body)
+                                setUserMaxes({
+                                    Accessory : body.Accessory,
+                                    Bench : body.Bench,
+                                    'Overhead Press' : body['Overhead Press'],
+                                    Squat: body.Squat,
+                                    Deadlift : body.Deadlift
+                                })
                         fetch(`http://localhost:5000/program/getmap/${body.program.replaceAll("/", "%2F")}?day=${getDateDayValue(date)}`)
                         .then((map_res) => {
                             map_res.json().then((body) => {
@@ -39,6 +54,9 @@ export default function DayInfo() {
                                     navigate(body.redirectURL)
                                     return
                                 }
+                                
+
+                                console.log(userMaxes)
                                 setVolumeMap(body)
                                 setLoading(false)
                             })
@@ -105,6 +123,11 @@ export default function DayInfo() {
         console.log(e)
     }
 
+    function round5(x)
+    {
+        return Math.ceil(x/5)*5;
+    }
+
     const CreateNewForm = (props) => {
         
         return (
@@ -142,19 +165,28 @@ export default function DayInfo() {
                 style={props.name == '' ? {pointerEvents:'none',border:'0'} : {}}
                 >
                     <div className="row" style={{pointerEvents:'none'}}>
-                        <div className="col">
+                        <div 
+                        className="col">
                             {props.name}
                         </div>
 
-                        <div id="arrow-collapser" className="col-xl-2.5 col-lg-2 col-md-3 col-sm-3">
+                        <div 
+                        id="arrow-collapser" 
+                        className="col-xl-2.5 col-lg-2 col-md-3 col-sm-3">
                             {props.name != '' ? collapsed ? `\u23F5` : '\u23F7' : ''}
                         </div>
                     </div>
                 </td>
-                <td className="rep-cell-hover" onClick={addCheckMark}>
-                    <div className="row" style={{pointerEvents:'none'}}> 
+                <td 
+                className="rep-cell-hover" 
+                onClick={addCheckMark}
+                >
+                    <div 
+                    className="row" 
+                    style={{pointerEvents:'none'}}
+                    > 
                         <div className="col">
-                            {`${props.reps} reps @ ${220 * parseInt(props.weight, 10) / 100} lbs`}
+                            {`${props.reps} reps @ ${round5(userMaxes[props.referWeight] * parseInt(props.weight, 10) / 100)} lbs`}
                         </div>
 
                         <div style={{visibility:'hidden'}} className="checkmark col-2">
@@ -165,7 +197,6 @@ export default function DayInfo() {
                 <td>
                     {props.weight}%
                 </td>
-                
             </tr>
         )
     }
@@ -257,6 +288,7 @@ export default function DayInfo() {
                                                         name={e.name}
                                                         reps={r}
                                                         weight={e.weight[i]}
+                                                        referWeight={e.ref}
                                                     />
                                                 )
                                                 
@@ -268,6 +300,7 @@ export default function DayInfo() {
                                                         name=''
                                                         reps={r}
                                                         weight={e.weight[i]}
+                                                        referWeight={e.ref}
                                                         
                                                     />
                                                 )
