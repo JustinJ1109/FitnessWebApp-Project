@@ -12,9 +12,10 @@ const dbo = require("../db/conn");
 const ObjectId = require("mongodb").ObjectId;
 
 function isAuthenticated(req, res, next) {
-    console.log("program authenticating")
-    // console.log(req.session)
-    if (req.session.user || true) {
+    console.log("**** program authenticating")
+    console.log(req.session)
+    console.log("*******")
+    if (req.session.user) {
         console.log("Logged in")
         next()
     }
@@ -123,7 +124,7 @@ programRoutes.get('/program', isAuthenticated, (req, res) => {
     }, function (err, result) {
         if (err) throw err;
         let programname = result.program
-        console.log(`program name ${programname}`)
+        // console.log(`program name ${programname}`)
         
         db_connect
         .collection('_program_library')
