@@ -9,10 +9,10 @@ const dbo = require("../db/conn");
 const ObjectId = require("mongodb").ObjectId;
 
 function isAuthenticated(req, res, next) {
-    console.log("isAuthenticated")
+    console.log("**** isAuthenticated Session")
     console.log(req.session)
     if(req.session.user || true) {
-      console.log("Already logged in")
+    //   console.log("Already logged in")
       next()
     }
     else {
@@ -118,7 +118,7 @@ userRoutes.post(`/user/authenticate-login`, (req, res) => {
     let db_connect = dbo.getDb();
 
     console.log('authenticating...')
-    // console.log(req.body)
+    console.log("***** SESSION BEFORE")
     console.log(req.session)
 
     db_connect
@@ -129,21 +129,26 @@ userRoutes.post(`/user/authenticate-login`, (req, res) => {
     },
     function (err, response) {
         if (err) throw err;
+        
         if (!response) {
+            return (
             res.status(401).json({succeeded:false, message:'Invalid Username or Password'})
+            )
         }
         else {
+            return (
             req.session.regenerate((err) => {
                 if (err)  next(err);
                 req.session.user = response
-                console.log("settig session to response")
+                console.log("**** SESSION")
                 console.log(req.session)
-                console.log("success!")
+                console.log("Success!")
                 req.session.save()
 
                 res.status(200).json({succeeded:true, redirectURL:'/'})
 
             })
+            )
 
 
 

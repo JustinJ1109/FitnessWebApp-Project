@@ -15,7 +15,7 @@ import Progress from "./components/progress";
 import DayInfo from "./components/dayInfoPage";
 import Delete from "./components/deleteall";
 import Todo from "./components/dev/todo";
-import GetLifts from "./components/lift/lift-list-page";
+import GetProgram from "./components/lift/programPage";
 import AddLift from "./components/lift/create";
 import Populate from "./components/dev/pop_db";
 import PopulateColorThemes from "./components/dev/pop_colors";
@@ -61,7 +61,7 @@ const App = () => {
 						<Route path="/deleteall" element={<Delete />} />
 						<Route path="/dev/todo" element={<Todo />} />
 	
-						<Route path="/lift/" element={<GetLifts />} />
+						<Route path="/program" element={<GetProgram />} />
 						<Route path="/lift/add" element={<AddLift />} />
 	
 						<Route path="/program/populate" element={<Populate />} />

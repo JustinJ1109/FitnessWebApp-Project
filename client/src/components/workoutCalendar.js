@@ -63,7 +63,7 @@ export default function WorkoutCalendar() {
                 setLoggedIn(true)
                 setDateMap(program_body.days)
                 console.log("fetching /getmap")
-                fetch(`http://localhost:5000/program/getmap/${program_body.name.replaceAll("/", "%2F")}`)
+                fetch(`http://localhost:5000/program/getmap`)
                 .then((response) => {
                     response.json().then((map_body) => {
                         if (map_body.redirectURL) {

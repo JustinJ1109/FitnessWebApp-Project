@@ -85,6 +85,12 @@ a.nav-link:hover  {
     width: 90%;
 }
 
+.page-content.program-page {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+
+}
 .page-content-area .table {
     position: relative;
     width: 90%;
@@ -119,7 +125,7 @@ a.nav-link:hover  {
     text-align: center;
 }
 
-.lift-row {
+.lift-row{
     text-align: center;
 }
 
@@ -186,7 +192,7 @@ tr.collapse.in {
     /* border-radius: 25px; */
     border-radius: 10px;
     border-spacing: 5px;
-    background-color: var(--text-color2) !important;
+    background-color: var(--bg4) !important;
     position: relative;
     height: 5px !important;
 }
@@ -200,20 +206,23 @@ tr.collapse.in {
 
 table.table-colored {
     border: 0px solid transparent;
-
 }
 
 .table-colored tbody {
     border-color: var(--bg2);
     border: 0px solid transparent;
-
 }
 
 h1#home-title > a:visited, h1#home-title > a:link, 
-h1#home-title > a.user-profile-link:hover, h1#home-title > a.user-profile-link:active,
+h1#home-title > a.user-profile-link:active,
 a.user-profile-link:visited, a.user-profile-link:link, a.user-profile-link:hover, a.user-profile-link:active {
     text-decoration: none;
     color:var(--text-color2)
+}
+
+h1#home-title > a.user-profile-link:hover {
+    color: var(--text-color1) !important;
+    text-decoration: none;
 }
 
 input.create-new-lift-btn.btn.btn-success {
@@ -225,4 +234,13 @@ input.create-new-lift-btn.btn.btn-success {
 
 #new-lift-name-field {
     text-align: center;
+}
+
+#lift-editor {
+    position: absolute;
+    top:0;
+    left:calc(100% - 25vw);
+    width:25vw;
+    height:100%;
+    background-color: var(--bg1);
 }

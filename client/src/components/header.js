@@ -33,6 +33,7 @@ export default function Header(props) {
         // getProgram();
     }, [cookies.Username])
     
+    console.log("header rendering")
     return (
         <div className="title row">
             <div className="col-4 col-md-3 col-sm-6 col-4">

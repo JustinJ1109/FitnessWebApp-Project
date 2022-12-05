@@ -72,7 +72,6 @@ recordRoutes.route("/record/add").post(function (req, response) {
 
 // get a single record by id
 recordRoutes.route("/record/:date").get(function (req, res) {
-    console.log("Retrieving record by date");
 
     // let parsed_date
 
@@ -83,7 +82,8 @@ recordRoutes.route("/record/:date").get(function (req, res) {
         res.status(400)
     }
 
-    console.log(`parsed date : ${parsed_date}`)
+    console.log("/record/:date: Retrieving record by date: " + parsed_date);
+
 
     let db_connect = dbo.getDb();
     let myquery = { date: parsed_date };

@@ -1,6 +1,8 @@
 import React from "react";
 import { useEffect, useState } from "react";
 
+import "../../views/css/main.css"
+
 // import AddLift from "./create";
 
 export default function LiftTable(props) {
@@ -51,16 +53,11 @@ export default function LiftTable(props) {
     }
     
     const AddNewRow = (props) => {
-        const [tags, setTags] = useState([]);
     
-        const handleRemoveTag = (e) => {
-            const val = e.target.getAttribute("name")
-            setTags(tags.filter(tag => tag !== val))
-        }
 
         const handleAddLift = (e) => {
             if (e.key == 'Enter') {
-                SubmitNewLift({name:e.target.value, tags:tags})
+                SubmitNewLift({name:e.target.value, custom:true})
             }
         }
         
@@ -77,69 +74,19 @@ export default function LiftTable(props) {
                 </td>
                 <td></td>
     
-                <td rowSpan="3"> 
-                    <div className="row">
-                        <div className="col">
-                        <input
-                            type="text"
-                            className="col-5 addNew-tags"
-                            placeholder="Add Tag" 
-                            onKeyDown={(e) => {
-                                
-                                if (e.key == 'Enter') {
-                                    if (e.target.value.length == 0) {
-                                        alert("Tag cannot be empty")
-                                        return;
-                                    }
-                                    if (tags.includes(e.target.value)) {
-                                        alert("Tag already exists")
-                                        return;
-                                    }
-                                    setTags([...tags, e.target.value])
-                                    e.target.value = '';
-                                }
-                            }}
-                        />
-                        </div>
-                        
-                    </div>
-                    {tags.map((t, i) => {
-                        return (
-                        <span 
-                            className="tag clickable" 
-                            key={`tag-${t}-${i}`}
-                            onClick={handleRemoveTag}
-                            name={t}
-                        >
-                            {i!=0?',':''} '{t}'
-                        </span>)
-                    })}
-                </td>
+                
             </tr>
-        )
-    }
-
-    const Tags = (props) => {
-        return (
-            <div>
-                Placeholder Tag
-            </div>
         )
     }
     
     const RecordRow = (props) => {
-        const [expand, setExpand] = useState(false);
 
         return (
             <tr className="lift-row" onClick={props.addClicked}>
                 <td>{props.row_num}</td>
                 <td>{props.name}</td>
 
-                <td 
-                    className={`divider ${expand?'collapsed':''}`}
-                    onClick={() => setExpand(!expand)}>
-                        {expand?<Tags />:''}
-                    </td>
+                
                 <td className="col-4">
                     <input 
                         type="button"
@@ -171,11 +118,11 @@ export default function LiftTable(props) {
                     </div>
                 </div>
                 <div className="col table">
-                    <table className="table table-bordered table-hover table-dark">
+                    <table className="lift-table table table-bordered table-colored">
                         <thead>
                             <tr className="lift-row">
                                 <th>#</th>
-                                <th colSpan="3">Exercise Name</th>
+                                <th>Exercise Name</th>
                             </tr>
                         </thead>
                         <tbody>

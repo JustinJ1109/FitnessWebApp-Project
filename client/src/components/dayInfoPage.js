@@ -33,12 +33,13 @@ export default function DayInfo() {
     useEffect(() => {
         async function getVolMap() {
             fetch(`http://localhost:5000/user`).then((user_res) => {
-                user_res.json().then((body) => {
+                user_res.json().then( async(body) => {
                     if (body.redirectURL) {
                         navigate(body.redirectURL)
                         return
                     }
                     else {
+                        console.log("User body")
                         console.log(body)
                                 setUserMaxes({
                                     Accessory : body.Accessory,
@@ -47,20 +48,26 @@ export default function DayInfo() {
                                     Squat: body.Squat,
                                     Deadlift : body.Deadlift
                                 })
-                        fetch(`http://localhost:5000/program/getmap/${body.program.replaceAll("/", "%2F")}?day=${getDateDayValue(date)}`)
-                        .then((map_res) => {
-                            map_res.json().then((body) => {
-                                if (body.redirectURL) {
-                                    navigate(body.redirectURL)
-                                    return
-                                }
-                                
+                        // fetch(`http://localhost:5000/program/getmap/${body.program.replaceAll("/", "%2F")}?day=${getDateDayValue(date)}`)
+                        let response = await fetch(`http://localhost:5000/program/getmap?day=${getDateDayValue(date)}`)
+                        
+                        if (!response.ok) {
+                            console.log("*** ERR SOMETHING WRONG");
+                            return
+                        }
+                        response.json().then((body) => {
+                            if (body.redirectURL) {
+                                navigate(body.redirectURL)
+                                return
+                            }
+                            
+                            console.log("User maxes")
+                            console.log(userMaxes)
 
-                                console.log(userMaxes)
-                                setVolumeMap(body)
-                                setLoading(false)
-                            })
-                            .catch((e) => console.log(e))
+                            console.log("volumeMap")
+                            console.log(volumeMap)
+                            setVolumeMap(body)
+                            setLoading(false)
                         })
                         .catch((e) => console.log(e))
                     }
@@ -71,7 +78,7 @@ export default function DayInfo() {
         }
 
         getVolMap()
-    }, [volumeMap.length])
+    }, [])
 
     const goBack = () => {
         navigate("/");
@@ -82,6 +89,7 @@ export default function DayInfo() {
     }
 
     function updateForm(value) {
+        console.log("UpdateForm")
         console.log(value)
     }
 
@@ -115,11 +123,10 @@ export default function DayInfo() {
         else {
             checkBox.style.visibility = 'hidden'
         }
-
-
     }
 
     const addClicked = (e) => {
+        console.log("addClicked")
         console.log(e)
     }
 
@@ -167,13 +174,13 @@ export default function DayInfo() {
                     <div className="row" style={{pointerEvents:'none'}}>
                         <div 
                         className="col">
-                            {props.name}
+                            {props.name} 
                         </div>
 
                         <div 
                         id="arrow-collapser" 
-                        className="col-xl-2.5 col-lg-2 col-md-3 col-sm-3">
-                            {props.name != '' ? collapsed ? `\u23F5` : '\u23F7' : ''}
+                        className="col-xl-2.5 col-lg-3.5 col-md-4 col-sm-5">
+                            {props.sets ?`(${props.sets})`:''} {props.name != '' ? (collapsed ? `\u23F5` : '\u23F7') : ''}
                         </div>
                     </div>
                 </td>
@@ -203,12 +210,14 @@ export default function DayInfo() {
 
     // pre-load
     if (loading) {
+        console.log("loading...")
         return (
             <div></div>
         )
     }
     // rest day
     if (volumeMap.length === 0) {
+        console.log("volumeMap === 0")
 
         return (
             <div className="container-fluid daily-report">
@@ -241,6 +250,7 @@ export default function DayInfo() {
         )
     }
 
+    console.log("Loading content")
     return (
         <div className="container-fluid daily-report page-content">
             <div className="row">
@@ -289,6 +299,7 @@ export default function DayInfo() {
                                                         reps={r}
                                                         weight={e.weight[i]}
                                                         referWeight={e.ref}
+                                                        sets={e.sets}
                                                     />
                                                 )
                                                 
