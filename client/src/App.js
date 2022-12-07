@@ -32,7 +32,6 @@ const App = () => {
 		setLoading(false)
 	},[])
 
-
 	const [username, setUsername] = useState(''); 
 
 	if (loading) {
@@ -56,23 +55,18 @@ const App = () => {
 						<Route path="/edit/:id" element={<Edit />} />
 						<Route path="/record/create" element={<Create />} />
 						<Route path="/settings" element={<Settings />} />
-						{/* <Route path="/progress" element={<Progress />} /> */}
 						<Route path="/record/:date" element={<DayInfo />} />
 						<Route path="/deleteall" element={<Delete />} />
 						<Route path="/dev/todo" element={<Todo />} />
 	
 						<Route path="/program" element={<GetProgram />} />
+
 						<Route path="/lift/add" element={<AddLift />} />
-	
 						<Route path="/program/populate" element={<Populate />} />
-	
 						<Route path="/user" element={<UserList />} />
-						<Route path="/user/login" element={<UserLogin headerUsername={username}/>} />
-	
+						<Route path="/user/login" element={<UserLogin headerUsername={setUsername}/>} />
 						<Route path="/color/populate" element={<PopulateColorThemes />} />
-	
 						<Route path="/record" element={<Rec />} />
-	
 					</Routes>
 				</div>
 			</div>

@@ -4,31 +4,25 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 
 export default function GetProgram() {
+    // holds all n number of exercises from database
     const [exercises, setExercises] = useState([])
-    const [editingExercise, setEditingExercise] = useState()
+    // number that holds which exercises is currently being shown/edited
     const [editingExerciseIndex, setEditingExerciseIndex] = useState(-1)
+    // once both effects have fetched the data
     const [loading, setLoading] = useState([true, true])
-
+    // holds info about the program to map for exercise displaying
     const [program, setProgram] = useState({
         days: [],
         name : '',
         _id : null
     })
 
-    function removeSet(e) {
-        if (window.confirm("Are you sure you want to delete the row?")){
-            
-        }
-    }
-
     useEffect(() => {
-        // console.log('getProgInfo running')
         async function getProgramInfo() {
             fetch(`http://localhost:5000/program`).then((res) => {
                 res.json().then((body) => {
                     setProgram(body)
                     setLoading([false, loading[1]])
-                    // console.log(body)
                 })
             })
             .catch((err) => {
@@ -36,7 +30,6 @@ export default function GetProgram() {
                 return
             })
         }
-
         getProgramInfo()
     }, [])
 
@@ -52,6 +45,68 @@ export default function GetProgram() {
         }
         getExercises()
     }, [])
+
+    // onChange handler for edit fields
+    function updateField(props) {
+
+        var newExercise;
+
+        if (props.reps) {
+            const newReps = exercises[props.j].reps.map((r, i) => {
+                if (i === props.set-1) {
+                    return parseInt(props.reps,10) // user's input
+                }
+                return r // old value
+            })
+            newExercise = {...exercises[props.j], reps:newReps} // []
+            console.log(newExercise)
+        }
+        else {
+            const newWeight = exercises[props.j].weight.map((w, i) => {
+                if (i === props.set-1) {
+                    return parseInt(props.weight,10)
+                }
+                return w
+            })
+            newExercise = {...exercises[props.j], weight:newWeight}
+        }
+        console.log([...exercises, newExercise])
+
+        setExercises(exercises.map((exercise, i) => {
+            if (exercise.day === newExercise.day && exercise.position === newExercise.position) {
+                return newExercise
+            }
+            return exercise
+        }))
+    }
+
+    
+
+    const EditField = (props) => {
+        return (
+            <div>
+                <form onSubmit={() => console.log("submitted")}>
+                <table className="table table-bordered table-colored">
+                    <thead>
+                        <tr>
+                            <th>Set</th>
+                            <th>Reps</th>
+                            <th>Weight</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {[...Array(props.exercise.sets).keys()].map((i) => {
+                            return (
+                                <EditFieldRow updateField={updateField} j={props.j} key={`fieldrow-${i}`} set={i+1} reps={props.exercise.reps[i]} weight={props.exercise.weight[i]}/>
+                            )
+                        })}
+                    </tbody>
+                </table>
+                </form>
+
+            </div>
+        )
+    }
 
     const PageContent = (props) => {
         return (
@@ -73,112 +128,30 @@ export default function GetProgram() {
                                     {exercises.map((exercise, j) => {
                                         if (exercise.day === i+1) {
                                             return (
-                                                <tbody key={`${exercise.name}${i}${day}`}>
+                                                <tbody key={`${exercise.name}${i}${j}${day}`}>
                                                     <tr id={`exercise-row-${exercise.name.replaceAll(" ", "-")}`} className={`exercise-row`} 
                                                     onClick={() => {
-                                                        
-                                                        console.log(i)
-                                                        console.log(j)
-                                                        console.log(exercise.day)
-                                                        console.log(exercise)
                                                         setEditingExerciseIndex(j)
-                                                        setEditingExercise(exercise)
                                                     }}
                                                         key={`${exercise.name}-${i}-${day}`}
                                                     >
                                                         <td>{exercise.name}</td>
                                                         <td>{exercise.sets}</td>
                                                     </tr>
-                                                    <EditField exercise={editingExercise??undefined} j={j} id={`exercise-row-${exercise.name.replaceAll(" ", "-")}-editor`} className={`exercise-row-editor`}/>
-                                                        
+                                                    {editingExerciseIndex === j && <tr><td colSpan="2">
+                                                         <EditField exercise={exercises[j]} j={j}/>
+                                                    </td></tr>}
                                                 </tbody>
-                                                
                                             )
                                         }
                                     })}
                                 </table>
-                                {/* <input 
-                                type="button"
-                                className="btn btn-success"
-                                value="Add Exercise"
-                                onClick={() => setAddingExercise(true)}
-                                /> */}
                             </div>
                         )
                     })}
                 </div>
             </div>
         )
-    }
-
-    const EditField = (props) => {
-        if (props.exercise) {
-            return (
-                <tr id={props.id} className={`${props.className} ${props.j === editingExerciseIndex ? '' : 'collapse'}`} >
-                    <td colSpan="2">
-                        <table className="table table-bordered table-colored">
-                            <thead>
-                                <tr>
-                                    <th>Set</th>
-                                    <th>Reps</th>
-                                    <th>Weight</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {props.exercise.reps.map((r, i) => {
-                                    return (
-                                        <tr key={`${r}${i}${props.exercise.name}`}>
-                                            <td>{i+1}</td>
-                                            <td>
-                                                <input 
-                                                name="reps"
-                                                className="reps-field"
-                                                type="text"
-                                                value={r}
-                                                onChange={(e) => {
-                                                    const newReps = props.exercise.reps.map((r2, i2) => {
-                                                        if (i2 === i) {
-                                                            return parseInt(e.target.value,10)
-                                                        }
-                                                        return r2
-                                                    })
-                                                    console.log(newReps)
-                                                    setEditingExercise({...props.exercise, reps:newReps})
-                                                    console.log({...props.exercise, reps:newReps})
-
-                                                    const newExercises = exercises.map((exer) => {
-                                                        if (exer.day === editingExercise.day && exer.position === editingExercise.position) {
-                                                            return editingExercise
-                                                        }
-                                                        return exer
-                                                    })
-                                                    console.log(newExercises)
-                                                    
-                                                }}
-                                                />
-                                            </td>
-                                            <td><input 
-                                                name="weight"
-                                                className="weight-field"
-                                                type="text"
-                                                value={props.exercise.weight[i]}
-                                                onChange={(e) => {
-                                                    setEditingExercise({...editingExercise, [e.target.name]:e.target.value})
-                                                }}
-                                                />
-                                            </td>
-                                        </tr>
-                                    )
-                                })}
-                            </tbody>
-                        </table>
-                    </td>
-                    
-                </tr> 
-            )
-        }   
-        return <tr></tr>    
-        
     }
 
     if (program.dayMap) {
@@ -189,7 +162,15 @@ export default function GetProgram() {
     return (
         <div></div>
     )
+}
 
-    
-    
+const EditFieldRow = (props) => {
+    console.log("Rendering Edit Field Row")
+    return (
+        <tr>
+            <td>{props.set}</td>
+            <td><input key="reps-input" type="text" value={props.reps} onChange={(e) => props.updateField({j:props.j, set:props.set, reps:e.target.value})}/></td>
+            <td><input key="weight-input" type="text" value={props.weight} onChange={(e) => props.updateField({j:props.j, set:props.set, weight:e.target.value})}/></td>
+        </tr>
+    )
 }
