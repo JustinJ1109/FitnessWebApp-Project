@@ -4,65 +4,16 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 
 export default function GetProgram() {
-    const navigate = useNavigate();
-    const [editingLift, setEditingLift] = useState(false)
     const [exercises, setExercises] = useState([])
-    const [addingSet, setAddingSet] = useState(false)
+    const [editingExercise, setEditingExercise] = useState()
+    const [editingExerciseIndex, setEditingExerciseIndex] = useState(-1)
     const [loading, setLoading] = useState([true, true])
-    const [addingExercise, setAddingExercise] = useState(false)
 
     const [program, setProgram] = useState({
         days: [],
         name : '',
         _id : null
     })
-    const [editForm, setEditForm] = useState({
-        name: 'test',
-        sets: 0,
-        reps: [],
-        weight : []
-    })
-
-    function updateForm(value) {
-        console.log("updating form")
-        return setEditForm((prev) => {
-            return {...prev, ...value}
-        })
-    }
-
-    function updateSet(value) {
-        console.log("updatingset")
-        // updating existing
-        if (value.set < editForm.sets) {
-            if (value.reps) {
-
-                return setEditForm((prev) => {
-                    const newReps = [...editForm.reps]
-                    newReps[value.set] = value.reps
-                    return {
-                        ...prev,
-                        reps : [...newReps]
-                    }
-                }) 
-            }
-            // value.weight 
-            else {
-                const newWeight = [...editForm.weight]
-                newWeight[value.set] = value.weight
-
-                return setEditForm((prev) => {
-                    return {
-                        ...prev,
-                        weight : [...newWeight]
-                    }
-                }) 
-            }
-        }
-        // creating new
-        else {
-
-        }
-    }
 
     function removeSet(e) {
         if (window.confirm("Are you sure you want to delete the row?")){
@@ -71,13 +22,13 @@ export default function GetProgram() {
     }
 
     useEffect(() => {
-        console.log('getProgInfo running')
+        // console.log('getProgInfo running')
         async function getProgramInfo() {
             fetch(`http://localhost:5000/program`).then((res) => {
                 res.json().then((body) => {
                     setProgram(body)
                     setLoading([false, loading[1]])
-                    console.log(body)
+                    // console.log(body)
                 })
             })
             .catch((err) => {
@@ -90,15 +41,11 @@ export default function GetProgram() {
     }, [])
 
     useEffect(() => {
-        console.log('getExercises running')
-
         async function getExercises() {
             fetch(`http://localhost:5000/program/getmap`).then((res) =>{
                 res.json().then((body) => {
-                    // console.log('body')
-                    // console.log(body)
+                    
                     setExercises(body)
-                    console.log(body)
                     setLoading([loading[0], false])
                 })
             })
@@ -106,153 +53,7 @@ export default function GetProgram() {
         getExercises()
     }, [])
 
-    const AddExercise = (props) => (
-        
-        <div>
-            <input 
-                type="button"
-                className="btn btn-danger"
-                value="Cancel"
-                onClick={() => setAddingExercise(false)}
-                />
-            <div>
-                ADDING
-            </div>
-        </div>
-    )
-
-
-    const AddSetField = () => (
-        <tbody>
-            <tr>
-                <td>{editForm.sets+1}</td>
-                <td>
-                    <input 
-                    type="text"
-                    placeholder="# reps"
-                    onChange={(e) => updateSet({set: editForm.sets, reps: e.target.value})}
-                    />
-                </td>
-                <td>
-                    <input 
-                    type="text"
-                    placeholder="%1RM"
-                    onChange={(e) => updateSet({set:editForm.sets, weight: e.target.value})}
-                    />
-                </td>
-                <td>
-                    <input 
-                    type="button"
-                    className="btn btn-danger"
-                    value="X"
-                    onClick={removeSet}
-                    />
-                </td>
-            </tr>
-        </tbody>
-    )
-
-    const EditLift = () => {
-        return (
-            <div className="col-8">
-                <form>
-                    <div className="row form-group">
-                        <div className="col-3"><label htmlFor="exercise-name">Exercise Name</label></div>
-                        <div className="col-4"><input 
-                        type="text"
-                        className="form-control"
-                        value={editForm.name??''}
-                        onChange={(e) => updateForm({name: e.target.value})}
-                        />
-                        </div>
-                    </div>
-
-                    <div className="row form-group">
-                        <div className="col">
-
-                            <table className="table table-bordered table-colored">
-                                <thead>
-                                    <tr>
-                                        <th>Set</th>
-                                        <th>Reps</th>
-                                        <th>%1RM</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {editForm.reps.map((r, i) => {
-                                        return (
-                                            <tr key={`${i}-editForm`}>
-                                                <td>
-                                                    {i+1}
-                                                </td>
-                                                <td>
-                                                    <input 
-                                                    type="text"
-                                                    className="form-control"
-                                                    value={r??''}
-                                                    onChange={(e) => {
-                                                        setEditForm((prev) => {
-                                                            const newReps = [...editForm.reps]
-                                                            newReps[i] = e.target.value
-                                                            return {
-                                                                ...prev,
-                                                                reps : [...newReps]
-                                                            }
-                                                        }) 
-                                                    }}
-                                                    />
-                                                </td>
-                                                <td>
-                                                    <input 
-                                                    type="text"
-                                                    value={editForm.weight[i]??''}
-                                                    onChange={(e) => {
-                                                        const newWeights = [...editForm.weights]
-                                                            newWeights[i] = e.target.value
-                                                        setEditForm((prev) => {
-                                                            return {
-                                                                ...prev,
-                                                                weights : [...newWeights]
-                                                            }
-                                                        }) 
-                                                    }}
-                                                    />
-                                                </td>
-                                                <td>
-                                                    <input 
-                                                    type="button"
-                                                    className="btn btn-danger"
-                                                    value="X"
-                                                    onClick={removeSet}
-                                                    />
-                                                </td>
-                                            </tr>
-                                        )
-                                    })}
-                                    <tr>
-                                            
-                                    </tr>
-                                </tbody>
-
-                                {addingSet? <AddSetField /> : <tbody />}
-                            </table>
-
-                            <input 
-                            type="button"
-                            className="btn btn-success"
-                            value="Add Set"
-                            onClick={() => setAddingSet(true)}
-                            />
-                            
-                        </div>
-                    </div>
-                </form>
-            </div>
-        )
-    }
-
-    if (program.dayMap) {
+    const PageContent = (props) => {
         return (
             <div className="container-fluid page-content program-page" >
                 <h2 style={{textAlign:'center'}}>{program.rname??program.name} Program</h2>
@@ -269,51 +70,126 @@ export default function GetProgram() {
                                         <th>Sets</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-
-                                    {exercises.map((e) => {
-                                        if (e.day === i+1) {
+                                    {exercises.map((exercise, j) => {
+                                        if (exercise.day === i+1) {
                                             return (
-                                                <tr onClick={() => {
-                                                    setEditForm({
-                                                        name:e.name,
-                                                        sets:e.sets,
-                                                        reps:e.reps,
-                                                        weight:e.weight
-                                                    })
-
-                                                    setEditingLift(true)
-                                                
-                                                }} key={`${e.name}-${i}-${day}`}>
-                                                    <td>{e.name}</td>
-                                                    <td>{e.sets}</td>
-                                                </tr>
+                                                <tbody key={`${exercise.name}${i}${day}`}>
+                                                    <tr id={`exercise-row-${exercise.name.replaceAll(" ", "-")}`} className={`exercise-row`} 
+                                                    onClick={() => {
+                                                        
+                                                        console.log(i)
+                                                        console.log(j)
+                                                        console.log(exercise.day)
+                                                        console.log(exercise)
+                                                        setEditingExerciseIndex(j)
+                                                        setEditingExercise(exercise)
+                                                    }}
+                                                        key={`${exercise.name}-${i}-${day}`}
+                                                    >
+                                                        <td>{exercise.name}</td>
+                                                        <td>{exercise.sets}</td>
+                                                    </tr>
+                                                    <EditField exercise={editingExercise??undefined} j={j} id={`exercise-row-${exercise.name.replaceAll(" ", "-")}-editor`} className={`exercise-row-editor`}/>
+                                                        
+                                                </tbody>
                                                 
                                             )
                                         }
                                     })}
-                                    </tbody>
-
                                 </table>
-
-                                {addingExercise ? <AddExercise /> : <input 
+                                {/* <input 
                                 type="button"
                                 className="btn btn-success"
                                 value="Add Exercise"
-                                onClick={() => setAddingExercise(true)}/>}
+                                onClick={() => setAddingExercise(true)}
+                                /> */}
                             </div>
                         )
                     })}
-
                 </div>
-                
-                {editingLift ? <EditLift /> : <div />}
-
             </div>
+        )
+    }
+
+    const EditField = (props) => {
+        if (props.exercise) {
+            return (
+                <tr id={props.id} className={`${props.className} ${props.j === editingExerciseIndex ? '' : 'collapse'}`} >
+                    <td colSpan="2">
+                        <table className="table table-bordered table-colored">
+                            <thead>
+                                <tr>
+                                    <th>Set</th>
+                                    <th>Reps</th>
+                                    <th>Weight</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {props.exercise.reps.map((r, i) => {
+                                    return (
+                                        <tr key={`${r}${i}${props.exercise.name}`}>
+                                            <td>{i+1}</td>
+                                            <td>
+                                                <input 
+                                                name="reps"
+                                                className="reps-field"
+                                                type="text"
+                                                value={r}
+                                                onChange={(e) => {
+                                                    const newReps = props.exercise.reps.map((r2, i2) => {
+                                                        if (i2 === i) {
+                                                            return parseInt(e.target.value,10)
+                                                        }
+                                                        return r2
+                                                    })
+                                                    console.log(newReps)
+                                                    setEditingExercise({...props.exercise, reps:newReps})
+                                                    console.log({...props.exercise, reps:newReps})
+
+                                                    const newExercises = exercises.map((exer) => {
+                                                        if (exer.day === editingExercise.day && exer.position === editingExercise.position) {
+                                                            return editingExercise
+                                                        }
+                                                        return exer
+                                                    })
+                                                    console.log(newExercises)
+                                                    
+                                                }}
+                                                />
+                                            </td>
+                                            <td><input 
+                                                name="weight"
+                                                className="weight-field"
+                                                type="text"
+                                                value={props.exercise.weight[i]}
+                                                onChange={(e) => {
+                                                    setEditingExercise({...editingExercise, [e.target.name]:e.target.value})
+                                                }}
+                                                />
+                                            </td>
+                                        </tr>
+                                    )
+                                })}
+                            </tbody>
+                        </table>
+                    </td>
+                    
+                </tr> 
+            )
+        }   
+        return <tr></tr>    
+        
+    }
+
+    if (program.dayMap) {
+        return (
+            <PageContent />
         )
     }
     return (
         <div></div>
     )
+
+    
     
 }

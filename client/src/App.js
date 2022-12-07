@@ -56,7 +56,7 @@ const App = () => {
 						<Route path="/edit/:id" element={<Edit />} />
 						<Route path="/record/create" element={<Create />} />
 						<Route path="/settings" element={<Settings />} />
-						<Route path="/progress" element={<Progress />} />
+						{/* <Route path="/progress" element={<Progress />} /> */}
 						<Route path="/record/:date" element={<DayInfo />} />
 						<Route path="/deleteall" element={<Delete />} />
 						<Route path="/dev/todo" element={<Todo />} />
