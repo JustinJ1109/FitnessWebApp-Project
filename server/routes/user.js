@@ -3,7 +3,6 @@ const express = require("express");
 
 const userRoutes = express.Router();
 
-const isAuthenticated = require("../middleware/auth")
 
 // connect to the database
 const dbo = require("../db/conn");
@@ -11,6 +10,18 @@ const dbo = require("../db/conn");
 // This help convert the id from string to ObjectId for the _id.
 const ObjectId = require("mongodb").ObjectId;
 
+function isAuthenticated(req, res, next) {
+    console.log("program authenticating")
+    // console.log(req.session)
+    if (req.session.user) {
+        console.log("Logged in")
+        next()
+    }
+    else {
+        console.log("Not logged in")
+        res.json({redirectURL:'/user/login'})
+    }
+}
 
 // create a new user.
 userRoutes.route("/user/add").post(function (req, response) {
@@ -39,7 +50,7 @@ userRoutes.route("/user/add").post(function (req, response) {
 // get user that is logged in
 // check if session is logged in
 // userRoutes.route("/user").get(function (req, res) {
-userRoutes.get('/user', isAuthenticated, (req, res) => {
+userRoutes.get('/user',isAuthenticated, (req, res) => {
     let db_connect = dbo.getDb("daily-report-db")
 
     db_connect
@@ -53,10 +64,8 @@ userRoutes.get('/user', isAuthenticated, (req, res) => {
 })
 
 // get a single user by id
-userRoutes.route("/user/:id").get(function (req, res) {
+userRoutes.get("/user/:id", isAuthenticated, function (req, res) {
     console.log("Retrieving user by id");
-
-
     let db_connect = dbo.getDb();
     let myquery = { _id: ObjectId(req.params.id) };
     db_connect.collection("user_data").findOne(myquery, function (err, result) {
@@ -66,7 +75,7 @@ userRoutes.route("/user/:id").get(function (req, res) {
 });
 
 // update a user by id.
-userRoutes.route("/user/update/:id").post(function (req, response) {
+userRoutes.post("/user/update/:id", isAuthenticated, function (req, response) {
     let db_connect = dbo.getDb();
     let myquery = { _id: ObjectId(req.params.id) };
     let newvalues = {
@@ -85,7 +94,7 @@ userRoutes.route("/user/update/:id").post(function (req, response) {
 });
 
 // delete a user
-userRoutes.route("/user/:id").delete((req, response) => {
+userRoutes.delete("/user/:id", isAuthenticated, (req, response) => {
     let db_connect = dbo.getDb();
     let myquery = { _id: ObjectId(req.params.id) };
     db_connect.collection("user_data").deleteOne(myquery, function (err, obj) {

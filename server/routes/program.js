@@ -14,7 +14,7 @@ const ObjectId = require("mongodb").ObjectId;
 function isAuthenticated(req, res, next) {
     console.log("program authenticating")
     // console.log(req.session)
-    if (req.session.user || true) {
+    if (req.session.user) {
         console.log("Logged in")
         next()
     }
@@ -26,7 +26,7 @@ function isAuthenticated(req, res, next) {
 
 // This section will help you create a new record.
 //TODO: not used
-programRoutes.route("/program/add").post(function (req, response) {
+programRoutes.post("/program/add", isAuthenticated, function (req, response) {
     let db_connect = dbo.getDb();
 
     console.log("** Adding Program **")
@@ -61,7 +61,7 @@ programRoutes.route("/program/add").post(function (req, response) {
  If day query is provided, will only look for those that match that day
  (used for daily, if omitted, used for calendar)
  */
-programRoutes.get('/program/getmap', async (req, res) => {
+programRoutes.get('/program/getmap', isAuthenticated, async (req, res) => {
     let db_connect = dbo.getDb("daily-report-db")
 
     let dayQuery = req.query.day
@@ -72,12 +72,12 @@ programRoutes.get('/program/getmap', async (req, res) => {
         
         if (dayQuery) {
             db_connect.collection('_program_library')
-            .findOne({name : {$eq : 'Full-body-3d'}},
+            .findOne({name : {$eq : 'nSuns 5/3/1'}},
             function (err, res) {
                 if (err) {reject(err)};
 
                 resolve({
-                    program: {$eq : 'Full-body-3d'},
+                    program: {$eq : 'nSuns 5/3/1'},
                     day: {$eq : res.days[parseInt(dayQuery, 10)]}
                 })
             })
@@ -85,7 +85,7 @@ programRoutes.get('/program/getmap', async (req, res) => {
 
         else {
             resolve({
-                program: {$eq: 'Full-body-3d'}
+                program: {$eq: 'nSuns 5/3/1'}
             })
         }
     });
@@ -133,7 +133,7 @@ programRoutes.get('/program', isAuthenticated, (req, res) => {
     })
 })
 
-programRoutes.get('/get-programs', (req, res) => {
+programRoutes.get('/get-programs', isAuthenticated, (req, res) => {
     let db_connect = dbo.getDb("daily-report-db")
     
     
@@ -153,7 +153,7 @@ programRoutes.get('/get-programs', (req, res) => {
 
 // This section will help you update a program by id.
 // FIXME: maybe not needed
-programRoutes.route("/program/update").post(function (req, response) {
+programRoutes.post("/program/update", isAuthenticated, function (req, response) {
     let db_connect = dbo.getDb();
 
     let dayQuery = req.query.date
