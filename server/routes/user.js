@@ -132,12 +132,14 @@ userRoutes.post(`/user/authenticate-login`, (req, res) => {
             console.log("Success!")
             req.session.save()
 
+            
+
             return res.status(200).json({succeeded:true, redirectURL:'/', user:{...response}}) 
         }
     })
 })
 
-userRouter.delete("/logout", (req, res) => {
+userRoutes.delete("/logout", (req, res) => {
     req.session.destroy((err) => {
       //delete session data from store, using sessionID in cookie
       if (err) throw err;
