@@ -3,8 +3,6 @@ const express = require("express");
 
 const userRoutes = express.Router();
 
-const isAuthenticated = require("../middleware/auth")
-
 // connect to the database
 const dbo = require("../db/conn");
 
@@ -39,7 +37,7 @@ userRoutes.route("/user/add").post(function (req, response) {
 // get user that is logged in
 // check if session is logged in
 // userRoutes.route("/user").get(function (req, res) {
-userRoutes.get('/user', isAuthenticated, (req, res) => {
+userRoutes.get('/user', (req, res) => {
     let db_connect = dbo.getDb("daily-report-db")
 
     db_connect
