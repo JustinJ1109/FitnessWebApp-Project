@@ -1,12 +1,16 @@
+
 const express = require("express");
 
 const userRoutes = express.Router();
+
+const isAuthenticated = require("../middleware/auth")
 
 // connect to the database
 const dbo = require("../db/conn");
 
 // This help convert the id from string to ObjectId for the _id.
 const ObjectId = require("mongodb").ObjectId;
+
 
 // create a new user.
 userRoutes.route("/user/add").post(function (req, response) {
@@ -34,21 +38,19 @@ userRoutes.route("/user/add").post(function (req, response) {
 
 // get user that is logged in
 // check if session is logged in
-userRoutes.route("/user").get(function (req, res) {
+// userRoutes.route("/user").get(function (req, res) {
+userRoutes.get('/user', isAuthenticated, (req, res) => {
     let db_connect = dbo.getDb("daily-report-db")
-    
-    // validate that req.session.name exists?
 
     db_connect
         .collection("user_data")
         // get between dates
-        .find({name : {$eq: 'Justin'}})
-        .sort({username : 1})
-        .toArray(function (err, result) {
+        .findOne({username : {$eq: 'justinj1109'}},
+            function (err, result) {
             if (err) throw err;
             res.json(result);
         });
-});
+})
 
 // get a single user by id
 userRoutes.route("/user/:id").get(function (req, res) {
@@ -69,8 +71,7 @@ userRoutes.route("/user/update/:id").post(function (req, response) {
     let myquery = { _id: ObjectId(req.params.id) };
     let newvalues = {
         $set: {
-            name: req.body.name,
-            username: req.body.username,
+            
             program: req.body.program,
         },
     };
@@ -94,12 +95,51 @@ userRoutes.route("/user/:id").delete((req, response) => {
     });
 });
 
-userRoutes.route("/login").get((req, response) => {
+userRoutes.route("/user/login").get((req, response) => {
     // response.render("/user/login")
     console.log("At login")
     response.json({
         success:true,
         redirectURL: '/user/login'
+    })
+})
+
+userRoutes.post(`/user/authenticate-login`, (req, res) => {
+    let db_connect = dbo.getDb();
+
+    console.log('authenticating...')
+    console.log("***** SESSION BEFORE")
+    console.log(req.session)
+
+    db_connect
+    .collection('user_data')
+    .findOne({
+        username: {$eq : req.body.username},
+        password: {$eq : req.body.password }
+    },
+    function (err, response) {
+        if (err) throw err;
+        
+        if (!response) {
+            return (
+            res.status(401).json({succeeded:false, message:'Invalid Username or Password'})
+            )
+        }
+        else {
+            return (
+            req.session.regenerate((err) => {
+                if (err)  next(err);
+                req.session.user = response
+                console.log("**** SESSION")
+                console.log(req.session)
+                console.log("Success!")
+                req.session.save()
+
+                res.status(200).json({succeeded:true, redirectURL:'/'})
+
+            })
+            )
+        }
     })
 })
 

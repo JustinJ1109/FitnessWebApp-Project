@@ -10,8 +10,10 @@ const port = process.env.PORT || 5000;
 app.use(session({
   resave:false,
   saveUninitialized:false,
-  secret:'key'
+  secret:'key',
+  cookie: {secure:false}
 }))
+
 
 
 const recordRoutes = require('./routes/record');

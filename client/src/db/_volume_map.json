@@ -236,6 +236,217 @@
         "weight" : [
             40,40,40,40,40
         ]
+    },
+
+    {
+        "program" : "Full-body-3d",
+        "name" : "Bench Press",
+        "position" : 1,
+        "day" : 1,
+        "sets" : 3,
+        "reps" : [
+            6, 6, 6
+        ],
+        "ref" : "Bench",
+        "weight" : [
+            80, 80, 80
+        ]
+    },
+
+    {
+        "program" : "Full-body-3d",
+        "name" : "Lat Pulldown",
+        "position" : 2,
+        "day" : 1,
+        "sets" : 3,
+        "reps" : [
+            12, 12, 12
+        ],
+        "ref" : "Accessory",
+        "weight" : [
+            80, 80, 80
+        ]
+    },
+
+    {
+        "program" : "Full-body-3d",
+        "name" : "Squat",
+        "position" : 3,
+        "day" : 1,
+        "sets" : 3,
+        "reps" : [
+            6, 6, 6
+        ],
+        "ref" : "Squat",
+        "weight" : [
+            80, 80, 80
+        ]
+    },
+
+    {
+        "program" : "Full-body-3d",
+        "name" : "Leg Curl",
+        "position" : 4,
+        "day" : 1,
+        "sets" : 3,
+        "reps" : [
+            12, 12, 12
+        ],
+        "ref" : "Squat",
+        "weight" : [
+            60, 60, 60
+        ]
+    },
+
+    {
+        "program" : "Full-body-3d",
+        "name" : "Overhead Press",
+        "position" : 5,
+        "day" : 1,
+        "sets" : 2,
+        "reps" : [
+            6, 6
+        ],
+        "ref" : "Overhead Press",
+        "weight" : [
+            80, 80
+        ]
+    },
+
+    {
+        "program" : "Full-body-3d",
+        "name" : "Bicep Curl",
+        "position" : 6,
+        "day" : 1,
+        "sets" : 3,
+        "reps" : [
+            12, 12, 12
+        ],
+        "ref" : "Accessory",
+        "weight" : [
+            60, 60, 60
+        ]
+    },
+
+    {
+        "program" : "Full-body-3d",
+        "name" : "Tricep Pressdown",
+        "position" : 7,
+        "day" : 1,
+        "sets" : 3,
+        "reps" : [
+            12, 12, 12
+        ],
+        "ref" : "Accessory",
+        "weight" : [
+            60, 60, 60
+        ]
+    },
+
+
+    {
+        "program" : "Full-body-3d",
+        "name" : "Incline Press",
+        "position" : 1,
+        "day" : 2,
+        "sets" : 3,
+        "reps" : [
+            6, 6, 6
+        ],
+        "ref" : "Bench",
+        "weight" : [
+            60, 60, 60
+        ]
+    },
+
+    {
+        "program" : "Full-body-3d",
+        "name" : "Cable Rows",
+        "position" : 2,
+        "day" : 2,
+        "sets" : 3,
+        "reps" : [
+            12, 12, 12
+        ],
+        "ref" : "Accessory",
+        "weight" : [
+            80, 80, 80
+        ]
+    },
+
+    {
+        "program" : "Full-body-3d",
+        "name" : "Leg Press",
+        "position" : 3,
+        "day" : 2,
+        "sets" : 3,
+        "reps" : [
+            12,12,12
+        ],
+        "ref" : "Squat",
+        "weight" : [
+            100, 100, 100
+        ]
+    },
+
+    {
+        "program" : "Full-body-3d",
+        "name" : "Romanian Deadlift",
+        "position" : 4,
+        "day" : 2,
+        "sets" : 3,
+        "reps" : [
+            12, 12, 12
+        ],
+        "ref" : "Deadlift",
+        "weight" : [
+            60, 60, 60
+        ]
+    },
+
+    {
+        "program" : "Full-body-3d",
+        "name" : "Lateral Raises",
+        "position" : 5,
+        "day" : 2,
+        "sets" : 2,
+        "reps" : [
+            6, 6
+        ],
+        "ref" : "Accessory",
+        "weight" : [
+            20, 20
+        ]
+    },
+
+    {
+        "program" : "Full-body-3d",
+        "name" : "Hammer Curls",
+        "position" : 6,
+        "day" : 2,
+        "sets" : 3,
+        "reps" : [
+            12, 12, 12
+        ],
+        "ref" : "Accessory",
+        "weight" : [
+            60, 60, 60
+        ]
+    },
+
+    {
+        "program" : "Full-body-3d",
+        "name" : "Tricep Extensions",
+        "position" : 7,
+        "day" : 2,
+        "sets" : 3,
+        "reps" : [
+            12, 12, 12
+        ],
+        "ref" : "Accessory",
+        "weight" : [
+            60, 60, 60
+        ]
     }
 
 

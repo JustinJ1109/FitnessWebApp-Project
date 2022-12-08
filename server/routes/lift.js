@@ -19,7 +19,7 @@ liftRoutes.route("/lift_library/add").post(function (req, response) {
         db_connect.collection("_lift_library").updateOne(
             {name:req.body.name}, 
             { $setOnInsert: {
-                type: req.body.tags,
+                custom: req.body.custom,
             } }, {upsert:true}, function (err, res) {
             if (err) throw err;
             response.json(res);

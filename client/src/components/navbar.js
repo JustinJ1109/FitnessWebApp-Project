@@ -18,13 +18,11 @@ export default function NB(props) {
 	<nav className="nav flex-column nav-col">
 		<a className="nav-link active" href="/">Home</a>
 		<hr />
-		<a className="nav-link" href="/progress">Progress</a>
+		{/* <a className="nav-link" href="/progress">Progress</a>
+		<hr /> */}
+		<a className="nav-link" href="/program">Program</a>
 		<hr />
-		<a className="nav-link" href="/settings">Settings</a>
-		<hr />
-		<a className="nav-link" href="/lift">Lift Catalogue</a>
-		<hr />
-		<a className="nav-link" href="/dev/todo">(dev) To Do</a>
+		<a className="nav-link settings-link" href="/settings">Settings</a>
 	</nav>
   );
 }

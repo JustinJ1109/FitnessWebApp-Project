@@ -7,8 +7,6 @@ const CAL_MAP = require("../db/days_map.json")
 
 const CALENDAR_FORMAT = 'col-lg col-md-4 col-sm-6 '
 
-const _USER = "Justin"
-
 Date.prototype.addDays = function(days) {
     var date = new Date(this.valueOf());
     date.setDate(date.getDate() + days);
@@ -27,11 +25,12 @@ function getDates(startDate, stopDate) {
 
 export default function WorkoutCalendar() {
 
-    const [user, setUser] = useState();
+    const [loggedIn, setLoggedIn] = useState(false)
     const [dateMap, setDateMap] = useState([])
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
     const [volumeMap, setVolumeMap] = useState([])
+    
 
     const weeks_to_display = 3;
 
@@ -44,53 +43,52 @@ export default function WorkoutCalendar() {
     let dates = getDates(first, last)
 
     useEffect(() => {
-        async function getProgramDays() {
-            // get user data
-            fetch(`http://localhost:5000/user?name=${_USER}`)
-            .then(async (res) => {
-                // get user data in json
-                res.json()
-                .then(async (content) => {
-                    // user not found
-                    if (content.length == 0) {
-                        navigate("/user/login");
-                        return
-                    }
-                    
-                    // find program data for user
-                    const response = await fetch(`http://localhost:5000/program?name=${content[0].program}`)
-                    if (!response.ok) {
-                        const message = `Could not find program for user ${_USER}: ${response.statusText}`;
-                        // window.alert(message);
-                        console.log(message)
-                        return;
-                    }
-                    response.json()
-                    .then(async (cont) => {
-                        setDateMap(cont[0].days)
+        async function getProgramDays() {                    
+            // find program data for user
 
-                        fetch(`http://localhost:5000/program/getmap/${cont[0].name.replaceAll("/", "%2F")}`)
-                        .then((r) => {
-                            r.json()
-                            .then((m) => {
-                                setVolumeMap(m)
-                                setLoading(false)
-                            })
-                        })  
-                        .catch((err) => {
-                            console.log("Problem finding program volume map")
-                            return;
-                        })
-                    })
-                    .catch((error) => {
-                        console.log(error)
-                        return;
-                    })
-                })
-            })
-            .catch((e) => {
-                // window.alert(e)
+            console.log("fetching /program for calendar");
+            const response = await fetch(`http://localhost:5000/program`)
+            if (!response.ok) {
+                const message = `Could not find program for user: ${response.statusText}`;
+                // window.alert(message);
+                console.log(message)
                 return;
+            }
+
+            response.json().then(async (program_body) => {
+                if (program_body.redirectURL) {
+                    setLoading(false)
+                    console.log("Did not fetch program")
+                    return
+                }
+
+                console.log("retrieved from user:")
+                console.log(program_body)
+
+                setLoggedIn(true)
+                setDateMap(program_body.days)
+                console.log(program_body.days)
+                console.log("fetching /getmap")
+                fetch(`http://localhost:5000/program/getmap`)
+                .then((response) => {
+                    response.json().then((map_body) => {
+
+                        console.log("Got from getmap")
+                        console.log(map_body)
+
+                        if (map_body.redirectURL) {
+                            navigate(map_body.redirectURL)
+                            return
+                        }
+
+                        setVolumeMap(map_body)
+                        setLoading(false)
+                    })
+                })  
+                .catch((err) => {
+                    console.log("Problem finding program volume map")
+                    return;
+                })
             })
         }
 
@@ -138,7 +136,7 @@ export default function WorkoutCalendar() {
     };
 
     const DayContent = (props) => {
-        if (loading) {
+        if (loading || !loggedIn) {
             return (
                 <div className="day-content-display"></div>
             )
@@ -148,13 +146,12 @@ export default function WorkoutCalendar() {
                 <div className="day-content-display">Rest Day</div>
             )
         }
+        
         return (
             <div className="day-content-display">
-                {volumeMap.map((v, i) => {
-                    if (v && v.position < 3 && props.content === v.day) {
-                        return (
-                            <div key={`${v.name}-${i}`}>{v.name}</div>
-                        )
+                {volumeMap.map((exercise, i) => {
+                    if (exercise.day === props.content && exercise.position < 3) {
+                        return <div key={`${exercise.name}${i}`}>{exercise.name}</div>
                     }
                 })}
             </div>
@@ -183,8 +180,6 @@ export default function WorkoutCalendar() {
         </div>
     );
 }
-
-
 
 function formatDateURL(date) {
     return `${date.toISOString()}`

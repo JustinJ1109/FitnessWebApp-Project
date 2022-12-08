@@ -11,12 +11,28 @@ const dbo = require("../db/conn");
 // This help convert the id from string to ObjectId for the _id.
 const ObjectId = require("mongodb").ObjectId;
 
+function isAuthenticated(req, res, next) {
+    console.log("program authenticating")
+    // console.log(req.session)
+    if (req.session.user || true) {
+        console.log("Logged in")
+        next()
+    }
+    else {
+        console.log("Not logged in")
+        res.json({redirectURL:'/user/login'})
+    }
+}
+
 // This section will help you create a new record.
+//TODO: not used
 programRoutes.route("/program/add").post(function (req, response) {
     let db_connect = dbo.getDb();
 
+    console.log("** Adding Program **")
     console.log(req.body)
     let inc_program = req.body
+
 
     db_connect
     .collection("_volume_map")
@@ -27,7 +43,8 @@ programRoutes.route("/program/add").post(function (req, response) {
             position: inc_program.position,
             reps : inc_program.reps,
             sets: inc_program.sets,
-            weight: inc_program.weight
+            weight: inc_program.weight,
+            ref: inc_program.ref
         } 
         }, 
         {upsert:true}, 
@@ -38,82 +55,112 @@ programRoutes.route("/program/add").post(function (req, response) {
     
 });
 
-// This section will help you get a list of all the programs.
-programRoutes.route("/program/getmap/:progname").get(function (req, res) {
+/*
+ Gets the map of all exercises for each day in the program by name
+
+ If day query is provided, will only look for those that match that day
+ (used for daily, if omitted, used for calendar)
+ */
+programRoutes.get('/program/getmap', async (req, res) => {
     let db_connect = dbo.getDb("daily-report-db")
 
     let dayQuery = req.query.day
-    let progname = req.params.progname.toString()
-    console.log(dayQuery)
-    console.log(typeof(dayQuery))
-    if (req.query.day) {
-        my_query = {
-            program : {$eq: progname},
-            day : {$eq : parseInt(dayQuery,10)}
-        }
-    }
-    else {
-        my_query = {
-            program : {$eq: progname},
-        }
-    }
+
+    console.log(`/program/getmap: Finding program ${dayQuery ? `for day ${dayQuery}` : ''}`)
     
-    console.log(`called /getmap/ Finding ${progname} ${dayQuery?`for ${dayQuery}`: ''}`)
-    db_connect
-        .collection("_volume_map")
-        // get between dates
+    var promise = new Promise((resolve, reject) => {
+        
+        if (dayQuery) {
+            db_connect.collection('_program_library')
+            .findOne({name : {$eq : 'Full-body-3d'}},
+            function (err, res) {
+                if (err) {reject(err)};
+
+                resolve({
+                    program: {$eq : 'Full-body-3d'},
+                    day: {$eq : res.days[parseInt(dayQuery, 10)]}
+                })
+            })
+        }
+
+        else {
+            resolve({
+                program: {$eq: 'Full-body-3d'}
+            })
+        }
+    });
+
+    try {
+        const my_query = await promise;
+        db_connect.collection('_volume_map')
         .find(my_query)
         .sort({day:1, position: 1})
         .toArray(function (err, result) {
             if (err) throw err;
-            res.json(result);
-        });
-});
-
-// This section will help you get a list of all the programs.
-programRoutes.route("/program").get(function (req, res) {
-    let db_connect = dbo.getDb("daily-report-db")
-    let name = req.query.name
-    console.log(`Finding ${name.length > 0 ? name : 'all programs'}`)
-    db_connect
-        .collection("_program_library")
-        // get between dates
-        .find({
-            name : {$eq: name}
+            res.json(result)
         })
-        .sort({date : 1})
+    } catch (err) {
+        throw err;
+    }
+    
+    
+})
+    
+/*
+Gets the program name and days map of the logged in user 
+
+
+*/
+programRoutes.get('/program', isAuthenticated, (req, res) => {
+    let db_connect = dbo.getDb("daily-report-db")
+    
+    db_connect.collection("user_data")
+    .findOne({
+        name : {$eq: "Justin"}
+    }, function (err, result) {
+        if (err) throw err;
+        let programname = result.program
+        console.log(`/program: name ${programname}`)
+        
+        db_connect
+        .collection('_program_library')
+        .findOne({
+            name : {$eq : programname}
+        }, function (err,  result) {
+            if (err) throw err;
+            res.json(result)
+        })
+    })
+})
+
+programRoutes.get('/get-programs', (req, res) => {
+    let db_connect = dbo.getDb("daily-report-db")
+    
+    
+    db_connect.collection('_program_library')
+        .find({})
+        .sort({name:1, custom:-1})
         .toArray(function (err, result) {
             if (err) throw err;
-            res.json(result);
-        });
-});
+            console.log(result)
+            console.log('/get-programs ^')
 
-// This section will help you get a single program by id
-programRoutes.route("/program/:date").get(function (req, res) {
-    console.log("Retrieving program by date");
 
-    try{
-        let parsed_date = `${req.params.date.slice(0, 4)}/${req.params.date.slice(4,6)}/${req.params.date.slice(6)}`
-    }
-    catch {
-        res.status(400)
-    }
-
-    console.log(`parsed date : ${parsed_date}`)
-
-    let db_connect = dbo.getDb();
-    let myquery = { date: parsed_date };
-    db_connect.collection("_volume_map").findOne(myquery, function (err, result) {
-        if (err) throw err;
-        res.json(result);
-    });
-});
+            res.json(result)
+        })
+    
+})
 
 // This section will help you update a program by id.
 // FIXME: maybe not needed
-programRoutes.route("/program/update/:id").post(function (req, response) {
+programRoutes.route("/program/update").post(function (req, response) {
     let db_connect = dbo.getDb();
-    let myquery = { _id: ObjectId(req.params.id) };
+
+    let dayQuery = req.query.date
+    let exercise = req.query.exercise
+    let set = req.query.set
+
+    let myquery = { date: dayQuery };
     let newvalues = {
         $set: {
             name: req.body.name,
