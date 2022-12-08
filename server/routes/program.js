@@ -69,25 +69,35 @@ programRoutes.get('/program/getmap', async (req, res) => {
     console.log(`/program/getmap: Finding program ${dayQuery ? `for day ${dayQuery}` : ''}`)
     
     var promise = new Promise((resolve, reject) => {
-        
-        if (dayQuery) {
-            db_connect.collection('_program_library')
-            .findOne({name : {$eq : 'Full-body-3d'}},
-            function (err, res) {
-                if (err) {reject(err)};
+        db_connect.collection('user_data').findOne({name : {$eq: 'Justin'}},
+        function(err, res) {
+            if (err) throw err;
+            console.log("RESSS")
+            console.log(res.program)
 
-                resolve({
-                    program: {$eq : 'Full-body-3d'},
-                    day: {$eq : res.days[parseInt(dayQuery, 10)]}
+            if (dayQuery) {
+                db_connect.collection('_program_library')
+                .findOne({name : {$eq : res.program}},
+                function (err, res) {
+                    console.log("SUBRESS")
+                    console.log(res)
+                    if (err) {reject(err)};
+    
+                    resolve({
+                        program: {$eq : res.name},
+                        day: {$eq : res.days[parseInt(dayQuery, 10)]}
+                    })
                 })
-            })
-        }
-
-        else {
-            resolve({
-                program: {$eq: 'Full-body-3d'}
-            })
-        }
+            }
+    
+            else {
+                resolve({
+                    program: {$eq: res.program}
+                })
+            }
+        })
+        
+        
     });
 
     try {
@@ -188,6 +198,10 @@ programRoutes.route("/program/:id").delete((req, response) => {
         response.json(obj);
     });
 });
+
+programRoutes.route("/program/record-status", (req, response) => {
+
+})
 
 
 

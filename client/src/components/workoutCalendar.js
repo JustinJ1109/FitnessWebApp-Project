@@ -148,7 +148,7 @@ export default function WorkoutCalendar() {
         }
         
         return (
-            <div className="day-content-display">
+            <div className="day-content-display activity-day-display">
                 {volumeMap.map((exercise, i) => {
                     if (exercise.day === props.content && exercise.position < 3) {
                         return <div key={`${exercise.name}${i}`}>{exercise.name}</div>

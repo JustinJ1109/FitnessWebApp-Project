@@ -60,12 +60,8 @@ export default function DayInfo() {
                                 navigate(body.redirectURL)
                                 return
                             }
-                            
-                            console.log("User maxes")
-                            console.log(userMaxes)
-
-                            console.log("volumeMap")
-                            console.log(volumeMap)
+                            console.log("SEtting volume map ")
+                            console.log(body)
                             setVolumeMap(body)
                             setLoading(false)
                         })
@@ -89,8 +85,6 @@ export default function DayInfo() {
     }
 
     function updateForm(value) {
-        console.log("UpdateForm")
-        console.log(value)
     }
 
     const expandRow = (e) => {
@@ -116,6 +110,7 @@ export default function DayInfo() {
     const addCheckMark = (e) => {
         let checkBox = e.target.querySelector(":nth-child(2)")
 
+        console.log(date)
 
         if (checkBox.style.visibility === 'hidden') {
             checkBox.style.visibility = 'visible'
@@ -217,7 +212,6 @@ export default function DayInfo() {
     }
     // rest day
     if (volumeMap.length === 0) {
-        console.log("volumeMap === 0")
 
         return (
             <div className="container-fluid daily-report">
@@ -250,7 +244,6 @@ export default function DayInfo() {
         )
     }
 
-    console.log("Loading content")
     return (
         <div className="container-fluid daily-report page-content">
             <div className="row">
@@ -300,6 +293,8 @@ export default function DayInfo() {
                                                         weight={e.weight[i]}
                                                         referWeight={e.ref}
                                                         sets={e.sets}
+                                                        day={e.day}
+                                                        position={e.position}
                                                     />
                                                 )
                                                 

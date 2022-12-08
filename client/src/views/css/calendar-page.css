@@ -68,6 +68,11 @@
     top: -20%;
 }
 
+div.activity-day-display.day-content-display > div{
+    color:var(--text-color3);
+    font-weight: 600;
+}
+
 .week-block {
     padding-top: 25px;
     padding-bottom: 10px;

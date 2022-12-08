@@ -82,7 +82,7 @@ export default function Settings() {
                 <form onSubmit={saveProgram}>
 
                     <div className="row">
-                        <div className="col-2">
+                        <div className="col-xl-2 col-lg-3 col-md-4">
                             <select defaultValue={programSelection} onChange={(e) => setForm({...form, program:e.target.value})} className="form-select-sm">
                                 {programs.map((p, i) => {
                                     return (
@@ -94,7 +94,7 @@ export default function Settings() {
 
                         <div className="form-group col">
                             <input 
-                                className="btn btn-success btn-sm"
+                                className="btn btn-success"
                                 type="submit"
                                 value="Save"
                             />
@@ -108,9 +108,9 @@ export default function Settings() {
             <div id="color-theme-setting" className="row setting-field">
                 <h4>Color Theme</h4>
                 <div className="row">
-                    <div className="col-2">
+                    <div className="col-xl-2 col-lg-3 col-md-4">
                         <select defaultValue={cookies.ColorTheme} id="color-theme-select" className="form-select-sm">
-                            {['Utopia', 'Ardent', 'Starship', 'Seashell', 'Ender', 'Unicorn', 'Diplomat', 'Bubblegum'].map((c) => {
+                            {['Utopia', 'Seashell', 'Ender', 'Diplomat'].map((c) => {
                                 return (
                                     <option key={`${c}`} value={c}>{c}</option>
                                 )
@@ -121,7 +121,7 @@ export default function Settings() {
                     <div className="col">
                         <input 
                         id="theme-button-save"
-                        className="btn btn-success btn-sm"
+                        className="btn btn-success"
                         type="button"
                         value="Save"
                         onClick={saveTheme}

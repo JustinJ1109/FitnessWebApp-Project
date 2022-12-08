@@ -30,6 +30,8 @@
     --bg3: #444444;
     --text-color1: #D5D5D5;
     --text-color2: #BE5DFF;
+    --text-color3: #ffffff;
+
 
     --bg1:#353535;
     --bg4:#242424;
@@ -73,11 +75,11 @@
 }
 
 [data-theme="Utopia"] {
-    --text-color1: #e4f500;
+    --text-color1: #e9e9e9;
     --text-color2: #5cb6c2;
     
-    --bg2: #d5e0ee;
-    --bg1:#394277 ;
-    --bg3: #125988;
-    --bg4:#3f5364;
+    --bg2: #536e92;
+    --bg1:#282e52 ;
+    --bg3: #1f2e5e;
+    --bg4:#29435a;
 }
