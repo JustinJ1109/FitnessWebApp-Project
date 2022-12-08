@@ -58,18 +58,29 @@ export default function WorkoutCalendar() {
             response.json().then(async (program_body) => {
                 if (program_body.redirectURL) {
                     setLoading(false)
+                    console.log("Did not fetch program")
                     return
                 }
+
+                console.log("retrieved from user:")
+                console.log(program_body)
+
                 setLoggedIn(true)
                 setDateMap(program_body.days)
+                console.log(program_body.days)
                 console.log("fetching /getmap")
                 fetch(`http://localhost:5000/program/getmap`)
                 .then((response) => {
                     response.json().then((map_body) => {
+
+                        console.log("Got from getmap")
+                        console.log(map_body)
+
                         if (map_body.redirectURL) {
                             navigate(map_body.redirectURL)
                             return
                         }
+
                         setVolumeMap(map_body)
                         setLoading(false)
                     })
@@ -135,13 +146,12 @@ export default function WorkoutCalendar() {
                 <div className="day-content-display">Rest Day</div>
             )
         }
+        
         return (
             <div className="day-content-display">
-                {volumeMap.map((v, i) => {
-                    if (v && v.position < 3 && props.content === v.day) {
-                        return (
-                            <div key={`${v.name}-${i}`}>{v.name}</div>
-                        )
+                {volumeMap.map((exercise, i) => {
+                    if (exercise.day === props.content && exercise.position < 3) {
+                        return <div key={`${exercise.name}${i}`}>{exercise.name}</div>
                     }
                 })}
             </div>
@@ -170,8 +180,6 @@ export default function WorkoutCalendar() {
         </div>
     );
 }
-
-
 
 function formatDateURL(date) {
     return `${date.toISOString()}`

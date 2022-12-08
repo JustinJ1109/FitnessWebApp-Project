@@ -61,10 +61,11 @@ export default function GetProgram() {
             newExercise = {...exercises[props.j], reps:newReps} // []
             console.log(newExercise)
         }
+        
         else {
             const newWeight = exercises[props.j].weight.map((w, i) => {
                 if (i === props.set-1) {
-                    return parseInt(props.weight,10)
+                    return props.weight
                 }
                 return w
             })
@@ -80,87 +81,84 @@ export default function GetProgram() {
         }))
     }
 
-    
-
-    const EditField = (props) => {
-        return (
-            <div>
-                <form onSubmit={() => console.log("submitted")}>
-                <table className="table table-bordered table-colored">
-                    <thead>
-                        <tr>
-                            <th>Set</th>
-                            <th>Reps</th>
-                            <th>Weight</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {[...Array(props.exercise.sets).keys()].map((i) => {
-                            return (
-                                <EditFieldRow updateField={updateField} j={props.j} key={`fieldrow-${i}`} set={i+1} reps={props.exercise.reps[i]} weight={props.exercise.weight[i]}/>
-                            )
-                        })}
-                    </tbody>
-                </table>
-                </form>
-
-            </div>
-        )
-    }
-
-    const PageContent = (props) => {
-        return (
-            <div className="container-fluid page-content program-page" >
-                <h2 style={{textAlign:'center'}}>{program.rname??program.name} Program</h2>
-                <div className="row">
-                    {program.dayMap.map((day, i) => {
-                        return (
-                            <div className="col" key={`${day}-${i}`}>
-                                <h4>{day}</h4>
-                                <hr />
-                                <table className="lift-table table table-bordered table-colored">
-                                    <thead>
-                                        <tr>
-                                        <th>Name</th>
-                                        <th>Sets</th>
-                                        </tr>
-                                    </thead>
-                                    {exercises.map((exercise, j) => {
-                                        if (exercise.day === i+1) {
-                                            return (
-                                                <tbody key={`${exercise.name}${i}${j}${day}`}>
-                                                    <tr id={`exercise-row-${exercise.name.replaceAll(" ", "-")}`} className={`exercise-row`} 
-                                                    onClick={() => {
-                                                        setEditingExerciseIndex(j)
-                                                    }}
-                                                        key={`${exercise.name}-${i}-${day}`}
-                                                    >
-                                                        <td>{exercise.name}</td>
-                                                        <td>{exercise.sets}</td>
-                                                    </tr>
-                                                    {editingExerciseIndex === j && <tr><td colSpan="2">
-                                                         <EditField exercise={exercises[j]} j={j}/>
-                                                    </td></tr>}
-                                                </tbody>
-                                            )
-                                        }
-                                    })}
-                                </table>
-                            </div>
-                        )
-                    })}
-                </div>
-            </div>
-        )
-    }
-
     if (program.dayMap) {
         return (
-            <PageContent />
+            <PageContent updateField={updateField} program={program} exercises={exercises} setEditingExerciseIndex={setEditingExerciseIndex} editingExerciseIndex={editingExerciseIndex}/>
         )
     }
     return (
         <div></div>
+    )
+}
+const PageContent = (props) => {
+    return (
+        <div className="container-fluid page-content program-page" >
+            <h2 style={{textAlign:'center'}}>{props.program.rname??props.program.name} Program</h2>
+            <div className="row">
+                {props.program.dayMap.map((day, i) => {
+                    return (
+                        <div className="col" key={`${day}-${i}`}>
+                            <h4>{day}</h4>
+                            <hr />
+                            <table className="lift-table table table-bordered table-colored">
+                                <thead>
+                                    <tr>
+                                    <th>Name</th>
+                                    <th>Sets</th>
+                                    </tr>
+                                </thead>
+                                {props.exercises.map((exercise, j) => {
+                                    if (exercise.day === i+1) {
+                                        return (
+                                            <tbody key={`${exercise.name}${i}${j}${day}`}>
+                                                <tr id={`exercise-row-${exercise.name.replaceAll(" ", "-")}`} className={`exercise-row`} 
+                                                onClick={() => {
+                                                    props.setEditingExerciseIndex(j)
+                                                }}
+                                                    key={`${exercise.name}-${i}-${day}`}
+                                                >
+                                                    <td>{exercise.name}</td>
+                                                    <td>{exercise.sets}</td>
+                                                </tr>
+                                                {props.editingExerciseIndex === j && <tr><td colSpan="2">
+                                                     <EditField updateField={props.updateField} exercise={props.exercises[j]} j={j}/>
+                                                </td></tr>}
+                                            </tbody>
+                                        )
+                                    }
+                                })}
+                            </table>
+                        </div>
+                    )
+                })}
+            </div>
+        </div>
+    )
+}
+
+const EditField = (props) => {
+    return (
+        <div>
+            <form onSubmit={() => console.log("submitted")}>
+            <table className="table table-bordered table-colored">
+                <thead>
+                    <tr>
+                        <th>Set</th>
+                        <th>Reps</th>
+                        <th>Weight</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {[...Array(props.exercise.sets).keys()].map((i) => {
+                        return (
+                            <EditFieldRow updateField={props.updateField} j={props.j} key={`fieldrow-${i}`} set={i+1} reps={props.exercise.reps[i]} weight={props.exercise.weight[i]}/>
+                        )
+                    })}
+                </tbody>
+            </table>
+            </form>
+
+        </div>
     )
 }
 

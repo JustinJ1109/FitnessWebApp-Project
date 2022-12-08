@@ -1,6 +1,9 @@
+
 const express = require("express");
 
 const userRoutes = express.Router();
+
+const isAuthenticated = require("../middleware/auth")
 
 // connect to the database
 const dbo = require("../db/conn");
@@ -8,18 +11,6 @@ const dbo = require("../db/conn");
 // This help convert the id from string to ObjectId for the _id.
 const ObjectId = require("mongodb").ObjectId;
 
-function isAuthenticated(req, res, next) {
-    console.log("**** isAuthenticated Session")
-    console.log(req.session)
-    if(req.session.user || true) {
-    //   console.log("Already logged in")
-      next()
-    }
-    else {
-      console.log("Redirecting to login");
-      res.json({redirectURL : '/user/login'});
-    }
-  }
 
 // create a new user.
 userRoutes.route("/user/add").post(function (req, response) {
@@ -50,11 +41,11 @@ userRoutes.route("/user/add").post(function (req, response) {
 // userRoutes.route("/user").get(function (req, res) {
 userRoutes.get('/user', isAuthenticated, (req, res) => {
     let db_connect = dbo.getDb("daily-report-db")
-    
+
     db_connect
         .collection("user_data")
         // get between dates
-        .findOne({username : {$eq: 'justinj1109'}}, 
+        .findOne({username : {$eq: 'justinj1109'}},
             function (err, result) {
             if (err) throw err;
             res.json(result);
@@ -80,8 +71,7 @@ userRoutes.route("/user/update/:id").post(function (req, response) {
     let myquery = { _id: ObjectId(req.params.id) };
     let newvalues = {
         $set: {
-            name: req.body.name,
-            username: req.body.username,
+            
             program: req.body.program,
         },
     };
@@ -149,10 +139,6 @@ userRoutes.post(`/user/authenticate-login`, (req, res) => {
 
             })
             )
-
-
-
-            
         }
     })
 })

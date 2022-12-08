@@ -11,18 +11,18 @@
     --text-color1: #E2E0D7;
     --text-color2: #dce8ff;
 
-    --bg2: #FF582A;
-
-    --bg1: #191919;
-    --bg3:rgb(37, 37, 39);
+    --bg1: #727070;
+    --bg4:#7a5292;
+    --bg2: #da7f08;
+    --bg3:rgb(119, 119, 196);
 }
 [data-theme='Ardent'] {
-    --bg3: #5e696e;
-    --text-color2: #eee2e2;
-    --text-color1: #a9e9de;
-    --bg2: #FF5C53;
-
-    --bg1:#393d3f;
+    --bg3: #3d4144;
+    --text-color2: #fff9f9;
+    --text-color1: #c0c5c4;
+    --bg2: #e62f29;
+    --bg4:#909491;
+    --bg1:#252627;
 }
 
 [data-theme='Ender'] {
@@ -37,11 +37,11 @@
 
 [data-theme="Unicorn"] {
     --text-color2: #b500bb;
-    --text-color1: #d6d6d6;
+    --text-color1: #383838;
     --bg3: #ff499e;
-    --bg2: #D264B6;
-
-    --bg1:#659ec4 ;
+    --bg2: #dfe2ec;
+    --bg4: #D264b6;
+    --bg1:#539ecf ;
 }
 
 [data-theme="Diplomat"] {
@@ -53,15 +53,6 @@
     --bg2: #662b46;
 }
 
-[data-theme="Peachy"] {
-    --bg3:#da8057;    
-    --bg2:#ec80a0;    
-    --text-color2: #e5cb9d;   
-    --text-color1: #c2dde4;
-
-    --bg1: #da7258;
-}
-
 [data-theme="Bubblegum"] {
     --text-color1: #8d296d;
     --text-color2: #7c3a7c;
@@ -69,15 +60,6 @@
     --bg1: #d684aa;
     --bg2:#dedbec ;
     --bg3: #d693ba;
-}
-
-[data-theme="Sunlight"] {
-    --text-color1: #92DCE5;
-    --text-color2: #7c7c7c;
-    
-    --bg1: #2B303A;
-    --bg2:#D64933 ;
-    --bg3: #EEE5E9;
 }
 
 [data-theme="Seashell"] {
@@ -90,20 +72,12 @@
     --bg4: #095757;
 }
 
-[data-theme="Grapes"] {
-    --text-color1: #c0c999;
-    --text-color2: #fd96a9;
-    
-    --bg2: #8B1E3f;
-    --bg1:#3c153b ;
-    --bg3: #442043;
-}
-
 [data-theme="Utopia"] {
-    --text-color1: #d64933;
-    --text-color2: #92dce5;
+    --text-color1: #e4f500;
+    --text-color2: #5cb6c2;
     
-    --bg2: #eee5e9;
-    --bg1:#2B303a ;
-    --bg3: #7c7c7c;
+    --bg2: #d5e0ee;
+    --bg1:#394277 ;
+    --bg3: #125988;
+    --bg4:#3f5364;
 }

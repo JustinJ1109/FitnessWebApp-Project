@@ -8,33 +8,7 @@ export default function Header(props) {
     const [cookies, setCookie] = useCookies([]);
 
     const [programTitle, setProgramTitle] = useState();
-
-    useEffect(() => {
-        
-
-
-        // async function getProgram() {
-        //     console.log("feching user in header")
-        //     const response = await fetch(`http://localhost:5000/user`)
-        //     if (!response.ok) {
-        //         // user not found, no login?
-        //         console.log("Could not fetch")
-        //         return;
-        //     }
-
-        //     response.json()
-        //     .then((b) => {
-        //         if (b.program) {
-        //             setProgramTitle(b.program);
-        //         }
-
-        //     })
-        // }
-        // getProgram();
-    }, [cookies.Username])
-    
-    console.log("header rendering")
-    return (
+        return (
         <div className="title row">
             <div className="col-4 col-md-3 col-sm-6 col-4">
             <h1 id="home-title"><a href="/">App Title</a></h1>

@@ -29,10 +29,10 @@ function isAuthenticated(req, res, next) {
 programRoutes.route("/program/add").post(function (req, response) {
     let db_connect = dbo.getDb();
 
+    console.log("** Adding Program **")
     console.log(req.body)
     let inc_program = req.body
 
-    console.log("adding program")
 
     db_connect
     .collection("_volume_map")
@@ -69,7 +69,7 @@ programRoutes.get('/program/getmap', async (req, res) => {
     console.log(`/program/getmap: Finding program ${dayQuery ? `for day ${dayQuery}` : ''}`)
     
     var promise = new Promise((resolve, reject) => {
-
+        
         if (dayQuery) {
             db_connect.collection('_program_library')
             .findOne({name : {$eq : 'Full-body-3d'}},
@@ -113,17 +113,14 @@ Gets the program name and days map of the logged in user
 */
 programRoutes.get('/program', isAuthenticated, (req, res) => {
     let db_connect = dbo.getDb("daily-report-db")
-    console.log('/program:')
     
-    //TODO: eventually replace with session.user.program
-    db_connect
-    .collection("user_data")
+    db_connect.collection("user_data")
     .findOne({
         name : {$eq: "Justin"}
     }, function (err, result) {
         if (err) throw err;
         let programname = result.program
-        console.log(`program name ${programname}`)
+        console.log(`/program: name ${programname}`)
         
         db_connect
         .collection('_program_library')
@@ -131,10 +128,27 @@ programRoutes.get('/program', isAuthenticated, (req, res) => {
             name : {$eq : programname}
         }, function (err,  result) {
             if (err) throw err;
-            console.log(result)
             res.json(result)
         })
     })
+})
+
+programRoutes.get('/get-programs', (req, res) => {
+    let db_connect = dbo.getDb("daily-report-db")
+    
+    
+    db_connect.collection('_program_library')
+        .find({})
+        .sort({name:1, custom:-1})
+        .toArray(function (err, result) {
+            if (err) throw err;
+            console.log(result)
+            console.log('/get-programs ^')
+
+
+            res.json(result)
+        })
+    
 })
 
 // This section will help you update a program by id.
