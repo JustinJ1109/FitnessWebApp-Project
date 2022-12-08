@@ -104,15 +104,6 @@ userRoutes.delete("/user/:id", isAuthenticated, (req, response) => {
     });
 });
 
-userRoutes.route("/user/login").get((req, response) => {
-    // response.render("/user/login")
-    console.log("At login")
-    response.json({
-        success:true,
-        redirectURL: '/user/login'
-    })
-})
-
 userRoutes.post(`/user/authenticate-login`, (req, res) => {
     let db_connect = dbo.getDb();
 
@@ -135,24 +126,25 @@ userRoutes.post(`/user/authenticate-login`, (req, res) => {
             )
         }
         else {
-            return (
-            req.session.regenerate((err) => {
-                if (err)  next(err);
-                req.session.user = response
-                console.log("**** SESSION")
-                console.log(req.session)
-                console.log("Success!")
-                req.session.save()
+            req.session.user = {...response}
+            console.log("**** SESSION")
+            console.log(req.session)
+            console.log("Success!")
+            req.session.save()
 
-                res.status(200).json({succeeded:true, redirectURL:'/'})
-
-            })
-            )
+            return res.status(200).json({succeeded:true, redirectURL:'/', user:{...response}}) 
         }
     })
 })
 
-
+userRouter.delete("/logout", (req, res) => {
+    req.session.destroy((err) => {
+      //delete session data from store, using sessionID in cookie
+      if (err) throw err;
+      res.clearCookie("session-id"); // clears cookie containing expired sessionID
+      res.send("Logged out successfully");
+    });
+  });
 
 module.exports = userRoutes;
 

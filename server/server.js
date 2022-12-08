@@ -11,10 +11,8 @@ app.use(session({
   resave:false,
   saveUninitialized:false,
   secret:'key',
-  cookie: {secure:false}
+  name:"cooookie"
 }))
-
-
 
 const recordRoutes = require('./routes/record');
 const liftRoutes = require('./routes/lift')
