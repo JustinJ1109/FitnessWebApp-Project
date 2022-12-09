@@ -39,15 +39,13 @@ export default function DayInfo() {
                         return
                     }
                     else {
-                        console.log("User body")
-                        console.log(body)
-                                setUserMaxes({
-                                    Accessory : body.Accessory,
-                                    Bench : body.Bench,
-                                    'Overhead Press' : body['Overhead Press'],
-                                    Squat: body.Squat,
-                                    Deadlift : body.Deadlift
-                                })
+                        setUserMaxes({
+                            Accessory : body.Accessory,
+                            Bench : body.Bench,
+                            'Overhead Press' : body['Overhead Press'],
+                            Squat: body.Squat,
+                            Deadlift : body.Deadlift
+                        })
                         // fetch(`http://localhost:5000/program/getmap/${body.program.replaceAll("/", "%2F")}?day=${getDateDayValue(date)}`)
                         let response = await fetch(`http://localhost:5000/program/getmap?day=${getDateDayValue(date)}`)
                         
@@ -60,8 +58,6 @@ export default function DayInfo() {
                                 navigate(body.redirectURL)
                                 return
                             }
-                            console.log("SEtting volume map ")
-                            console.log(body)
                             setVolumeMap(body)
                             setLoading(false)
                         })
@@ -109,8 +105,6 @@ export default function DayInfo() {
 
     const addCheckMark = (e) => {
         let checkBox = e.target.querySelector(":nth-child(2)")
-
-        console.log(date)
 
         if (checkBox.style.visibility === 'hidden') {
             checkBox.style.visibility = 'visible'
@@ -205,7 +199,6 @@ export default function DayInfo() {
 
     // pre-load
     if (loading) {
-        console.log("loading...")
         return (
             <div></div>
         )
@@ -318,17 +311,6 @@ export default function DayInfo() {
                                 )
                             })}
                     </table>
-                    
-                    {creating ? <CreateNewForm 
-                                    onClick={() => setCreating(false)}
-                    
-                    /> : <input 
-                        className="create-new-lift-btn btn btn-success"
-                        type="button"
-                        value="Add new lift"
-                        onClick={() => setCreating(true)}
-                    />}
-                    
                 </div>
                 
                 <div className="col" />

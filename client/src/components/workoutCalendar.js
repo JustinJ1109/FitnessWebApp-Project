@@ -46,12 +46,9 @@ export default function WorkoutCalendar() {
         async function getProgramDays() {                    
             // find program data for user
 
-            console.log("fetching /program for calendar");
             const response = await fetch(`http://localhost:5000/program`)
             if (!response.ok) {
                 const message = `Could not find program for user: ${response.statusText}`;
-                // window.alert(message);
-                console.log(message)
                 return;
             }
 
@@ -62,19 +59,11 @@ export default function WorkoutCalendar() {
                     return
                 }
 
-                console.log("retrieved from user:")
-                console.log(program_body)
-
                 setLoggedIn(true)
                 setDateMap(program_body.days)
-                console.log(program_body.days)
-                console.log("fetching /getmap")
                 fetch(`http://localhost:5000/program/getmap`)
                 .then((response) => {
                     response.json().then((map_body) => {
-
-                        console.log("Got from getmap")
-                        console.log(map_body)
 
                         if (map_body.redirectURL) {
                             navigate(map_body.redirectURL)
@@ -152,6 +141,9 @@ export default function WorkoutCalendar() {
                 {volumeMap.map((exercise, i) => {
                     if (exercise.day === props.content && exercise.position < 3) {
                         return <div key={`${exercise.name}${i}`}>{exercise.name}</div>
+                    }
+                    if (exercise.day === props.content && exercise.position === 3) {
+                        return <small style={{position:'relative',top:'-10px'}} key={`${exercise.day}${exercise.position}-3`}>...</small>
                     }
                 })}
             </div>

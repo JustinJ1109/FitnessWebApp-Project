@@ -49,6 +49,11 @@ tbody, td, tfoot, th, thead, tr {
     border-color: var(--bg2) !important;
 }
 
+tr.exercise-row.selected {
+    background-color: var(--bg4) !important;
+    border-color: var(--text-color1) !important;
+}
+
 a.nav-link:hover  {
     color:var(--text-color1);
 }

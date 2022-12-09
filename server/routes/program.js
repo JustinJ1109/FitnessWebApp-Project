@@ -67,20 +67,19 @@ programRoutes.get('/program/getmap', async (req, res) => {
     let dayQuery = req.query.day
 
     console.log(`/program/getmap: Finding program ${dayQuery ? `for day ${dayQuery}` : ''}`)
-    
+
+    // get from volume data if userEdit==user, else get volume
+
+
     var promise = new Promise((resolve, reject) => {
         db_connect.collection('user_data').findOne({name : {$eq: 'Justin'}},
         function(err, res) {
             if (err) throw err;
-            console.log("RESSS")
-            console.log(res.program)
 
             if (dayQuery) {
                 db_connect.collection('_program_library')
                 .findOne({name : {$eq : res.program}},
                 function (err, res) {
-                    console.log("SUBRESS")
-                    console.log(res)
                     if (err) {reject(err)};
     
                     resolve({
@@ -89,7 +88,6 @@ programRoutes.get('/program/getmap', async (req, res) => {
                     })
                 })
             }
-    
             else {
                 resolve({
                     program: {$eq: res.program}
@@ -163,28 +161,33 @@ programRoutes.get('/get-programs', (req, res) => {
 
 // This section will help you update a program by id.
 // FIXME: maybe not needed
-programRoutes.route("/program/update").post(function (req, response) {
+programRoutes.route("/program/update").post(function (req, res) {
     let db_connect = dbo.getDb();
 
-    let dayQuery = req.query.date
-    let exercise = req.query.exercise
-    let set = req.query.set
+    // console.log(req.body)
 
-    let myquery = { date: dayQuery };
-    let newvalues = {
-        $set: {
-            name: req.body.name,
-            position: req.body.position,
-            level: req.body.level,
-        },
-    };
-    db_connect
-        .collection("_volume_map")
-        .updateOne(myquery, newvalues, function (err, res) {
-            if (err) throw err;
-            console.log("1 document updated");
-            response.json(res);
-        });
+    req.body.map((item) => {
+        let query = {day:item.day, position:item.position, userEdit:'Justin'}
+
+        let {_id, ...newvalues} = item
+
+        db_connect.collection("_volume_map")
+        .updateOne(query, {$set : {...newvalues}}, {upsert:true}, function(err, red) {
+            if (err) throw err
+            console.log("Updated DB")})
+    })
+    // db_connect.collection("_volume_map")
+    
+
+    res.json({suceeded:true})
+
+    // db_connect
+    //     .collection("_volume_map")
+    //     .updateOne(myquery, newvalues, function (err, res) {
+    //         if (err) throw err;
+    //         console.log("1 document updated");
+    //         response.json(res);
+    //     });
 });
 
 // This section will help you delete a program

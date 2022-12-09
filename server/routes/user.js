@@ -69,7 +69,6 @@ userRoutes.route("/user/update/:id").post(function (req, response) {
     let myquery = { _id: ObjectId(req.params.id) };
     let newvalues = {
         $set: {
-            
             program: req.body.program,
         },
     };

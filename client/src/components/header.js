@@ -7,7 +7,6 @@ export default function Header(props) {
 
     const [cookies, setCookie] = useCookies([]);
 
-    const [programTitle, setProgramTitle] = useState();
         return (
         <div className="title row">
             <div className="col-4 col-md-3 col-sm-6 col-4">
@@ -15,7 +14,7 @@ export default function Header(props) {
 
             </div>
             <div className="col-lg-4 col-md-3 col-6">
-            <h2>{programTitle}</h2>
+            <h2></h2>
                 
             </div>
             {props.username ? 

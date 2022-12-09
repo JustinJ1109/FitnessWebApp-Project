@@ -34,6 +34,7 @@ const App = () => {
 
 	const [username, setUsername] = useState(''); 
 
+
 	if (loading) {
 		return (
 			<div className="page" style={{backgroundColor:'grey'}}></div>
@@ -51,10 +52,10 @@ const App = () => {
 				{/* content */}
 				<div className="page-content-area">
 					<Routes>
-						<Route exact path="/" element={<WorkoutCalendar />} />
+						<Route exact path="/" element={<WorkoutCalendar/>} />
 						<Route path="/edit/:id" element={<Edit />} />
 						<Route path="/record/create" element={<Create />} />
-						<Route path="/settings" element={<Settings />} />
+						<Route path="/settings" element={<Settings/>} />
 						<Route path="/record/:date" element={<DayInfo />} />
 						<Route path="/deleteall" element={<Delete />} />
 						<Route path="/dev/todo" element={<Todo />} />

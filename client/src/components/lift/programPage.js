@@ -6,6 +6,7 @@ import { useNavigate } from "react-router";
 export default function GetProgram() {
     // holds all n number of exercises from database
     const [exercises, setExercises] = useState([])
+    const [exercisesBackup, setExercisesBackup] = useState([])
     // number that holds which exercises is currently being shown/edited
     const [editingExerciseIndex, setEditingExerciseIndex] = useState(-1)
     // once both effects have fetched the data
@@ -43,6 +44,7 @@ export default function GetProgram() {
                 res.json().then((body) => {
                     
                     setExercises(body)
+                    setExercisesBackup(body)
                     setLoading([loading[0], false])
                 })
             })
@@ -57,22 +59,60 @@ export default function GetProgram() {
         }
         setSaved(true)
 
-        // fetch(`http://localhost:5000/program/update`,
-        // {
-        //     method: "POST",
-        //     body: JSON.stringify(exercises),
-        //     headers: {
-        //         'Content-Type':'application/json'
-        //     }
-        // }).then((res) => {
-        //     if (res.succeeded) {
-        //         window.alert("Updated Exercises")
-        //     }
-        // }).catch((err) => {
-        //     window.alert(err)
-        //     return
-        // }) 
+        fetch(`http://localhost:5000/program/update`,
+        {
+            method: "POST",
+            body: JSON.stringify(exercises),
+            headers: {
+                'Content-Type':'application/json'
+            }
+        }).then((res) => {
+            res.json((body) => {
+                console.log(body)
+                if (body.succeeded) {
+                    window.alert("Updated Exercises")
+                }
+            })
+            .catch((err) => {
+                console.log(err)
+                return
+            })
+            
+        }).catch((err) => {
+            window.alert(err)
+            return
+        }) 
+        // window.location.reload()
+    }
+
+    function cancelForm() {
+
         window.location.reload()
+    }
+
+    function newSet(exercise) {
+        setSaved(false)
+        setIsValidNewForm(false)
+        console.log(exercise)
+
+        let newExercise = exercise
+        if (newExercise.sets === 0) {
+            newExercise.sets = 1
+        }
+        else {
+            newExercise.sets += 1
+        }
+        newExercise.reps = [...newExercise.reps, '']
+        newExercise.weight = [...newExercise.weight, '']
+
+        console.log(newExercise)
+
+        setExercises(exercises.map((ex) => {
+            if (ex.day === newExercise.day && ex.position === newExercise.position) {
+                return newExercise
+            }
+            return ex
+        }))
     }
 
     function removeField(props) {
@@ -94,6 +134,7 @@ export default function GetProgram() {
             }
         })
         newExercise.sets -= 1
+
 
         // console.log(newExercise)
         setExercises(exercises.map((exercise, i) => {
@@ -140,7 +181,11 @@ export default function GetProgram() {
             const newWeight = exercises[props.j].weight.map((w, i) => {
                 if (i === props.set-1) {
                     if (props.weight === '') {
-                        return 0
+                        setIsValidNewForm(false)
+                    }
+                    else {
+                        if (!isValidNewForm)
+                            setIsValidNewForm(true)
                     }
                     if (isNaN(props.weight)) {
                         window.alert("Must be a number")
@@ -163,7 +208,7 @@ export default function GetProgram() {
 
     if (program.dayMap) {
         return (
-            <PageContent removeField={removeField} saved={saved} saveForm={saveForm} updateField={updateField} program={program} exercises={exercises} setEditingExerciseIndex={setEditingExerciseIndex} editingExerciseIndex={editingExerciseIndex}/>
+            <PageContent newSet={newSet} removeField={removeField} saved={saved} cancelForm={cancelForm} saveForm={saveForm} updateField={updateField} program={program} exercises={exercises} setEditingExerciseIndex={setEditingExerciseIndex} editingExerciseIndex={editingExerciseIndex}/>
         )
     }
     return (
@@ -174,14 +219,15 @@ export default function GetProgram() {
 const SaveChanges = (props) => {
     return (
         <div className="col-2">
-            <input type="button" value="Save Changes" className="btn btn-success" onClick={props.saveForm} style={props.saved ? {visibility:'hidden'} : {visibility:'visible'}}/>
+            <input type="button" value="Save Changes" className="btn btn-success" onClick={props.saveForm} style={props.saved ? {visibility:'hidden'} : {marginRight:'15px', visibility:'visible'}}/>
+            <input type="button" value="Revert" className="btn btn-danger" onClick={props.cancelForm} style={props.saved ? {visibility:'hidden'} : {visibility:'visible'}}/>
         </div>
     )
 }
 const PageContent = (props) => {
     return (
         <div className="container-fluid page-content program-page" >
-            <SaveChanges saved={props.saved} saveForm={props.saveForm}/>
+            <SaveChanges cancelForm={props.cancelForm} saved={props.saved} saveForm={props.saveForm}/>
 
             <h2 style={{textAlign:'center'}}>{props.program.rname??props.program.name} Program</h2>
             <div className="row">
@@ -202,7 +248,7 @@ const PageContent = (props) => {
                                     if (exercise.day === i+1) {
                                         return (
                                             <tbody key={`${exercise.name}${i}${j}${day}`}>
-                                                <tr id={`exercise-row-${exercise.name.replaceAll(" ", "-")}`} className={`exercise-row`} 
+                                                <tr id={`exercise-row-${exercise.name.replaceAll(" ", "-")}`} className={`exercise-row ${props.editingExerciseIndex===j && 'selected'}`} 
                                                 onClick={(e) => {
                                                     console.log(!e.target.parentNode.classList.contains('collapse'))
                                                     if (j === props.editingExerciseIndex) {
@@ -219,7 +265,7 @@ const PageContent = (props) => {
                                                     <td>{exercise.sets}</td>
                                                 </tr>
                                                 {props.editingExerciseIndex === j && <tr><td colSpan="2">
-                                                     <EditField removeField={props.removeField} updateField={props.updateField} exercise={props.exercises[j]} j={j}/>
+                                                     <EditField newSet={props.newSet} removeField={props.removeField} updateField={props.updateField} exercise={props.exercises[j]} j={j}/>
                                                 </td></tr>}
                                             </tbody>
                                         )
@@ -254,6 +300,14 @@ const EditField = (props) => {
                                 <EditFieldRow removeField={props.removeField} updateField={props.updateField} j={props.j} key={`fieldrow-${i}`} set={i+1} reps={props.exercise.reps[i]} weight={props.exercise.weight[i]}/>
                             )
                         })}
+
+                        <tr>
+                            <td colSpan="4">
+                                <div style={{textAlign:'center'}}>
+                                    <input type="button" className="btn btn-success" value="Add Set" onClick={() => props.newSet(props.exercise)}/>
+                                </div>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
                 </form>
