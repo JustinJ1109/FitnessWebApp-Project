@@ -51,12 +51,12 @@ export default function UserLogin(props) {
     }
 
     return (
-        <div className="login-page page-content">
+        <div className="container-fluid login-page page-content">
             Login
             <div style={{color:'red'}}>{message}</div>
-            <div>
+            <div class="row">
                 <form onSubmit={onSubmit}>
-                    <div className="form-group" >
+                    <div className="form-group col-4" >
                         <label htmlFor="username">Username</label>
                         <input 
                         type="text"
@@ -67,7 +67,7 @@ export default function UserLogin(props) {
                         />
                     </div>
 
-                    <div className="form-group" >
+                    <div className="form-group col-4" >
                         <label htmlFor="password">Password</label>
                         <input 
                         type="password"

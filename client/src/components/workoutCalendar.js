@@ -64,6 +64,7 @@ export default function WorkoutCalendar() {
                 fetch(`http://localhost:5000/program/getmap`)
                 .then((response) => {
                     response.json().then((map_body) => {
+                        console.log(map_body)
 
                         if (map_body.redirectURL) {
                             navigate(map_body.redirectURL)
@@ -135,7 +136,6 @@ export default function WorkoutCalendar() {
                 <div className="day-content-display">Rest Day</div>
             )
         }
-        
         return (
             <div className="day-content-display activity-day-display">
                 {volumeMap.map((exercise, i) => {

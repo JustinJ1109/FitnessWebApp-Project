@@ -218,12 +218,14 @@ table.table-colored {
 
 h1#home-title > a:visited, h1#home-title > a:link, 
 h1#home-title > a.user-profile-link:active,
-a.user-profile-link:visited, a.user-profile-link:link, a.user-profile-link:hover, a.user-profile-link:active {
+a.user-profile-link:visited, a.user-profile-link:link, a.user-profile-link:active,
+a.user-login-link:visited, a.user-login-link:link, a.user-login-link:active {
     text-decoration: none;
     color:var(--text-color2)
 }
 
-h1#home-title > a.user-profile-link:hover {
+h1#home-title > a.user-profile-link:hover,
+h1#home-title > a.user-login-link:hover {
     color: var(--text-color1) !important;
     text-decoration: none;
 }

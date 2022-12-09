@@ -98,10 +98,13 @@ programRoutes.get('/program/getmap', async (req, res) => {
 
     try {
         const my_query = await promise;
+        console.log("My query:")
+        console.log(my_query)
         db_connect.collection('_volume_map')
         .find({...my_query, userEdit:'Justin'})
         .sort({day:1, position: 1, userEdit:-1})
         .toArray(async function (err, result) {
+            console.log("Returning array of size " + result.length)
             const my_query = await promise
             if (result.length === 0) {
                 console.log("giving default map to user")
@@ -115,7 +118,6 @@ programRoutes.get('/program/getmap', async (req, res) => {
                 })
             }
             else {
-                console.log(result)
                 if (err) throw err;
                 res.json(result)
             }
@@ -180,8 +182,7 @@ programRoutes.route("/program/update").post(function (req, res) {
     let db_connect = dbo.getDb();
 
     // console.log(req.body)
-
-    req.body.map((item) => {
+    req.body.exercises.map((item) => {
         let query = {day:item.day, position:item.position, userEdit:'Justin'}
 
         let {_id, ...newvalues} = item
@@ -192,7 +193,14 @@ programRoutes.route("/program/update").post(function (req, res) {
             console.log("Updated DB")})
     })
     // db_connect.collection("_volume_map")
-    
+    req.body.deleted.map((item) => {
+        let query = {day:item.day, position:item.position, userEdit:'Justin', name:item.name}
+
+        db_connect.collection("_volume_map")
+        .deleteOne(query, function(err, red) {
+            if (err) throw err
+            console.log("Deleted from DB")})
+    })
 
     res.json({suceeded:true})
 

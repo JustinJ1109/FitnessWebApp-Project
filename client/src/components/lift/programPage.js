@@ -18,9 +18,13 @@ export default function GetProgram() {
         _id : null
     })
 
+    const [newExerciseName, setNewExerciseName] = useState('')
+
     const [addingRow, setAddingRow] = useState(false)
 
     const [saved, setSaved] = useState(true)
+
+    const [deletedRows, setDeletedRows] = useState([])
 
     useEffect(() => {
         async function getProgramInfo() {
@@ -56,9 +60,7 @@ export default function GetProgram() {
         console.log(exercises)
 
         for (let i = 0; i < exercises.length; i++) {
-            if (exercises[i].reps.length === 0 || exercises[i].reps.length === 0) {
-                return false;
-            }
+            
             for (let j = 0; j < exercises[i].sets; j++) {
                 if (exercises[i].reps[j] === '' || exercises[i].weight[j] === '')
                 return false;
@@ -78,7 +80,7 @@ export default function GetProgram() {
         fetch(`http://localhost:5000/program/update`,
         {
             method: "POST",
-            body: JSON.stringify(exercises),
+            body: JSON.stringify({exercises:exercises, deleted:deletedRows}),
             headers: {
                 'Content-Type':'application/json'
             }
@@ -204,6 +206,9 @@ export default function GetProgram() {
                 // remove
                 return ex
             }
+            setDeletedRows([...deletedRows, ex])
+            console.log("Deleted rows:")
+            console.log([...deletedRows, ex])
         })
 
         newExercises = newExercises.map((ex) => {
@@ -214,16 +219,54 @@ export default function GetProgram() {
             return ex
         })
 
+        console.log("new exercises after delete")
+        console.log(newExercises)
         setExercises(newExercises)
     }
 
     function addRow(props) {
+        setSaved(false)
+        // validate input
+        if (newExerciseName === '') {
+            window.alert("New exercise must have a name")
+            return
+        }
+        // console.log(newExerciseName)
+        // console.log(props)
+        // append new row name and empty rows and stuff to day
+        let newExercises = exercises
+        let newPosition = 1
+        for (let i =0; i < newExercises.length; i++) {
+            if (newExercises[i].day === props.dayIndex+1) {
+                console.log(newExercises[i])
+                newPosition = newExercises[i].position+1
+            }
+        }
+        console.log(newExercises)
 
+        newExercises = [
+            ...newExercises, 
+            {
+                name:newExerciseName, 
+                day:props.dayIndex+1, 
+                sets:0, 
+                reps:[], 
+                weight:[], 
+                ref:'Accessory', 
+                program: program.name,
+                position:newPosition
+            }
+        ]
+        console.log("new exercises after add")
+        console.log(newExercises)
+
+        setExercises(newExercises)
+        setAddingRow(false)
     }
 
     if (program.dayMap) {
         return (
-            <PageContent addingRow={addingRow} setAddingRow={setAddingRow} addRow={addRow} removeRow={removeRow} newSet={newSet} removeSet={removeSet} saved={saved} cancelForm={cancelForm} saveForm={saveForm} updateField={updateField} program={program} exercises={exercises} setEditingExerciseIndex={setEditingExerciseIndex} editingExerciseIndex={editingExerciseIndex}/>
+            <PageContent addRow={addRow} setNewExerciseName={setNewExerciseName} addingRow={addingRow} setAddingRow={setAddingRow} addRow={addRow} removeRow={removeRow} newSet={newSet} removeSet={removeSet} saved={saved} cancelForm={cancelForm} saveForm={saveForm} updateField={updateField} program={program} exercises={exercises} setEditingExerciseIndex={setEditingExerciseIndex} editingExerciseIndex={editingExerciseIndex}/>
         )
     }
     return (
@@ -274,13 +317,12 @@ const PageContent = (props) => {
                                                     }
                                                     else {
                                                         props.setEditingExerciseIndex(j)
-
                                                     }
                                                 }}
                                                     key={`${exercise.name}-${i}-${day}`}
                                                 >
-                                                    <td>{exercise.name}</td>
-                                                    <td>{exercise.sets}</td>
+                                                    <td className="col">{exercise.name}</td>
+                                                    <td style={{textAlign:'center'}} className="col-1">{exercise.sets}</td>
                                                     <td className="col-1"><input onClick={() => props.removeRow(exercise)} type="button" value="X" className="x-button btn btn-danger"/></td>
                                                 </tr>
                                                 {props.editingExerciseIndex === j && 
@@ -292,10 +334,10 @@ const PageContent = (props) => {
                                     }
                                 })}
                                 <tbody>
-                                    {props.addingRow ? <AddRow onSubmit={props.addRow}/>: 
+                                    {props.addingRow === day ? <AddRow setAddingRow={props.setAddingRow} addRow={props.addRow} dayIndex={i} setNewExerciseName={props.setNewExerciseName} day={day} onSubmit={props.addRow}/>: 
                                     <tr>
-                                        <td colSpan="3">
-                                            <input type="button" className="btn btn-success" value="Add Exercise" onClick={() => props.setAddingRow(true)}/>
+                                        <td style={{textAlign:'center'}} colSpan="3">
+                                            <input type="button" className="btn btn-success" value="Add Exercise" onClick={() => props.setAddingRow(day)}/>
                                         </td>
                                     </tr>
                                     }
@@ -315,7 +357,11 @@ const PageContent = (props) => {
 const AddRow = (props) => {
     return (
         <tr>
-
+            <td colSpan="2">
+                <input type="text" placeholder="Name" onChange={(e) => props.setNewExerciseName(e.target.value)}/>
+                <input style={{position:'relative', left:'5%'}} onClick={() => props.addRow({dayIndex:props.dayIndex})} type="button" value="Create" className="btn btn-success"/>
+            </td>
+            <td><input type="button" value="X" className="btn btn-danger" onClick={() => props.setAddingRow(false)}/></td>
         </tr>
     )
 }
@@ -343,7 +389,7 @@ const EditField = (props) => {
                         <tr>
                             <td colSpan="4">
                                 <div style={{textAlign:'center'}}>
-                                    <input type="button" className="btn btn-success" value="Add Set" onClick={() => props.newSet(props.exercise)}/>
+                                    <input type="button" className="btn btn-primary" value="Add Set" onClick={() => props.newSet(props.exercise)}/>
                                 </div>
                             </td>
                         </tr>
