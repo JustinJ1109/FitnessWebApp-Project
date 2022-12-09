@@ -94,15 +94,13 @@ programRoutes.get('/program/getmap', async (req, res) => {
                 })
             }
         })
-        
-        
     });
 
     try {
         const my_query = await promise;
         db_connect.collection('_volume_map')
         .find({...my_query, userEdit:'Justin'})
-        .sort({day:1, position: 1})
+        .sort({day:1, position: 1, userEdit:-1})
         .toArray(async function (err, result) {
             const my_query = await promise
             if (result.length === 0) {

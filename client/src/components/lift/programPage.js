@@ -18,6 +18,8 @@ export default function GetProgram() {
         _id : null
     })
 
+    const [addingRow, setAddingRow] = useState(false)
+
     const [saved, setSaved] = useState(true)
 
     useEffect(() => {
@@ -52,28 +54,18 @@ export default function GetProgram() {
 
     function isValid() {
         console.log(exercises)
-        const res = exercises.forEach(exercise => {
-            if (exercise.reps === [] || exercise.weight === []) {
+
+        for (let i = 0; i < exercises.length; i++) {
+            if (exercises[i].reps.length === 0 || exercises[i].reps.length === 0) {
                 return false;
             }
-            exercise.reps.forEach(rep => {
-                if (rep == '' || rep == 0) {
-                    console.log("BAD")
-                    return false;
-                }
-            })
-            exercise.weight.forEach(w => {
-                console.log("w: \'" + w + "\'")
+            for (let j = 0; j < exercises[i].sets; j++) {
+                if (exercises[i].reps[j] === '' || exercises[i].weight[j] === '')
+                return false;
+            }
+        }
 
-                if (w == '' || w == 0) {
-                    console.log("BAD")
-
-                    return false;
-                }
-            })
-        });
-
-        return true && res
+        return true
     }
 
     function saveForm(){
@@ -202,9 +194,36 @@ export default function GetProgram() {
         }))
     }
 
+    function removeRow(props) {
+        setSaved(false)
+        console.log(props)
+        let newExercises = exercises
+
+        newExercises = newExercises.filter((ex) => {
+            if (!(ex._id === props._id)) {
+                // remove
+                return ex
+            }
+        })
+
+        newExercises = newExercises.map((ex) => {
+            if (ex.day === props.day && ex.position > props.position) {
+                // decrement position by one
+                return {...ex, position:ex.position-1}
+            }
+            return ex
+        })
+
+        setExercises(newExercises)
+    }
+
+    function addRow(props) {
+
+    }
+
     if (program.dayMap) {
         return (
-            <PageContent newSet={newSet} removeSet={removeSet} saved={saved} cancelForm={cancelForm} saveForm={saveForm} updateField={updateField} program={program} exercises={exercises} setEditingExerciseIndex={setEditingExerciseIndex} editingExerciseIndex={editingExerciseIndex}/>
+            <PageContent addingRow={addingRow} setAddingRow={setAddingRow} addRow={addRow} removeRow={removeRow} newSet={newSet} removeSet={removeSet} saved={saved} cancelForm={cancelForm} saveForm={saveForm} updateField={updateField} program={program} exercises={exercises} setEditingExerciseIndex={setEditingExerciseIndex} editingExerciseIndex={editingExerciseIndex}/>
         )
     }
     return (
@@ -226,7 +245,7 @@ const PageContent = (props) => {
         <div className="container-fluid page-content program-page" >
             <SaveChanges cancelForm={props.cancelForm} saved={props.saved} saveForm={props.saveForm}/>
 
-            <h2 style={{textAlign:'center'}}>{props.program.rname??props.program.name} Program</h2>
+            <h2 style={{textAlign:'center'}}>{props.program.rname??props.program.name} Program {props.exercises.length && props.exercises[0].userEdit ? '(Custom)' :''}</h2>
             <div className="row">
 
                 {props.program.dayMap.map((day, i) => {
@@ -238,7 +257,7 @@ const PageContent = (props) => {
                                 <thead>
                                     <tr>
                                     <th>Name</th>
-                                    <th>Sets</th>
+                                    <th colSpan="2">Sets</th>
                                     </tr>
                                 </thead>
                                 {props.exercises.map((exercise, j) => {
@@ -247,6 +266,9 @@ const PageContent = (props) => {
                                             <tbody key={`${exercise.name}${i}${j}${day}`}>
                                                 <tr id={`exercise-row-${exercise.name.replaceAll(" ", "-")}`} className={`exercise-row ${props.editingExerciseIndex===j && 'selected'}`} 
                                                 onClick={(e) => {
+                                                    if (e.target.className.includes('x-button')) {
+                                                        return
+                                                    }
                                                     if (j === props.editingExerciseIndex) {
                                                         props.setEditingExerciseIndex(-1)
                                                     }
@@ -259,15 +281,27 @@ const PageContent = (props) => {
                                                 >
                                                     <td>{exercise.name}</td>
                                                     <td>{exercise.sets}</td>
+                                                    <td className="col-1"><input onClick={() => props.removeRow(exercise)} type="button" value="X" className="x-button btn btn-danger"/></td>
                                                 </tr>
                                                 {props.editingExerciseIndex === j && 
-                                                <tr className="editfield"><td colSpan="2">
+                                                <tr className="editfield"><td colSpan="3">
                                                      <EditField newSet={props.newSet} removeSet={props.removeSet} updateField={props.updateField} exercise={props.exercises[j]} j={j}/>
                                                 </td></tr>}
                                             </tbody>
                                         )
                                     }
                                 })}
+                                <tbody>
+                                    {props.addingRow ? <AddRow onSubmit={props.addRow}/>: 
+                                    <tr>
+                                        <td colSpan="3">
+                                            <input type="button" className="btn btn-success" value="Add Exercise" onClick={() => props.setAddingRow(true)}/>
+                                        </td>
+                                    </tr>
+                                    }
+                                    
+
+                                </tbody>
                             </table>
                         </div>
                     )
@@ -275,6 +309,14 @@ const PageContent = (props) => {
             
             </div>
         </div>
+    )
+}
+
+const AddRow = (props) => {
+    return (
+        <tr>
+
+        </tr>
     )
 }
 
