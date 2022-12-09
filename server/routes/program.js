@@ -84,13 +84,13 @@ programRoutes.get('/program/getmap', async (req, res) => {
     
                     resolve({
                         program: {$eq : res.name},
-                        day: {$eq : res.days[parseInt(dayQuery, 10)]}
+                        day: {$eq : res.days[parseInt(dayQuery, 10)]},
                     })
                 })
             }
             else {
                 resolve({
-                    program: {$eq: res.program}
+                    program: {$eq: res.program},
                 })
             }
         })
@@ -101,11 +101,28 @@ programRoutes.get('/program/getmap', async (req, res) => {
     try {
         const my_query = await promise;
         db_connect.collection('_volume_map')
-        .find(my_query)
+        .find({...my_query, userEdit:'Justin'})
         .sort({day:1, position: 1})
-        .toArray(function (err, result) {
-            if (err) throw err;
-            res.json(result)
+        .toArray(async function (err, result) {
+            const my_query = await promise
+            if (result.length === 0) {
+                console.log("giving default map to user")
+                db_connect.collection('_volume_map')
+                .find(my_query)
+                .sort({day:1, position:1})
+                .toArray(function (err, result) {
+
+                    if (err) throw err;
+                    res.json(result)
+                })
+            }
+            else {
+                console.log(result)
+                if (err) throw err;
+                res.json(result)
+            }
+
+            
         })
     } catch (err) {
         throw err;

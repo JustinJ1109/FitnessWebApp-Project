@@ -26,8 +26,10 @@
 
 /* text colors */
 div, th, td {
-    color:var(--text-color1)
+    color:var(--text-color1);
 }
+
+
 
 h1, h2, h3, h4, .nav-col > a, hr, div.logged-in-as {
     color:var(--text-color2)

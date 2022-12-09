@@ -18,8 +18,6 @@ export default function GetProgram() {
         _id : null
     })
 
-    const [isValidNewForm, setIsValidNewForm] = useState(true)
-
     const [saved, setSaved] = useState(true)
 
     useEffect(() => {
@@ -52,8 +50,34 @@ export default function GetProgram() {
         getExercises()
     }, [])
 
+    function isValid() {
+        console.log(exercises)
+        const res = exercises.forEach(exercise => {
+            if (exercise.reps === [] || exercise.weight === []) {
+                return false;
+            }
+            exercise.reps.forEach(rep => {
+                if (rep == '' || rep == 0) {
+                    console.log("BAD")
+                    return false;
+                }
+            })
+            exercise.weight.forEach(w => {
+                console.log("w: \'" + w + "\'")
+
+                if (w == '' || w == 0) {
+                    console.log("BAD")
+
+                    return false;
+                }
+            })
+        });
+
+        return true && res
+    }
+
     function saveForm(){
-        if (!isValidNewForm) {
+        if (!isValid()) {
             window.alert("Please fix the exising mistakes in the form")
             return
         }
@@ -68,7 +92,6 @@ export default function GetProgram() {
             }
         }).then((res) => {
             res.json((body) => {
-                console.log(body)
                 if (body.succeeded) {
                     window.alert("Updated Exercises")
                 }
@@ -92,8 +115,6 @@ export default function GetProgram() {
 
     function newSet(exercise) {
         setSaved(false)
-        setIsValidNewForm(false)
-        console.log(exercise)
 
         let newExercise = exercise
         if (newExercise.sets === 0) {
@@ -105,8 +126,6 @@ export default function GetProgram() {
         newExercise.reps = [...newExercise.reps, '']
         newExercise.weight = [...newExercise.weight, '']
 
-        console.log(newExercise)
-
         setExercises(exercises.map((ex) => {
             if (ex.day === newExercise.day && ex.position === newExercise.position) {
                 return newExercise
@@ -115,14 +134,11 @@ export default function GetProgram() {
         }))
     }
 
-    function removeField(props) {
+    function removeSet(props) {
         setSaved(false)
-
-        // console.log(props)
 
         let newExercise = exercises[props.day]
 
-        console.log(newExercise)
         newExercise.reps = newExercise.reps.filter((r, i) => {
             if (i+1 != props.set) {
                 return r
@@ -136,7 +152,6 @@ export default function GetProgram() {
         newExercise.sets -= 1
 
 
-        // console.log(newExercise)
         setExercises(exercises.map((exercise, i) => {
             if (exercise.day === newExercise.day && exercise.position === newExercise.position) {
                 return newExercise
@@ -150,20 +165,9 @@ export default function GetProgram() {
         setSaved(false)
         var newExercise;
 
-        console.log(props)
-
         if ("reps" in props) {
-            console.log("REPSSS")
             const newReps = exercises[props.j].reps.map((r, i) => {
                 if (i === props.set-1) {
-                    if (props.reps === '') {
-                        setIsValidNewForm(false)
-                    }
-                    else {
-                        if (!isValidNewForm)
-                            setIsValidNewForm(true)
-                    }
-
                     if (isNaN(props.reps)) {
                         window.alert("Must be a number")
                         return r
@@ -177,16 +181,8 @@ export default function GetProgram() {
         }
         
         else {
-            console.log("WEIGTHT")
             const newWeight = exercises[props.j].weight.map((w, i) => {
                 if (i === props.set-1) {
-                    if (props.weight === '') {
-                        setIsValidNewForm(false)
-                    }
-                    else {
-                        if (!isValidNewForm)
-                            setIsValidNewForm(true)
-                    }
                     if (isNaN(props.weight)) {
                         window.alert("Must be a number")
                         return w
@@ -208,7 +204,7 @@ export default function GetProgram() {
 
     if (program.dayMap) {
         return (
-            <PageContent newSet={newSet} removeField={removeField} saved={saved} cancelForm={cancelForm} saveForm={saveForm} updateField={updateField} program={program} exercises={exercises} setEditingExerciseIndex={setEditingExerciseIndex} editingExerciseIndex={editingExerciseIndex}/>
+            <PageContent newSet={newSet} removeSet={removeSet} saved={saved} cancelForm={cancelForm} saveForm={saveForm} updateField={updateField} program={program} exercises={exercises} setEditingExerciseIndex={setEditingExerciseIndex} editingExerciseIndex={editingExerciseIndex}/>
         )
     }
     return (
@@ -225,6 +221,7 @@ const SaveChanges = (props) => {
     )
 }
 const PageContent = (props) => {
+
     return (
         <div className="container-fluid page-content program-page" >
             <SaveChanges cancelForm={props.cancelForm} saved={props.saved} saveForm={props.saveForm}/>
@@ -250,7 +247,6 @@ const PageContent = (props) => {
                                             <tbody key={`${exercise.name}${i}${j}${day}`}>
                                                 <tr id={`exercise-row-${exercise.name.replaceAll(" ", "-")}`} className={`exercise-row ${props.editingExerciseIndex===j && 'selected'}`} 
                                                 onClick={(e) => {
-                                                    console.log(!e.target.parentNode.classList.contains('collapse'))
                                                     if (j === props.editingExerciseIndex) {
                                                         props.setEditingExerciseIndex(-1)
                                                     }
@@ -264,8 +260,9 @@ const PageContent = (props) => {
                                                     <td>{exercise.name}</td>
                                                     <td>{exercise.sets}</td>
                                                 </tr>
-                                                {props.editingExerciseIndex === j && <tr><td colSpan="2">
-                                                     <EditField newSet={props.newSet} removeField={props.removeField} updateField={props.updateField} exercise={props.exercises[j]} j={j}/>
+                                                {props.editingExerciseIndex === j && 
+                                                <tr className="editfield"><td colSpan="2">
+                                                     <EditField newSet={props.newSet} removeSet={props.removeSet} updateField={props.updateField} exercise={props.exercises[j]} j={j}/>
                                                 </td></tr>}
                                             </tbody>
                                         )
@@ -297,7 +294,7 @@ const EditField = (props) => {
                     <tbody>
                         {[...Array(props.exercise.sets).keys()].map((i) => {
                             return (
-                                <EditFieldRow removeField={props.removeField} updateField={props.updateField} j={props.j} key={`fieldrow-${i}`} set={i+1} reps={props.exercise.reps[i]} weight={props.exercise.weight[i]}/>
+                                <EditFieldRow removeSet={props.removeSet} updateField={props.updateField} j={props.j} key={`fieldrow-${i}`} set={i+1} reps={props.exercise.reps[i]} weight={props.exercise.weight[i]}/>
                             )
                         })}
 
@@ -328,7 +325,7 @@ const EditFieldRow = (props) => {
                 <input type="text" value={props.weight} onChange={(e) => props.updateField({e:e, j:props.j, set:props.set, weight:e.target.value})}/>
             </td>
             
-            <td><input type="button" value="X" className="btn btn-danger" onClick={() => props.removeField({day:props.j, set:props.set})}/></td>
+            <td><input type="button" value="X" className="btn btn-danger" onClick={() => props.removeSet({day:props.j, set:props.set})}/></td>
         </tr>
     )
 }
